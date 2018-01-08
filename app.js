@@ -84,7 +84,7 @@ app.use(
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     store: new MongoStore({
-      url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
+      url: process.env.MONGODB_URI,
       autoReconnect: true,
       clear_interval: 3600
     })
@@ -166,13 +166,6 @@ app.get(
  * API examples routes.
  */
 app.get('/api', apiController.getApi);
-app.get(
-  '/api/facebook',
-  passportConfig.isAuthenticated,
-  passportConfig.isAuthorized,
-  apiController.getFacebook
-);
-app.get('/api/lob', apiController.getLob);
 app.get('/api/upload', apiController.getFileUpload);
 app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
 app.get('/api/google-maps', apiController.getGoogleMaps);
