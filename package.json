@@ -23,7 +23,6 @@
     "express": "^4.15.4",
     "express-flash": "^0.0.2",
     "express-session": "^1.15.5",
-    "express-status-monitor": "^1.0.0",
     "express-validator": "^3.2.1",
     "lusca": "^1.5.1",
     "mongoose": "^4.11.7",
@@ -44,6 +43,7 @@
     "chai": "^4.1.1",
     "eslint": "^4.4.1",
     "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-config-rallycoding": "^3.2.0",
     "eslint-plugin-chai-friendly": "^0.4.0",
     "eslint-plugin-import": "^2.7.0",
     "mocha": "^3.5.0",
@@ -53,7 +53,7 @@
     "supertest": "^3.0.0"
   },
   "eslintConfig": {
-    "extends": "airbnb-base",
+    "extends": "rallycoding",
     "rules": {
       "comma-dangle": 0,
       "consistent-return": 0,
@@ -70,6 +70,8 @@
       "mocha": true,
       "node": true
     },
-    "plugins": ["chai-friendly"]
+    "plugins": [
+      "chai-friendly"
+    ]
   }
 }
