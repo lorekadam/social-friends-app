@@ -12,7 +12,9 @@ import {
   Text
 } from 'native-base';
 
-export default class LoginPage extends React.Component {
+export default class LoginScreen extends React.Component {
+  navRegister = () => {};
+
   render() {
     return (
       <Container>
@@ -38,6 +40,13 @@ export default class LoginPage extends React.Component {
           <Button iconLeft full style={{ backgroundColor: '#4267B2' }}>
             <Icon name="logo-facebook" />
             <Text>Facebook</Text>
+          </Button>
+          <Button
+            onPress={this.navRegister}
+            full
+            style={{ backgroundColor: '#000000' }}
+          >
+            <Text>Register</Text>
           </Button>
         </Content>
       </Container>
