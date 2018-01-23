@@ -12,3 +12,14 @@ export const Tabs = TabNavigator({
     screen: Login
   }
 });
+
+const RootNavigator = StackNavigator({
+  Register: {
+    screen: Register
+  },
+  Login: {
+    screen: Login
+  }
+});
+
+export default RootNavigator;
