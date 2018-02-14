@@ -1,25 +1,26 @@
 import React from 'react';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
-import Register from '../screens/Register';
-import Login from '../screens/Login';
+import LoginScreen from '../screens/Login';
+import RegisterScreen from '../screens/Register';
+import DashboardScreen from '../screens/Dashboard';
 
-export const Tabs = TabNavigator({
-  Register: {
-    screen: Register
+export const AppNavigator = StackNavigator(
+  {
+    Login: { screen: LoginScreen },
+    Register: { screen: RegisterScreen },
+    Dashboard: { screen: DashboardScreen }
   },
-  Login: {
-    screen: Login
-  }
+  { navigationOptions: { header: null } }
+);
+
+const RootNavigator = ({ dispatch, nav }) => (
+  <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
+);
+
+const mapStateToProps = (state) => ({
+  nav: state.nav
 });
 
-const RootNavigator = StackNavigator({
-  Register: {
-    screen: Register
-  },
-  Login: {
-    screen: Login
-  }
-});
-
-export default RootNavigator;
+export default connect(mapStateToProps)(RootNavigator);
