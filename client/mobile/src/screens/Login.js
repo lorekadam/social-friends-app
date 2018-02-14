@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { Container, Form, Item, Label, Input, Button, Content, Icon, Text } from 'native-base';
 import { navChange } from '../actions/navigationActions';
+// import Axios from 'axios';
 
 @connect()
 export default class LoginScreen extends React.Component {
@@ -14,16 +15,20 @@ export default class LoginScreen extends React.Component {
     };
   }
 
-  setEmail = (e) => {
+  setEmail = (val) => {
     this.setState({
-      email: e.target.value
+      email: val
     });
   };
 
-  setPassword = (e) => {
+  setPassword = (val) => {
     this.setState({
-      password: e.target.value
+      password: val
     });
+  };
+
+  submitLogin = () => {
+    console.log(this.state);
   };
 
   render() {
@@ -33,16 +38,17 @@ export default class LoginScreen extends React.Component {
           <Form>
             <Item floatingLabel>
               <Label>Email</Label>
-              <Input value={this.state.email} onChange={this.setEmail} />
+              <Input value={this.state.email} onChangeText={(val) => this.setEmail(val)} />
             </Item>
             <Item floatingLabel>
               <Label>Password</Label>
-              <Input value={this.state.password} onChange={this.setPassword} />
+              <Input value={this.state.password} onChangeText={(val) => this.setPassword(val)} />
             </Item>
             <Button
               iconLeft
               full
-              disabled={this.state.email.length > 0 && this.state.password.length > 0}
+              onPress={this.submitLogin}
+              disabled={this.state.email.length === 0 || this.state.password.length === 0}
             >
               <Icon name="md-log-in" />
               <Text>Log in</Text>
