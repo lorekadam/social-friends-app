@@ -1,17 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {
-  Container,
-  Form,
-  Item,
-  Label,
-  Input,
-  Button,
-  Content,
-  Icon,
-  Text
-} from 'native-base';
+import { Container, Form, Item, Label, Input, Button, Content, Icon, Text } from 'native-base';
 import { navChange } from '../actions/navigationActions';
 
 @connect()
@@ -52,11 +42,7 @@ export default class LoginScreen extends React.Component {
             <Button
               iconLeft
               full
-              disabled={
-                this.state.email.length > 0 && this.state.password.length > 0
-                  ? false
-                  : true
-              }
+              disabled={this.state.email.length > 0 && this.state.password.length > 0}
             >
               <Icon name="md-log-in" />
               <Text>Log in</Text>
