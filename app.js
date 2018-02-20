@@ -61,7 +61,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
+  if (req.path.substr('/api/') !== -1) {
     next();
   } else {
     lusca.csrf()(req, res, next);
@@ -100,16 +100,20 @@ app.use(errorHandler());
  */
 app.listen(app.get('port'), () => {
   console.log(
-    'App is running at http://localhost:8080',
-    app.get('port'),
-    app.get('env')
+    'App is running at http://localhost:', app.get('port'), 'in', app.get('env')
   );
-  console.log('  Press CTRL-C to stop\n');
+  console.log('Press CTRL-C to stop\n');
 });
+
+/**
+ * Routes
+ */
 
 app.use(require('./routes/globals'));
 app.use(require('./routes/OAuth'));
 app.use(require('./routes/account'));
 app.use(require('./routes/user'));
+
+app.use(require('./routes/api/authentication'));
 
 module.exports = app;
