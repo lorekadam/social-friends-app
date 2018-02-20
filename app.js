@@ -20,12 +20,6 @@ const expressValidator = require('express-validator');
 dotenv.load({ path: '.env' });
 
 /**
- * Controllers (route handlers).
- */
-const homeController = require('./controllers/home');
-const contactController = require('./controllers/contact');
-
-/**
  * Create Express server.
  */
 const app = express();
@@ -97,13 +91,6 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
- * Primary app routes.
- */
-app.get('/', homeController.index);
-app.get('/contact', contactController.getContact);
-app.post('/contact', contactController.postContact);
-
-/**
  * Error Handler.
  */
 app.use(errorHandler());
@@ -113,13 +100,14 @@ app.use(errorHandler());
  */
 app.listen(app.get('port'), () => {
   console.log(
-    '%s App is running at http://localhost:%d in %s mode',
+    'App is running at http://localhost:8080',
     app.get('port'),
     app.get('env')
   );
   console.log('  Press CTRL-C to stop\n');
 });
 
+app.use(require('./routes/globals'));
 app.use(require('./routes/OAuth'));
 app.use(require('./routes/account'));
 app.use(require('./routes/user'));
