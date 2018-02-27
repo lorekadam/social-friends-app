@@ -18,14 +18,18 @@ const app = express();
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI, {
-  auth: {
-    user: process.env.MONGODB_USER,
-    password: process.env.MONGODB_PASSWORD
+mongoose.connect(
+  process.env.MONGODB_URI,
+  {
+    auth: {
+      user: process.env.MONGODB_USER || '',
+      password: process.env.MONGODB_PASSWORD || ''
+    }
+  },
+  (err, db) => {
+    db.close();
   }
-}, (err, db) => {
-  db.close();
-});
+);
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
@@ -39,8 +43,8 @@ app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 /**
  * Start Express server.
