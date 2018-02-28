@@ -1,42 +1,93 @@
-const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const randtoken = require('rand-token');
+const User = require('../models/User');
 const config = require('../config/config');
+const msg = require('../helpers/messages');
 
-exports.createUser = (req, res) => {
-  console.log(req.body);
+exports.register = (req, res) => {
   if (req.body.email === undefined || req.body.password === undefined) {
-    res.status(200).send('Email and password are required.');
-  }
-  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-  User.create(
-    {
-      email: req.body.email,
-      password: hashedPassword
-    },
-    function (err, user) {
-      if (err) {
-        return res.status(500).send('There was a problem registering the user.');
+    res.status(500).send(msg.auth.required);
+  } else if (req.body.password !== undefined && req.body.password.length <= 3) {
+    res.status(500).send(msg.auth.password);
+  } else {
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+    const refreshToken = randtoken.uid(64);
+    User.create(
+      {
+        email: req.body.email,
+        password: hashedPassword,
+        refreshToken
+      },
+      (err, user) => {
+        if (err) {
+          if (err.errors !== undefined && err.errors.email) {
+            return res.status(500).send(err.errors.email.message);
+          }
+          return res.status(500).send(msg.auth.duplicateEmail);
+        }
+        const token = jwt.sign({ id: user._id }, config.secret, {
+          expiresIn: 86400
+        });
+        res.status(200).send({ auth: true, token: token, refreshToken });
       }
-      const token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
-      });
-      res.status(200).send({ auth: true, token: token });
+    );
+  }
+};
+
+exports.login = (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (err) {
+      return res.status(500).send(msg.basic);
     }
-  );
+    if (!user) {
+      return res.status(404).send(msg.auth.noUser);
+    }
+    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!passwordIsValid) {
+      return res.status(401).send(msg.auth.login);
+    }
+    const token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: 86400
+    });
+    res.status(200).send({ auth: true, token: token });
+  });
 };
 
 exports.getUser = (req, res) => {
-  const token = req.headers['x-access-token'];
-  if (!token) {
-    return res.status(401).send({ auth: false, message: 'No token provided.' });
-  }
-
-  jwt.verify(token, config.secret, (err, decoded) => {
+  User.findById(req.userId, { password: 0 }, (err, user) => {
     if (err) {
-      return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+      return res.status(500).send(msg.basic);
     }
-
-    res.status(200).send(decoded);
+    if (!user) {
+      return res.status(404).send(msg.auth.noUser);
+    }
+    res.status(200).send(user);
   });
+};
+
+exports.refreshToken = (req, res) => {
+  User.findOne(
+    { email: req.body.email, refreshToken: req.body.refreshToken },
+    { password: 0 },
+    (err, user) => {
+      if (err) {
+        return res.status(500).send(msg.basic);
+      }
+      if (req.body.refreshToken === user.refreshToken) {
+        const token = jwt.sign({ id: user._id }, config.secret, {
+          expiresIn: 86400 // expires in 24 hours
+        });
+        const refreshToken = randtoken.uid(64);
+        User.findOneAndUpdate({ _id: user._id }, { refreshToken }, (dbErr) => {
+          if (dbErr) {
+            return res.status(500).send(msg.basic);
+          }
+          res.status(200).send({ auth: true, token: token, refreshToken });
+        });
+      } else {
+        return res.status(500).send(msg.auth.token.invalidRefresh);
+      }
+    }
+  );
 };
