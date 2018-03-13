@@ -9,3 +9,7 @@ export function loginScreen() {
 export function registerScreen() {
   return { type: 'REGISTER_SCREEN' };
 }
+
+export function dashboardScreen() {
+  return { type: 'DASHBOARD_SCREEN' };
+}

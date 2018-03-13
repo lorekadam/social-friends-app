@@ -2,12 +2,6 @@
   "name": "fstats",
   "version": "0.1.0",
   "private": true,
-  "devDependencies": {
-    "eslint-config-rallycoding": "^3.2.0",
-    "jest-expo": "25.0.0",
-    "react-native-scripts": "1.11.1",
-    "react-test-renderer": "16.2.0"
-  },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
     "start": "react-native-scripts start",
@@ -31,10 +25,37 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2"
   },
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.18.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "jest-expo": "25.0.0",
+    "react-native-scripts": "1.11.1",
+    "react-test-renderer": "16.2.0"
+  },
   "eslintConfig": {
-    "extends": "rallycoding",
+    "extends": "airbnb",
+    "parser": "babel-eslint",
     "rules": {
-      "experimentalDecorators": 0
+      "comma-dangle": 0,
+      "no-console": 0,
+      "linebreak-style": 0,
+      "consistent-return": 0,
+      "no-underscore-dangle": 0,
+      "func-names": 0,
+      "no-useless-escape": 0,
+      "experimentalDecorators": 0,
+      "default-case": 0,
+      "react/prop-types": 0,
+      "react/jsx-filename-extension": 0
+    },
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
     }
   }
 }

@@ -5,6 +5,8 @@ const User = require('../models/User');
 const config = require('../config/config');
 const msg = require('../helpers/messages');
 
+const tokenExpire = 86400;
+
 exports.register = (req, res) => {
   if (req.body.email === undefined || req.body.password === undefined) {
     res.status(500).send(msg.auth.required);
@@ -27,7 +29,7 @@ exports.register = (req, res) => {
           return res.status(500).send(msg.auth.duplicateEmail);
         }
         const token = jwt.sign({ id: user._id }, config.secret, {
-          expiresIn: 86400
+          expiresIn: tokenExpire
         });
         res.status(200).send({ auth: true, token: token, refreshToken });
       }
@@ -48,7 +50,7 @@ exports.login = (req, res) => {
       return res.status(401).send(msg.auth.login);
     }
     const token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: 86400
+      expiresIn: tokenExpire
     });
     res.status(200).send({ auth: true, token: token });
   });
@@ -68,7 +70,7 @@ exports.getUser = (req, res) => {
 
 exports.refreshToken = (req, res) => {
   User.findOne(
-    { email: req.body.email, refreshToken: req.body.refreshToken },
+    { email: req.body.email },
     { password: 0 },
     (err, user) => {
       if (err) {
@@ -76,7 +78,7 @@ exports.refreshToken = (req, res) => {
       }
       if (req.body.refreshToken === user.refreshToken) {
         const token = jwt.sign({ id: user._id }, config.secret, {
-          expiresIn: 86400 // expires in 24 hours
+          expiresIn: tokenExpire
         });
         const refreshToken = randtoken.uid(64);
         User.findOneAndUpdate({ _id: user._id }, { refreshToken }, (dbErr) => {

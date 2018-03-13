@@ -1,19 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addNavigationHelpers, StackNavigator } from 'react-navigation';
+import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import { addListener } from './utils';
 
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import DashboardScreen from '../screens/Dashboard';
 
-export const AppNavigator = StackNavigator(
+export const AppNavigator = TabNavigator(
   {
     Login: { screen: LoginScreen },
     Register: { screen: RegisterScreen },
     Dashboard: { screen: DashboardScreen }
   },
-  { navigationOptions: { header: null } }
+  {
+    navigationOptions: {
+      tabBarVisible: false
+    }
+  }
 );
 
 const RootNavigator = ({ dispatch, nav }) => (
@@ -26,7 +30,7 @@ const RootNavigator = ({ dispatch, nav }) => (
   />
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   nav: state.nav
 });
 

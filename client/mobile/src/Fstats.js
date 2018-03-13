@@ -11,14 +11,12 @@ import { navMiddleware } from './config/utils';
 
 const store = createStore(reducers, applyMiddleware(navMiddleware));
 
-export default class Fstats extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <StyleProvider style={getTheme(variables)}>
-          <RootNavigator />
-        </StyleProvider>
-      </Provider>
-    );
-  }
-}
+const Fstats = () => (
+  <Provider store={store}>
+    <StyleProvider style={getTheme(variables)}>
+      <RootNavigator />
+    </StyleProvider>
+  </Provider>
+);
+
+export default Fstats;

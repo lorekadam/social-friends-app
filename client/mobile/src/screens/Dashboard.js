@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 
 import { Container, Button, Content, Text } from 'native-base';
 import { navChange } from '../actions/navigationActions';
+import Auth from '../components/require_auth';
 
+@Auth
 @connect()
 export default class DashboardScreen extends React.Component {
   render() {
@@ -15,7 +17,7 @@ export default class DashboardScreen extends React.Component {
             full
             style={{ backgroundColor: '#000000' }}
           >
-            <Text>Go to login screen</Text>
+            <Text>DASHBOARD Go to login screen</Text>
           </Button>
         </Content>
       </Container>

@@ -38,11 +38,11 @@ export default class LoginScreen extends React.Component {
           <Form>
             <Item floatingLabel>
               <Label>Email</Label>
-              <Input value={this.state.email} onChangeText={(val) => this.setEmail(val)} />
+              <Input value={this.state.email} onChangeText={val => this.setEmail(val)} />
             </Item>
             <Item floatingLabel>
               <Label>Password</Label>
-              <Input value={this.state.password} onChangeText={(val) => this.setPassword(val)} />
+              <Input value={this.state.password} onChangeText={val => this.setPassword(val)} />
             </Item>
             <Button
               iconLeft
@@ -68,6 +68,13 @@ export default class LoginScreen extends React.Component {
             style={{ backgroundColor: '#000000' }}
           >
             <Text>Go To Register Screen</Text>
+          </Button>
+          <Button
+            onPress={() => this.props.dispatch(navChange('DASHBOARD_SCREEN'))}
+            full
+            style={{ backgroundColor: '#ab29f1' }}
+          >
+            <Text>Go protected DASHBOARD</Text>
           </Button>
         </Content>
       </Container>
