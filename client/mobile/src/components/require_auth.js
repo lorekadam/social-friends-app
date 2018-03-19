@@ -7,6 +7,7 @@ export default function (ComposedComponent) {
   @connect(state => ({ authenticated: state.user.authenticated }))
   class Auth extends Component {
     componentWillMount() {
+      console.log('auth');
       if (!this.props.authenticated) {
         this.props.dispatch(loginScreen());
       }

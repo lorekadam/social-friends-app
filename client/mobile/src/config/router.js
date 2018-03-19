@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addNavigationHelpers, TabNavigator } from 'react-navigation';
+import { addNavigationHelpers, TabNavigator, StackNavigator } from 'react-navigation';
 import { addListener } from './utils';
 
 import LoginScreen from '../screens/Login';
@@ -9,13 +9,28 @@ import DashboardScreen from '../screens/Dashboard';
 
 export const AppNavigator = TabNavigator(
   {
-    Login: { screen: LoginScreen },
-    Register: { screen: RegisterScreen },
-    Dashboard: { screen: DashboardScreen }
+    login: { screen: LoginScreen },
+    register: { screen: RegisterScreen },
+    main: {
+      screen: StackNavigator(
+        {
+          dashboard: { screen: DashboardScreen }
+        },
+        {
+          navigationOptions: {
+            tabBarVisible: false,
+            swipeEnabled: false,
+            animationEnabled: false
+          }
+        }
+      )
+    }
   },
   {
     navigationOptions: {
-      tabBarVisible: false
+      tabBarVisible: false,
+      swipeEnabled: false,
+      lazy: true
     }
   }
 );

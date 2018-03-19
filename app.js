@@ -7,6 +7,7 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const config = require('./config/config');
 const msg = require('./helpers/messages');
+const os = require('os');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -74,6 +75,10 @@ app.use(function (req, res, next) {
 /**
  * Start Express server.
  */
+
+const networkInterfaces = os.networkInterfaces();
+console.log(networkInterfaces['VirtualBox Host-Only Network'][1].address);
+
 app.listen(app.get('port'), () => {
   console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
   console.log('Press CTRL-C to stop\n');

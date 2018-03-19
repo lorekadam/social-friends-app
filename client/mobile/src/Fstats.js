@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
 
 import { StyleProvider, getTheme, variables } from 'native-base';
 import RootNavigator from './config/router';
@@ -9,7 +10,9 @@ import RootNavigator from './config/router';
 import reducers from './reducers';
 import { navMiddleware } from './config/utils';
 
-const store = createStore(reducers, applyMiddleware(navMiddleware));
+const logger = createLogger();
+
+const store = createStore(reducers, applyMiddleware(navMiddleware, logger));
 
 const Fstats = () => (
   <Provider store={store}>
