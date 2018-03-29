@@ -3,7 +3,7 @@ module.exports = {
   auth: {
     required: 'Email and password are required.',
     email: 'Given email is not valid.',
-    duplicateEmail: 'Account with given email is created.',
+    duplicateEmail: 'Account with given email already exist.',
     password: 'Password must be longer that 3 characters.',
     noUser: 'No user found.',
     login: 'Invalid email or password.',
