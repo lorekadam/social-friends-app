@@ -51,7 +51,6 @@ export default class RegisterScreen extends React.Component {
       password: this.state.password
     })
       .then((res) => {
-        console.log(res);
         if (res.data.error) {
           this.setState({
             error: res.data.msg
@@ -61,6 +60,9 @@ export default class RegisterScreen extends React.Component {
             token: res.data.token,
             refreshToken: res.data.refreshToken
           };
+          this.setState({
+            error: ''
+          });
           this.props.dispatch(authUser(data));
           this.props.dispatch(navChange(types.DASHBOARD_SCREEN));
         }
@@ -99,6 +101,13 @@ export default class RegisterScreen extends React.Component {
             disabled={this.state.email.length === 0 && this.state.password.length > 3}
           >
             <Text>Register</Text>
+          </Button>
+          <Button
+            onPress={() => this.props.dispatch(navChange(types.LOGIN_SCREEN))}
+            full
+            style={{ backgroundColor: '#000000' }}
+          >
+            <Text>Go To Login Screen</Text>
           </Button>
         </Content>
       </Container>

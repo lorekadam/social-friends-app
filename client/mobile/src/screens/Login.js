@@ -8,6 +8,7 @@ import { api } from '../config/globals';
 
 import * as types from '../actions/types';
 import { authUser } from '../actions/userActions';
+import ErrorBlock from '../components/ErrorBlock';
 
 // import Axios from 'axios';
 
@@ -17,7 +18,8 @@ export default class LoginScreen extends React.Component {
     super(props);
     this.state = {
       email: 'lorekadam@interia.pl',
-      password: '102587'
+      password: '102587',
+      error: ''
     };
   }
 
@@ -38,12 +40,19 @@ export default class LoginScreen extends React.Component {
       email: this.state.email,
       password: this.state.password
     })
-      .then((response) => {
-        if (response.status === 200) {
+      .then((res) => {
+        if (res.data.error) {
+          this.setState({
+            error: res.data.msg
+          });
+        } else {
           const data = {
-            token: response.data.token,
-            refreshToken: response.data.refreshToken
+            token: res.data.token,
+            refreshToken: res.data.refreshToken
           };
+          this.setState({
+            error: ''
+          });
           this.props.dispatch(authUser(data));
           this.props.dispatch(navChange(types.DASHBOARD_SCREEN));
         }
@@ -58,14 +67,15 @@ export default class LoginScreen extends React.Component {
       <Container>
         <Content>
           <Form>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Email</Label>
               <Input value={this.state.email} onChangeText={val => this.setEmail(val)} />
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Password</Label>
               <Input value={this.state.password} onChangeText={val => this.setPassword(val)} />
             </Item>
+            {this.state.error.length > 0 && <ErrorBlock message={this.state.error} />}
             <Button
               iconLeft
               full
