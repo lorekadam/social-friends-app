@@ -17,10 +17,9 @@ export const AppNavigator = TabNavigator(
           dashboard: { screen: DashboardScreen }
         },
         {
+          headerMode: 'none',
           navigationOptions: {
-            tabBarVisible: false,
-            swipeEnabled: false,
-            animationEnabled: false
+            headerVisible: false
           }
         }
       )

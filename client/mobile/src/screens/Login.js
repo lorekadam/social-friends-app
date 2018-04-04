@@ -7,10 +7,8 @@ import { navChange } from '../actions/navigationActions';
 import { api } from '../config/globals';
 
 import * as types from '../actions/types';
-import { authUser } from '../actions/userActions';
+import { authUser } from '../actions/authActions';
 import ErrorBlock from '../components/ErrorBlock';
-
-// import Axios from 'axios';
 
 @connect()
 export default class LoginScreen extends React.Component {

@@ -20,6 +20,14 @@ export default function reducer(
         refreshToken: action.payload.refreshToken
       };
     }
+    case types.UNAUTH_USER: {
+      return {
+        ...state,
+        authenticated: false,
+        token: '',
+        refreshToken: ''
+      };
+    }
   }
   return state;
 }

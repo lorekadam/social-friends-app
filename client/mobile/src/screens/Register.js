@@ -17,7 +17,7 @@ import {
 
 import { navChange } from '../actions/navigationActions';
 import { api } from '../config/globals';
-import { authUser } from '../actions/userActions';
+import { authUser } from '../actions/authActions';
 
 import * as types from '../actions/types';
 import ErrorBlock from '../components/ErrorBlock';
