@@ -5,6 +5,7 @@
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
     "start": "react-native-scripts start",
+    "start-clean": "react-native-scripts start -c",
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
@@ -16,11 +17,12 @@
   "dependencies": {
     "@expo/vector-icons": "^6.2.2",
     "axios": "^0.17.1",
-    "expo": "^25.0.0",
+    "expo": "^26.0.0",
     "native-base": "^2.3.8",
-    "react": "16.2.0",
-    "react-native": "0.52.0",
-    "react-navigation": "^1.0.0-beta.30",
+    "react": "16.3.0-alpha.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
+    "react-native-tesseract-ocr": "^1.0.10",
+    "react-navigation": "1.5.8",
     "react-navigation-redux-helpers": "^1.0.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -35,7 +37,7 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "jest-expo": "25.0.0",
+    "jest-expo": "^26.0.0",
     "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0"
   },
@@ -53,7 +55,8 @@
       "experimentalDecorators": 0,
       "default-case": 0,
       "react/prop-types": 0,
-      "react/jsx-filename-extension": 0
+      "react/jsx-filename-extension": 0,
+      "jsx-a11y/accessible-emoji": 0
     },
     "parserOptions": {
       "ecmaVersion": 6,

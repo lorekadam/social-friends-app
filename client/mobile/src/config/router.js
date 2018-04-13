@@ -6,6 +6,7 @@ import { addListener } from './utils';
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import DashboardScreen from '../screens/Dashboard';
+import CameraScreen from '../screens/Camera';
 
 export const AppNavigator = TabNavigator(
   {
@@ -14,7 +15,8 @@ export const AppNavigator = TabNavigator(
     main: {
       screen: StackNavigator(
         {
-          dashboard: { screen: DashboardScreen }
+          dashboard: { screen: DashboardScreen },
+          camera: { screen: CameraScreen }
         },
         {
           headerMode: 'none',

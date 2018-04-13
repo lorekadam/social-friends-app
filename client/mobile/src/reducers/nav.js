@@ -12,24 +12,34 @@ const initialNavState = AppNavigator.router.getStateForAction(secondAction, temp
 export default function nav(state = initialNavState, action) {
   let nextState;
   switch (action.type) {
-    case types.LOGIN_SCREEN:
+    case types.LOGIN_SCREEN: {
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'login' }),
         state
       );
       break;
-    case types.REGISTER_SCREEN:
+    }
+    case types.REGISTER_SCREEN: {
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'register' }),
         state
       );
       break;
-    case types.DASHBOARD_SCREEN:
+    }
+    case types.DASHBOARD_SCREEN: {
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'dashboard' }),
         state
       );
       break;
+    }
+    case types.CAMERA_SCREEN: {
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'camera' }),
+        state
+      );
+      break;
+    }
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);
       break;

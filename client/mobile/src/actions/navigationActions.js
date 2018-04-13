@@ -15,3 +15,7 @@ export function registerScreen() {
 export function dashboardScreen() {
   return { type: types.DASHBOARD_SCREEN };
 }
+
+export function cameraScreen() {
+  return { type: types.CAMERA_SCREEN };
+}
