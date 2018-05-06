@@ -1,7 +1,7 @@
 import { Constants, Camera, FileSystem, Permissions } from 'expo';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Slider, Vibration } from 'react-native';
-import GalleryScreen from './Gallery';
+import RNTesseractOcr from 'react-native-tesseract-ocr';
 
 const landmarkSize = 2;
 
@@ -9,7 +9,7 @@ const flashModeOrder = {
   off: 'on',
   on: 'auto',
   auto: 'torch',
-  torch: 'off',
+  torch: 'off'
 };
 
 const wbOrder = {
@@ -18,21 +18,21 @@ const wbOrder = {
   cloudy: 'shadow',
   shadow: 'fluorescent',
   fluorescent: 'incandescent',
-  incandescent: 'auto',
+  incandescent: 'auto'
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#000'
   },
   navigation: {
-    flex: 1,
+    flex: 1
   },
   gallery: {
     flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   flipButton: {
     flex: 0.3,
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   flipText: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 15
   },
   item: {
     margin: 4,
@@ -58,20 +58,20 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 5,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   picButton: {
-    backgroundColor: 'darkseagreen',
+    backgroundColor: 'darkseagreen'
   },
   galleryButton: {
-    backgroundColor: 'indianred',
+    backgroundColor: 'indianred'
   },
   facesContainer: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
-    top: 0,
+    top: 0
   },
   face: {
     padding: 10,
@@ -80,24 +80,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderColor: '#FFD700',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   landmark: {
     width: landmarkSize,
     height: landmarkSize,
     position: 'absolute',
-    backgroundColor: 'red',
+    backgroundColor: 'red'
   },
   faceText: {
     color: '#FFD700',
     fontWeight: 'bold',
     textAlign: 'center',
     margin: 10,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   row: {
-    flexDirection: 'row',
-  },
+    flexDirection: 'row'
+  }
 });
 
 export default class CameraScreen extends React.Component {
@@ -109,10 +109,9 @@ export default class CameraScreen extends React.Component {
     type: 'back',
     whiteBalance: 'auto',
     ratio: '16:9',
-    photoId: 1,
     showGallery: false,
     faces: [],
-    permissionsGranted: false,
+    permissionsGranted: false
   };
 
   async componentWillMount() {
@@ -121,7 +120,7 @@ export default class CameraScreen extends React.Component {
   }
 
   componentDidMount() {
-    FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory} photos`).catch((e) => {
+    FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`).catch((e) => {
       console.log(e, 'Directory exists');
     });
   }
@@ -136,97 +135,113 @@ export default class CameraScreen extends React.Component {
 
   setFocusDepth = (depth) => {
     this.setState({
-      depth,
+      depth
     });
-  }
+  };
 
   setRatio = (ratio) => {
     this.setState({
-      ratio,
+      ratio
     });
-  }
+  };
 
   toggleFacing = () => {
     this.setState({
-      type: this.state.type === 'back' ? 'front' : 'back',
+      type: this.state.type === 'back' ? 'front' : 'back'
     });
-  }
+  };
 
   toggleFlash = () => {
     this.setState({
-      flash: flashModeOrder[this.state.flash],
+      flash: flashModeOrder[this.state.flash]
     });
-  }
+  };
 
   toggleWB = () => {
     this.setState({
-      whiteBalance: wbOrder[this.state.whiteBalance],
+      whiteBalance: wbOrder[this.state.whiteBalance]
     });
-  }
+  };
 
   toggleFocus = () => {
     this.setState({
-      autoFocus: this.state.autoFocus === 'on' ? 'off' : 'on',
+      autoFocus: this.state.autoFocus === 'on' ? 'off' : 'on'
     });
-  }
+  };
 
   zoomOut = () => {
     this.setState({
-      zoom: this.state.zoom - 0.1 < 0 ? 0 : this.state.zoom - 0.1,
+      zoom: this.state.zoom - 0.1 < 0 ? 0 : this.state.zoom - 0.1
     });
-  }
+  };
 
   zoomIn = () => {
     this.setState({
-      zoom: this.state.zoom + 0.1 > 1 ? 1 : this.state.zoom + 0.1,
+      zoom: this.state.zoom + 0.1 > 1 ? 1 : this.state.zoom + 0.1
     });
-  }
+  };
 
-  takePicture = async () => {
+  takePicture = () => {
     if (this.camera) {
+      const tessOptions = {
+        whitelist: null,
+        blacklist: '\'!"#$%&/()={}[]+*-_:;<>'
+      };
+      const lang = 'LANG_ENGLISH';
+
       this.camera.takePictureAsync().then((data) => {
-        FileSystem.moveAsync({
-          from: data.uri,
-          to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,
-        }).then(() => {
-          console.log('success');
-          this.setState({
-            photoId: this.state.photoId + 1,
-          });
-          Vibration.vibrate();
-        });
+        console.log(RNTesseractOcr);
+        RNTesseractOcr.recognize(data.uri, lang, tessOptions)
+          .then((result) => {
+            console.log('OCR Result: ', result);
+          })
+          .catch((err) => {
+            console.log('OCR Error: ', err);
+          })
+          .done();
       });
+      // this.camera.takePictureAsync().then((data) => {
+      //   console.log(data);
+      //   FileSystem.moveAsync({
+      //     from: data.uri,
+      //     to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,
+      //   }).then(() => {
+      //     console.log('success');
+      //     this.setState({
+      //       photoId: this.state.photoId + 1,
+      //     });
+      //     Vibration.vibrate();
+      //   });
+      // });
     }
   };
 
   toggleView = () => {
     this.setState({
-      showGallery: !this.state.showGallery,
+      showGallery: !this.state.showGallery
     });
-  }
+  };
 
   renderGallery = () => <GalleryScreen onPress={this.toggleView} />;
 
   renderFace = ({
-    bounds,
-    faceID,
-    rollAngle,
-    yawAngle
+    bounds, faceID, rollAngle, yawAngle
   }) => (
     <View
       key={faceID}
       transform={[
         { perspective: 600 },
         { rotateZ: `${rollAngle.toFixed(0)}deg` },
-        { rotateY: `${yawAngle.toFixed(0)}deg` },
+        { rotateY: `${yawAngle.toFixed(0)}deg` }
       ]}
       style={[
         styles.face,
         {
           ...bounds.size,
           left: bounds.origin.x,
-          top: bounds.origin.y,
-        }]}
+          top: bounds.origin.y
+        }
+      ]}
     >
       <Text style={styles.faceText}>ID: {faceID}</Text>
       <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
@@ -241,9 +256,9 @@ export default class CameraScreen extends React.Component {
           style={[
             styles.landmark,
             {
-              left: position.x - (landmarkSize / 2),
-              top: position.y - (landmarkSize / 2),
-            },
+              left: position.x - landmarkSize / 2,
+              top: position.y - landmarkSize / 2
+            }
           ]}
         />
       );
@@ -262,7 +277,7 @@ export default class CameraScreen extends React.Component {
         {renderLandmark(face.bottomMouthPosition)}
       </View>
     );
-  }
+  };
 
   renderFaces() {
     return (
@@ -281,12 +296,13 @@ export default class CameraScreen extends React.Component {
   }
 
   renderNoPermissions = () => (
-    <View style={{
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 10
-    }}
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10
+      }}
     >
       <Text style={{ color: 'white' }}>
         Camera permissions not granted - cannot open camera preview.
@@ -301,7 +317,7 @@ export default class CameraScreen extends React.Component {
           this.camera = ref;
         }}
         style={{
-          flex: 1,
+          flex: 1
         }}
         type={this.state.type}
         flashMode={this.state.flash}
@@ -320,7 +336,7 @@ export default class CameraScreen extends React.Component {
             backgroundColor: 'transparent',
             flexDirection: 'row',
             justifyContent: 'space-around',
-            paddingTop: Constants.statusBarHeight / 2,
+            paddingTop: Constants.statusBarHeight / 2
           }}
         >
           <TouchableOpacity style={styles.flipButton} onPress={this.toggleFacing}>
@@ -329,9 +345,6 @@ export default class CameraScreen extends React.Component {
           <TouchableOpacity style={styles.flipButton} onPress={this.toggleFlash}>
             <Text style={styles.flipText}> FLASH: {this.state.flash} </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.flipButton} onPress={this.toggleWB}>
-            <Text style={styles.flipText}> WB: {this.state.whiteBalance} </Text>
-          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -339,7 +352,7 @@ export default class CameraScreen extends React.Component {
             backgroundColor: 'transparent',
             flexDirection: 'row',
             alignSelf: 'flex-end',
-            marginBottom: -5,
+            marginBottom: -5
           }}
         >
           {this.state.autoFocus !== 'on' ? (
@@ -361,21 +374,9 @@ export default class CameraScreen extends React.Component {
             paddingBottom: 0,
             backgroundColor: 'transparent',
             flexDirection: 'row',
-            alignSelf: 'flex-end',
+            alignSelf: 'flex-end'
           }}
         >
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-            onPress={this.zoomIn}
-          >
-            <Text style={styles.flipText}> + </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-            onPress={this.zoomOut}
-          >
-            <Text style={styles.flipText}> - </Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={[styles.flipButton, { flex: 0.25, alignSelf: 'flex-end' }]}
             onPress={this.toggleFocus}
@@ -388,15 +389,7 @@ export default class CameraScreen extends React.Component {
           >
             <Text style={styles.flipText}> SNAP </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, styles.galleryButton, { flex: 0.25, alignSelf: 'flex-end' }]}
-            onPress={this.toggleView}
-          >
-            <Text style={styles.flipText}> Gallery </Text>
-          </TouchableOpacity>
         </View>
-        {this.renderFaces()}
-        {this.renderLandmarks()}
       </Camera>
     );
   }
