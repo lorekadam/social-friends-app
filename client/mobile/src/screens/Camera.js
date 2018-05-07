@@ -222,8 +222,6 @@ export default class CameraScreen extends React.Component {
     });
   };
 
-  renderGallery = () => <GalleryScreen onPress={this.toggleView} />;
-
   renderFace = ({
     bounds, faceID, rollAngle, yawAngle
   }) => (
