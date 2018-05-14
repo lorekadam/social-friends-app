@@ -76,9 +76,6 @@ app.use(function (req, res, next) {
  * Start Express server.
  */
 
-const networkInterfaces = os.networkInterfaces();
-console.log(networkInterfaces['VirtualBox Host-Only Network'][1].address);
-
 app.listen(app.get('port'), () => {
   console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
   console.log('Press CTRL-C to stop\n');
