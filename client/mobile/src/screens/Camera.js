@@ -1,7 +1,13 @@
-import { Constants, Camera, FileSystem, Permissions } from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Slider, Vibration } from 'react-native';
+import { connect } from 'react-redux';
 import RNTesseractOcr from 'react-native-tesseract-ocr';
+
+import { Constants, Camera, FileSystem, Permissions } from 'expo';
+import { StyleSheet, Text, View, TouchableOpacity, Slider } from 'react-native';
+
+import { navChange } from '../actions/navigationActions';
+import * as types from '../actions/types';
+
 
 const landmarkSize = 2;
 
@@ -100,6 +106,7 @@ const styles = StyleSheet.create({
   }
 });
 
+@connect()
 export default class CameraScreen extends React.Component {
   state = {
     flash: 'off',
@@ -200,19 +207,6 @@ export default class CameraScreen extends React.Component {
           })
           .done();
       });
-      // this.camera.takePictureAsync().then((data) => {
-      //   console.log(data);
-      //   FileSystem.moveAsync({
-      //     from: data.uri,
-      //     to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,
-      //   }).then(() => {
-      //     console.log('success');
-      //     this.setState({
-      //       photoId: this.state.photoId + 1,
-      //     });
-      //     Vibration.vibrate();
-      //   });
-      // });
     }
   };
 
@@ -337,6 +331,9 @@ export default class CameraScreen extends React.Component {
             paddingTop: Constants.statusBarHeight / 2
           }}
         >
+          <TouchableOpacity style={styles.flipButton} onPress={() => this.props.dispatch(navChange(types.DASHBOARD_SCREEN))}>
+            <Text style={styles.flipText}> BACK </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.flipButton} onPress={this.toggleFacing}>
             <Text style={styles.flipText}> FLIP </Text>
           </TouchableOpacity>
