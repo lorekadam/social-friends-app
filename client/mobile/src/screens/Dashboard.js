@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Container } from 'native-base';
 import styled from 'styled-components';
+import { Icon } from 'native-base';
 
 import ScanStatistics from '../components/ScanStatistics';
 import CreateDuel from '../components/CreateDuel';
 import Logout from '../components/Logout';
 
+import HalfButton from '../styled/HalfButton';
+
 const Dashboard = styled.View`
   display: flex;
+  flex: 1;
   flex-wrap: wrap;
-`;
-
-const HalfButton = styled.View`
-  width: 50%;
+  background-color: black;
 `;
 
 // @Auth
@@ -22,18 +22,20 @@ const HalfButton = styled.View`
 export default class DashboardScreen extends React.Component {
   render() {
     return (
-      <Container>
-        <Dashboard>
-          <ScanStatistics />
-
-          <HalfButton>
-            <CreateDuel />
-          </HalfButton>
-          <HalfButton>
-            <Logout />
-          </HalfButton>
-        </Dashboard>
-      </Container>
+      <Dashboard>
+        <HalfButton>
+          <Icon name="md-camera" />
+        </HalfButton>
+        <HalfButton>
+          <Icon name="md-camera" />
+        </HalfButton>
+        <HalfButton>
+          <Icon name="md-camera" />
+        </HalfButton>
+        <ScanStatistics />
+        <CreateDuel />
+        <Logout />
+      </Dashboard>
     );
   }
 }
