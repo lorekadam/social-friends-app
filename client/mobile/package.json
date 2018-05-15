@@ -6,6 +6,7 @@
   "scripts": {
     "start": "react-native-scripts start",
     "start-clean": "react-native-scripts start -c",
+    "start-usb": "exp start --localhost --android",
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
