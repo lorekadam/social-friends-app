@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import user from './auth';
-import nav from './nav';
+import nav from './navigation';
 
 export default combineReducers({
   nav,

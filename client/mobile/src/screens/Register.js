@@ -27,11 +27,18 @@ export default class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: '',
       email: '',
       password: '',
       error: ''
     };
   }
+
+  setUsername = (val) => {
+    this.setState({
+      username: val
+    });
+  };
 
   setEmail = (val) => {
     this.setState({
@@ -47,6 +54,7 @@ export default class RegisterScreen extends React.Component {
 
   submitRegister = () => {
     Axios.post(`${api}register`, {
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password
     })
@@ -79,6 +87,10 @@ export default class RegisterScreen extends React.Component {
             <CardItem>
               <Body>
                 <Text>Register new account</Text>
+                <Item stackedLabel>
+                  <Label>Username</Label>
+                  <Input value={this.state.username} onChangeText={val => this.setUsername(val)} />
+                </Item>
                 <Item stackedLabel>
                   <Label>Email</Label>
                   <Input value={this.state.email} onChangeText={val => this.setEmail(val)} />

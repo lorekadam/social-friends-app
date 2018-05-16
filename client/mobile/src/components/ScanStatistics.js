@@ -12,7 +12,10 @@ import HalfButton from '../styled/HalfButton';
 export default class ScanStatistics extends React.Component {
   render() {
     return (
-      <HalfButton onPress={() => this.props.dispatch(navChange(types.CAMERA_SCREEN))}>
+      <HalfButton
+        bgcolor="#abc145"
+        onPress={() => this.props.dispatch(navChange(types.CAMERA_SCREEN))}
+      >
         <Icon name="md-camera" />
       </HalfButton>
     );

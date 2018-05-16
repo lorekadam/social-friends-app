@@ -7,6 +7,10 @@ import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import DashboardScreen from '../screens/Dashboard';
 import CameraScreen from '../screens/Camera';
+import FriendsScreen from '../screens/Friends';
+import DuelsScreen from '../screens/Duels';
+import TournamentsScreen from '../screens/Tournaments';
+import LiguesScreen from '../screens/Ligues';
 
 export const AppNavigator = TabNavigator(
   {
@@ -16,6 +20,10 @@ export const AppNavigator = TabNavigator(
       screen: StackNavigator(
         {
           dashboard: { screen: DashboardScreen },
+          friends: { screen: FriendsScreen },
+          duels: { screen: DuelsScreen },
+          tournaments: { screen: TournamentsScreen },
+          ligues: { screen: LiguesScreen },
           camera: { screen: CameraScreen }
         },
         {
