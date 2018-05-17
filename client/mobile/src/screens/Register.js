@@ -20,7 +20,7 @@ import { api } from '../config/globals';
 import { authUser } from '../actions/authActions';
 
 import * as types from '../actions/types';
-import ErrorBlock from '../components/ErrorBlock';
+import ErrorBlock from '../styled/ErrorBlock';
 
 @connect()
 export default class RegisterScreen extends React.Component {

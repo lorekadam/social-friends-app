@@ -8,7 +8,7 @@ import { api } from '../config/globals';
 
 import * as types from '../actions/types';
 import { authUser } from '../actions/authActions';
-import ErrorBlock from '../components/ErrorBlock';
+import ErrorBlock from '../styled/ErrorBlock';
 
 @connect()
 export default class LoginScreen extends React.Component {

@@ -3,6 +3,15 @@ const validations = require('../helpers/validations');
 const msg = require('../helpers/messages');
 
 const UserSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    unique: true,
+    required: [true, 'Username is required'],
+    validate: {
+      validator: (username) => validations.username(username),
+      message: msg.auth.username
+    }
+  },
   email: {
     type: String,
     unique: true,

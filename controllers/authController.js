@@ -7,7 +7,7 @@ const msg = require('../helpers/messages');
 
 const tokenExpire = 86400;
 
-exports.register = (req, res) => {
+module.exports.register = (req, res) => {
   if (req.body.email === undefined || req.body.password === undefined) {
     res.status(200).send({ error: true, msg: msg.auth.required });
   } else if (req.body.password !== undefined && req.body.password.length <= 3) {
@@ -17,12 +17,16 @@ exports.register = (req, res) => {
     const refreshToken = randtoken.uid(64);
     User.create(
       {
+        username: req.body.username,
         email: req.body.email,
         password: hashedPassword,
         refreshToken
       },
       (err, user) => {
         if (err) {
+          if (err.errors !== undefined && err.errors.username) {
+            return res.status(200).send({ error: true, msg: err.errors.username.message });
+          }
           if (err.errors !== undefined && err.errors.email) {
             return res.status(200).send({ error: true, msg: err.errors.email.message });
           }
@@ -37,7 +41,7 @@ exports.register = (req, res) => {
   }
 };
 
-exports.login = (req, res) => {
+module.exports.login = (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) {
       return res.status(200).send({ error: true, msg: msg.basic });
@@ -56,7 +60,7 @@ exports.login = (req, res) => {
   });
 };
 
-exports.getUser = (req, res) => {
+module.exports.getUser = (req, res) => {
   User.findById(req.userId, { password: 0 }, (err, user) => {
     if (err) {
       return res.status(200).send({ error: true, msg: msg.basic });
@@ -68,7 +72,7 @@ exports.getUser = (req, res) => {
   });
 };
 
-exports.refreshToken = (req, res) => {
+module.exports.refreshToken = (req, res) => {
   User.findOne({ email: req.body.email }, { password: 0 }, (err, user) => {
     if (err) {
       return res.status(200).send({ error: true, msg: msg.basic });
