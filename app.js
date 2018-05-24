@@ -8,6 +8,13 @@ const jwt = require('jsonwebtoken');
 const config = require('./config/config');
 const msg = require('./helpers/messages');
 const os = require('os');
+const expressGraphQL = require('express-graphql');
+
+/**
+ * SCHEMAS
+ */
+
+const { schema } = require('./models/User');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -18,6 +25,18 @@ dotenv.load({ path: '.env' });
  * Create Express server.
  */
 const app = express();
+
+/**
+ * Use GraphQL
+ */
+
+app.use(
+  '/ql',
+  expressGraphQL({
+    schema,
+    graphiql: true
+  })
+);
 
 /**
  * Connect to MongoDB.
