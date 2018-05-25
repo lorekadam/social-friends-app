@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const randtoken = require('rand-token');
-const { User } = require('../models/User');
+const User = require('../models/User');
 const config = require('../config/config');
 const msg = require('../helpers/messages');
 

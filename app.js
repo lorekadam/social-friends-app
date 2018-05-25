@@ -14,7 +14,7 @@ const expressGraphQL = require('express-graphql');
  * SCHEMAS
  */
 
-const { schema } = require('./models/User');
+const UserSchema = require('./schema/User');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -33,7 +33,7 @@ const app = express();
 app.use(
   '/ql',
   expressGraphQL({
-    schema,
+    UserSchema,
     graphiql: true
   })
 );
