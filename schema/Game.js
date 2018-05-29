@@ -1,60 +1,94 @@
-const mongoose = require('mongoose');
+const graphql = require('graphql');
+const { GraphQLObjectType, GraphQLString, GraphQLInt } = graphql;
+const Game = require('../models/game');
 
-const PlayerSchema = new mongoose.Schema({
-  player: {
-    type: String
-  },
-  team: {
-    type: String
-  },
-  score: {
-    type: Number
-  },
-  shots: {
-    type: Number
-  },
-  shotsOnTarget: {
-    type: Number
-  },
-  possession: {
-    type: Number
-  },
-  tackles: {
-    type: Number
-  },
-  fouls: {
-    type: Number
-  },
-  yellow: {
-    type: Number
-  },
-  red: {
-    type: Number
-  },
-  injuries: {
-    type: Number
-  },
-  offsides: {
-    type: Number
-  },
-  corners: {
-    type: Number
-  },
-  shotsAccuracy: {
-    type: Number
-  },
-  passAccuracy: {
-    type: Number
+const PlayerStatsType = new GraphQLObjectType({
+  name: 'GameStats',
+  fields: {
+    team: {
+      type: GraphQLString
+    },
+    score: {
+      type: GraphQLInt
+    },
+    shots: {
+      type: GraphQLInt
+    },
+    shotsOnTarget: {
+      type: GraphQLInt
+    },
+    possession: {
+      type: GraphQLInt
+    },
+    tackles: {
+      type: GraphQLInt
+    },
+    fouls: {
+      type: GraphQLInt
+    },
+    yellow: {
+      type: GraphQLInt
+    },
+    red: {
+      type: GraphQLInt
+    },
+    injuries: {
+      type: GraphQLInt
+    },
+    offsides: {
+      type: GraphQLInt
+    },
+    corners: {
+      type: GraphQLInt
+    },
+    shotsAccuracy: {
+      type: GraphQLInt
+    },
+    passAccuracy: {
+      type: GraphQLInt
+    }
   }
 });
 
-const GameSchema = new mongoose.Schema({
-  home: {
-    type: PlayerSchema
-  },
-  away: {
-    type: PlayerSchema
+const GameType = new GraphQLObjectType({
+  name: 'Game',
+  fields: {
+    _id: { type: GraphQLString },
+    homePlayer: {
+      type: GraphQLString
+    },
+    home: {
+      type: PlayerStatsType
+    },
+    awayPlayer: {
+      type: GraphQLString
+    },
+    away: {
+      type: PlayerStatsType
+    },
+    score: {
+      type: GraphQLString
+    }
   }
 });
 
-module.exports = mongoose.model('Game', GameSchema);
+const GameMutations = {
+  type: GameType,
+  args: {
+    homePlayer: {
+      type: GraphQLString
+    },
+    awayPlayer: {
+      type: GraphQLString
+    }
+  },
+  resolve(parent, args) {
+    let newGame = new Game({
+      homePlayer: args.homePlayer,
+      awayPlayer: args.awayPlayer
+    });
+    return newGame.save();
+  }
+};
+
+module.exports = GameMutations;

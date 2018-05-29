@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const validations = require('../helpers/validations');
 const msg = require('../helpers/messages');
@@ -37,7 +38,27 @@ const UserSchema = new mongoose.Schema({
   refreshToken: {
     type: String,
     required: true
-  }
+  },
+  duels: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'duel'
+    }
+  ],
+  tournaments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'tournament'
+    }
+  ],
+  ligues: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'ligue'
+    }
+  ]
 });
 
-module.exports = mongoose.model('User', UserSchema);
+const User = mongoose.model('user', UserSchema);
+
+module.exports = User;
