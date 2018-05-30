@@ -28,18 +28,14 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
-console.log(GameMutations);
-
-const Mutation = new GraphQLObjectType({
+const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    addGame: {
-      GameMutations
-    }
+    GameMutations
   }
 });
 
 module.exports = new GraphQLSchema({
   query: RootQuery,
-  mutation: Mutation
+  mutation
 });
