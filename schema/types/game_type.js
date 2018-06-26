@@ -1,6 +1,5 @@
 const graphql = require('graphql');
 const { GraphQLObjectType, GraphQLString, GraphQLInt } = graphql;
-const Game = require('../models/game');
 
 const PlayerStatsType = new GraphQLObjectType({
   name: 'GameStats',
@@ -72,26 +71,4 @@ const GameType = new GraphQLObjectType({
   }
 });
 
-const GameMutations = new GraphQLObjectType({
-  name: 'Mutation',
-  addGame: {
-    type: GameType,
-    args: {
-      homePlayer: {
-        type: GraphQLString
-      },
-      awayPlayer: {
-        type: GraphQLString
-      }
-    },
-    resolve(parent, args) {
-      let newGame = new Game({
-        homePlayer: args.homePlayer,
-        awayPlayer: args.awayPlayer
-      });
-      return newGame.save();
-    }
-  }
-});
-
-module.exports = GameMutations;
+module.exports = GameType;

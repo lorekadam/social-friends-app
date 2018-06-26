@@ -7,7 +7,6 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const config = require('./config/config');
 const msg = require('./helpers/messages');
-const os = require('os');
 const expressGraphQL = require('express-graphql');
 
 /**
@@ -42,12 +41,15 @@ app.use(
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI, {
-  auth: {
-    user: process.env.MONGODB_USER || '',
-    password: process.env.MONGODB_PASSWORD || ''
+mongoose.connect(
+  process.env.MONGODB_URI,
+  {
+    auth: {
+      user: process.env.MONGODB_USER || '',
+      password: process.env.MONGODB_PASSWORD || ''
+    }
   }
-});
+);
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.');
