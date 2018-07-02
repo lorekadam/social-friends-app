@@ -1,8 +1,10 @@
 const graphql = require('graphql');
 const { GraphQLSchema, GraphQLObjectType, GraphQLString } = graphql;
-const User = require('../models/user');
+const User = require('../models/User');
+const Game = require('../models/Game');
 
 const UserType = require('./types/user_type');
+const GameType = require('./types/game_type');
 
 const mutation = require('./mutations');
 
@@ -23,9 +25,25 @@ const RootQuery = new GraphQLObjectType({
         }
       },
       resolve(parentValue, args) {
-        const value =
-          args.email !== undefined ? { email: args.email } : { username: args.username };
-        return User.findOne(value);
+        return User.findOne(args);
+      }
+    },
+    game: {
+      type: GameType,
+      args: {
+        _id: {
+          type: GraphQLString
+        },
+        homePlayer: {
+          type: GraphQLString
+        },
+        awayPlayer: {
+          type: GraphQLString
+        }
+      },
+      resolve(parentValue, args) {
+        console.log(Game.findOne(args));
+        return Game.findOne(args);
       }
     }
   }
