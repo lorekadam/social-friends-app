@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const config = require('./config/config');
 const msg = require('./helpers/messages');
 const expressGraphQL = require('express-graphql');
+const { ApolloServer } = require('apollo-server-express');
+const { typeDefs, resolvers } = require('./schema/schema');
 
 /**
  * SCHEMAS
@@ -28,6 +30,14 @@ const app = express();
 /**
  * Use GraphQL
  */
+
+const server = new ApolloServer({
+  // These will be defined for both new or existing servers
+  typeDefs,
+  resolvers
+});
+
+server.applyMiddleware({ app });
 
 app.use(
   '/ql',
@@ -98,6 +108,7 @@ app.use(function (req, res, next) {
  */
 
 app.listen(app.get('port'), () => {
+  console.log(`Apollo server on: ${server.graphqlPath}`);
   console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
   console.log('Press CTRL-C to stop\n');
 });
