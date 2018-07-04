@@ -1,16 +1,26 @@
 const { gql } = require('apollo-server');
+const User = require('../models/User');
 
 const typeDefs = gql`
   type Query {
-    "A simple type for getting started!"
-    hello: String
+    user(_id:String): BasicUserData
+  }
+  type BasicUserData {
+    _id: String,
+    username: String,
+    email: String
+  }
+  type Mutation {
+    addUser(username: String, email: String): BasicUserData
   }
 `;
 
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    hello: () => 'world'
+    user: (root, args, context, info) => {
+      return User.findOne(args);
+    }
   }
 };
 

@@ -81,7 +81,7 @@ app.use(bodyParser.json());
  */
 
 app.use(function (req, res, next) {
-  const excludedPaths = ['/api/register', '/api/login', '/api/refreshToken'];
+  const excludedPaths = ['/api/register', '/api/login', '/api/refreshToken', '/graphql'];
   if (excludedPaths.indexOf(req.path) !== -1) {
     next();
   } else {
