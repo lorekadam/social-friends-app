@@ -9,13 +9,12 @@ const config = require('./config/config');
 const msg = require('./helpers/messages');
 const expressGraphQL = require('express-graphql');
 const { ApolloServer } = require('apollo-server-express');
-const { typeDefs, resolvers } = require('./schema/schema');
 
 /**
- * SCHEMAS
+ * SCHEMA
  */
 
-const schema = require('./schema/root');
+const schema = require('./schema/schema');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -32,9 +31,7 @@ const app = express();
  */
 
 const server = new ApolloServer({
-  // These will be defined for both new or existing servers
-  typeDefs,
-  resolvers
+  schema
 });
 
 server.applyMiddleware({ app });

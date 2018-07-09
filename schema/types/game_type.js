@@ -73,3 +73,32 @@
 
 // module.exports = GameType;
 
+export const PlayerStats = `
+  type PlayerStats {
+    type: String,
+    score: Int,
+    shots: Int,
+    shotsOnTarget: Int,
+    possession: Int,
+    tackles: Int,
+    fouls: Int,
+    yellow: Int,
+    red: Int,
+    injuries: Int,
+    offsides: Int,
+    corners: Int,
+    shotsAccuracy: Int,
+    passAccuracy: Int
+  }
+`;
+
+export const Game = `
+  type Game {
+    _id: String,
+    homePlayer: String,
+    home: PlayerStats,
+    awayPlayer: String,
+    away: PlayerStats,
+    score: String
+  }
+`;

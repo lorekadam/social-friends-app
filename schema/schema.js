@@ -1,52 +1,64 @@
+import { PlayerStats, Game } from './types/game_type';
+
 const { makeExecutableSchema, gql } = require('apollo-server');
 const User = require('../models/User');
 
-const Game = require('../models/Game');
+const GameModel = require('../models/Game');
+console.log(GameType);
 
-console.log(makeExecutableSchema);
 const typeDefs = gql`
   type Query {
-    user(_id:String): BasicUserData
+    user(_id: String): BasicUserData
   }
   type BasicUserData {
-    _id: String,
-    username: String,
+    _id: String
+    username: String
     email: String
   }
   type PlayerStats {
-    type: String,
-    score: Int,
-    shots: Int,
-    shotsOnTarget: Int,
-    possession: Int,
-    tackles: Int,
-    fouls: Int,
-    yellow: Int,
-    red: Int,
-    injuries: Int,
-    offsides: Int,
-    corners: Int,
-    shotsAccuracy: Int,
+    type: String
+    score: Int
+    shots: Int
+    shotsOnTarget: Int
+    possession: Int
+    tackles: Int
+    fouls: Int
+    yellow: Int
+    red: Int
+    injuries: Int
+    offsides: Int
+    corners: Int
+    shotsAccuracy: Int
     passAccuracy: Int
   }
   type Game {
-    _id: String,
-    homePlayer: String,
-    home: PlayerStats,
-    awayPlayer: String,
-    away: PlayerStats,
+    _id: String
+    homePlayer: String
+    home: PlayerStats
+    awayPlayer: String
+    away: PlayerStats
     score: String
   }
   type Mutation {
     addUser(username: String, email: String): BasicUserData
     addGame(homePlayer: String, awayPlayer: String): Game
   }
+
 `;
 
 const Query = `
-type Query {
-  user(_id:String): BasicUserData
-}`
+  type Query {
+    user(_id:String): BasicUserData
+  }
+`;
+
+const BasicUserData = `
+  type BasicUserData {
+    _id: String,
+    username: String,
+    email: String
+  }
+`;
 
 // A map of functions which return data for the schema.
 const resolvers = {
@@ -57,7 +69,7 @@ const resolvers = {
   },
   Mutation: {
     addGame: (root, args, context, info) => {
-      let newGame = new Game({
+      let newGame = new GameModel({
         homePlayer: args.homePlayer,
         awayPlayer: args.awayPlayer
       });
@@ -67,11 +79,8 @@ const resolvers = {
 };
 
 const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
+  typeDefs: [Query, BasicUserData, PlayerStats, Game],
+  resolvers
 });
 
-module.exports = {
-  typeDefs,
-  resolvers
-};
+module.exports = schema;
