@@ -1,86 +1,28 @@
-import { PlayerStats, Game } from './types/game_type';
+import { makeExecutableSchema } from 'apollo-server';
 
-const { makeExecutableSchema, gql } = require('apollo-server');
-const User = require('../models/User');
-
-const GameModel = require('../models/Game');
-console.log(GameType);
-
-const typeDefs = gql`
-  type Query {
-    user(_id: String): BasicUserData
-  }
-  type BasicUserData {
-    _id: String
-    username: String
-    email: String
-  }
-  type PlayerStats {
-    type: String
-    score: Int
-    shots: Int
-    shotsOnTarget: Int
-    possession: Int
-    tackles: Int
-    fouls: Int
-    yellow: Int
-    red: Int
-    injuries: Int
-    offsides: Int
-    corners: Int
-    shotsAccuracy: Int
-    passAccuracy: Int
-  }
-  type Game {
-    _id: String
-    homePlayer: String
-    home: PlayerStats
-    awayPlayer: String
-    away: PlayerStats
-    score: String
-  }
-  type Mutation {
-    addUser(username: String, email: String): BasicUserData
-    addGame(homePlayer: String, awayPlayer: String): Game
-  }
-
-`;
+import { GameQueries, GameTypes, GameMutations, GameResolvers } from './types/game_type';
+import { UserQueries, UserTypes, UserMutations, UserResolvers } from './types/user_type';
 
 const Query = `
   type Query {
-    user(_id:String): BasicUserData
+    ${UserQueries},
+    ${GameQueries}
   }
 `;
 
-const BasicUserData = `
-  type BasicUserData {
-    _id: String,
-    username: String,
-    email: String
+const Types = `
+  ${UserTypes}
+  ${GameTypes}
+`;
+
+const Mutations = `
+  type Mutation {
+    ${UserMutations},
+    ${GameMutations}
   }
 `;
 
-// A map of functions which return data for the schema.
-const resolvers = {
-  Query: {
-    user: (root, args, context, info) => {
-      return User.findOne(args);
-    }
-  },
-  Mutation: {
-    addGame: (root, args, context, info) => {
-      let newGame = new GameModel({
-        homePlayer: args.homePlayer,
-        awayPlayer: args.awayPlayer
-      });
-      return newGame.save();
-    }
-  }
-};
-
-const schema = makeExecutableSchema({
-  typeDefs: [Query, BasicUserData, PlayerStats, Game],
-  resolvers
+export const schema = makeExecutableSchema({
+  typeDefs: [Query, Types, Mutations],
+  resolvers: [UserResolvers, GameResolvers]
 });
-
-module.exports = schema;

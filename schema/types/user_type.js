@@ -1,13 +1,25 @@
-const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLString } = graphql;
+import User from '../../models/User';
 
-const UserType = new GraphQLObjectType({
-  name: 'User',
-  fields: {
-    _id: { type: GraphQLString },
-    username: { type: GraphQLString },
-    email: { type: GraphQLString }
+export const UserQueries = `
+  user(_id:String): BasicUserData
+`;
+
+export const UserTypes = `
+  type BasicUserData {
+    _id: String,
+    username: String,
+    email: String
   }
-});
+`;
 
-module.exports = UserType;
+export const UserMutations = `
+  addUser(username: String, email: String): BasicUserData
+`;
+
+export const UserResolvers = {
+  Query: {
+    user: (root, args) => {
+      return User.findOne(args);
+    }
+  }
+};
