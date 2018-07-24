@@ -1,7 +1,10 @@
-import React from 'react';
 import { connect } from 'react-redux';
-import { addNavigationHelpers, TabNavigator, StackNavigator } from 'react-navigation';
-import { addListener } from './utils';
+import { createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation';
+
+import {
+  reduxifyNavigator,
+  createReactNavigationReduxMiddleware
+} from 'react-navigation-redux-helpers';
 
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
@@ -12,12 +15,14 @@ import DuelsScreen from '../screens/Duels';
 import TournamentsScreen from '../screens/Tournaments';
 import LiguesScreen from '../screens/Ligues';
 
-export const AppNavigator = TabNavigator(
+export const navMiddleware = createReactNavigationReduxMiddleware('root', state => state.nav);
+
+export const RootNavigator = createMaterialTopTabNavigator(
   {
     login: { screen: LoginScreen },
     register: { screen: RegisterScreen },
     main: {
-      screen: StackNavigator(
+      screen: createStackNavigator(
         {
           dashboard: { screen: DashboardScreen },
           friends: { screen: FriendsScreen },
@@ -44,18 +49,10 @@ export const AppNavigator = TabNavigator(
   }
 );
 
-const RootNavigator = ({ dispatch, nav }) => (
-  <AppNavigator
-    navigation={addNavigationHelpers({
-      dispatch,
-      state: nav,
-      addListener
-    })}
-  />
-);
+const AppWithNavigationState = reduxifyNavigator(RootNavigator, 'root');
 
 const mapStateToProps = state => ({
-  nav: state.nav
+  state: state.nav
 });
 
-export default connect(mapStateToProps)(RootNavigator);
+export const AppNavigator = connect(mapStateToProps)(AppWithNavigationState);

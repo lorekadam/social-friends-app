@@ -6,19 +6,18 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import { StyleProvider, getTheme, variables } from 'native-base';
-import RootNavigator from './config/router';
+import { AppNavigator, navMiddleware } from './config/router';
 
 import reducers from './reducers';
-import { navMiddleware } from './config/utils';
 
 const logger = createLogger();
 
-const store = createStore(reducers, applyMiddleware(thunk, navMiddleware, logger));
+const store = createStore(reducers, applyMiddleware(navMiddleware, thunk, logger));
 
 const Fstats = () => (
   <Provider store={store}>
     <StyleProvider style={getTheme(variables)}>
-      <RootNavigator />
+      <AppNavigator />
     </StyleProvider>
   </Provider>
 );
