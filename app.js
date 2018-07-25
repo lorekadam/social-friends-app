@@ -1,20 +1,20 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import errorHandler from 'errorhandler';
-import path from 'path';
-import jwt from 'jsonwebtoken';
-import config from './config/config';
-import msg from './helpers/messages';
-import expressGraphQL from 'express-graphql';
-import { ApolloServer } from 'apollo-server-express';
+const express = require('express');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const errorHandler = require('errorhandler');
+const path = require('path');
+const jwt = require('jsonwebtoken');
+const config = require('./config/config');
+const msg = require('./helpers/messages');
+const expressGraphQL = require('express-graphql');
+const { ApolloServer } = require('apollo-server-express');
 
 /**
  * SCHEMA
  */
 
-import { schema } from './schema/schema';
+const schema = require('./schema/schema');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.

@@ -1,10 +1,10 @@
-import GameModel from '../../models/Game';
+const GameModel = require('../../models/Game');
 
-export const GameQueries = `
+const GameQueries = `
   games(_id:String): [Game]
 `;
 
-export const GameTypes = `
+const GameTypes = `
   type PlayerStats {
     type: String,
     score: Int,
@@ -31,11 +31,11 @@ export const GameTypes = `
   }
 `;
 
-export const GameMutations = `
+const GameMutations = `
   addGame(homePlayer: String, awayPlayer: String): Game
 ,`;
 
-export const GameResolvers = {
+const GameResolvers = {
   Query: {
     games: (root, args) => {
       return GameModel.find({ homePlayer: args._id });
@@ -50,4 +50,11 @@ export const GameResolvers = {
       return newGame.save();
     }
   }
+};
+
+module.exports = {
+  GameQueries,
+  GameTypes,
+  GameMutations,
+  GameResolvers
 };

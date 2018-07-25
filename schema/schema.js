@@ -1,7 +1,11 @@
-import { makeExecutableSchema } from 'apollo-server';
+const { makeExecutableSchema } = require('apollo-server');
 
-import { GameQueries, GameTypes, GameMutations, GameResolvers } from './types/game_type';
-import { UserQueries, UserTypes, UserMutations, UserResolvers } from './types/user_type';
+const {
+  GameQueries, GameTypes, GameMutations, GameResolvers
+} = require('./types/game_type');
+const {
+  UserQueries, UserTypes, UserMutations, UserResolvers
+} = require('./types/user_type');
 
 const Query = `
   type Query {
@@ -22,7 +26,9 @@ const Mutations = `
   }
 `;
 
-export const schema = makeExecutableSchema({
+const schema = makeExecutableSchema({
   typeDefs: [Query, Types, Mutations],
   resolvers: [UserResolvers, GameResolvers]
 });
+
+module.exports = schema;

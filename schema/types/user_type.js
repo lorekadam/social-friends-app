@@ -1,25 +1,29 @@
-import User from '../../models/User';
+const User = require('../../models/User');
 
-export const UserQueries = `
+const UserQueries = `
   user(_id:String): BasicUserData
 `;
-
-export const UserTypes = `
+const UserTypes = `
   type BasicUserData {
     _id: String,
     username: String,
     email: String
   }
 `;
-
-export const UserMutations = `
+const UserMutations = `
   addUser(username: String, email: String): BasicUserData
 `;
-
-export const UserResolvers = {
+const UserResolvers = {
   Query: {
     user: (root, args) => {
       return User.findOne(args);
     }
   }
+};
+
+module.exports = {
+  UserQueries,
+  UserTypes,
+  UserMutations,
+  UserResolvers
 };
