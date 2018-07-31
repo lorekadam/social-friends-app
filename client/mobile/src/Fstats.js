@@ -9,12 +9,12 @@ import { ApolloProvider } from 'react-apollo';
 
 import { StyleProvider, getTheme, variables } from 'native-base';
 import { AppNavigator, navMiddleware } from './config/router';
-import { main } from './config/globals';
+import { ql } from './config/globals';
 
 import reducers from './reducers';
 
 const client = new ApolloClient({
-  uri: `${main}/graphql`
+  uri: `${ql}`
 });
 
 const logger = createLogger();

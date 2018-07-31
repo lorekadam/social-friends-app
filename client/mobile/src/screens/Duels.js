@@ -15,6 +15,9 @@ export default class DuelsScreen extends React.Component {
         <Button onPress={() => this.props.dispatch(back())}>
           <StyledText>Back</StyledText>
         </Button>
+        <Button>
+          <StyledText>Add new game</StyledText>
+        </Button>
       </Screen>
     );
   }
