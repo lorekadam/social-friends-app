@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 
-const Screen = styled.View`
+import { Content } from 'native-base';
+
+export const Screen = styled.View`
   display: flex;
   flex-wrap: wrap;
   flex: 1;
-  background-color: black;
+  background-color: #008999;
   ${props => props.row && 'flex-direction:row;'};
   ${props => props.column && 'flex-direction:column;'};
   ${props => props.aic && 'align-items:center;'};
   ${props => props.jcc && 'justify-content:center;'};
 `;
 
-export default Screen;
+export const StyledContent = styled(Content)`
+  background-color: #008999;
+`;

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'native-base';
 
-import Screen from '../styled/Screen';
+import { Screen } from '../styled/Screen';
 import { StyledText } from '../styled/StyledComponents';
 import { back } from '../actions/navigationActions';
 

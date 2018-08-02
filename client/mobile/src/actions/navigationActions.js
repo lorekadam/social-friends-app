@@ -39,3 +39,7 @@ export function tournamentsScreen() {
 export function liguesScreen() {
   return { type: types.LIGUES_SCREEN };
 }
+
+export function addGameScreen() {
+  return { type: types.ADD_GAME_SCREEN };
+}

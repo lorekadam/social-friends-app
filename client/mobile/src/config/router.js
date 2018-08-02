@@ -14,22 +14,26 @@ import FriendsScreen from '../screens/Friends';
 import DuelsScreen from '../screens/Duels';
 import TournamentsScreen from '../screens/Tournaments';
 import LiguesScreen from '../screens/Ligues';
+import AddGame from '../screens/AddGame';
+
+import * as types from '../actions/types';
 
 export const navMiddleware = createReactNavigationReduxMiddleware('root', state => state.nav);
 
 export const RootNavigator = createMaterialTopTabNavigator(
   {
-    login: { screen: LoginScreen },
-    register: { screen: RegisterScreen },
+    [types.LOGIN_SCREEN]: { screen: LoginScreen },
+    [types.REGISTER_SCREEN]: { screen: RegisterScreen },
     main: {
       screen: createStackNavigator(
         {
-          dashboard: { screen: DashboardScreen },
-          friends: { screen: FriendsScreen },
-          duels: { screen: DuelsScreen },
-          tournaments: { screen: TournamentsScreen },
-          ligues: { screen: LiguesScreen },
-          camera: { screen: CameraScreen }
+          [types.DASHBOARD_SCREEN]: { screen: DashboardScreen },
+          [types.FRIENDS_SCREEN]: { screen: FriendsScreen },
+          [types.DUELS_SCREEN]: { screen: DuelsScreen },
+          [types.TOURNAMENTS_SCREEN]: { screen: TournamentsScreen },
+          [types.LIGUES_SCREEN]: { screen: LiguesScreen },
+          [types.CAMERA_SCREEN]: { screen: CameraScreen },
+          [types.ADD_GAME_SCREEN]: { screen: AddGame }
         },
         {
           headerMode: 'none',

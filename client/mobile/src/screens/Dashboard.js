@@ -7,7 +7,7 @@ import { navChange } from '../actions/navigationActions';
 
 import * as types from '../actions/types';
 import { unAuth } from '../actions/authActions';
-import Screen from '../styled/Screen';
+import { Screen } from '../styled/Screen';
 
 // @Auth
 @connect()

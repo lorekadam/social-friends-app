@@ -4,9 +4,9 @@ import { RootNavigator } from '../config/router';
 
 import * as types from '../actions/types';
 
-const firstAction = RootNavigator.router.getActionForPathAndParams('register');
+const firstAction = RootNavigator.router.getActionForPathAndParams(types.REGISTER_SCREEN);
 const tempNavState = RootNavigator.router.getStateForAction(firstAction);
-const secondAction = RootNavigator.router.getActionForPathAndParams('login');
+const secondAction = RootNavigator.router.getActionForPathAndParams(types.LOGIN_SCREEN);
 
 const initialNavState = RootNavigator.router.getStateForAction(secondAction, tempNavState);
 
@@ -19,56 +19,63 @@ export default function nav(state = initialNavState, action) {
     }
     case types.LOGIN_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'login' }),
+        NavigationActions.navigate({ routeName: types.LOGIN_SCREEN }),
         state
       );
       break;
     }
     case types.REGISTER_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'register' }),
+        NavigationActions.navigate({ routeName: types.REGISTER_SCREEN }),
         state
       );
       break;
     }
     case types.DASHBOARD_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'dashboard' }),
+        NavigationActions.navigate({ routeName: types.DASHBOARD_SCREEN }),
         state
       );
       break;
     }
     case types.CAMERA_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'camera' }),
+        NavigationActions.navigate({ routeName: types.CAMERA_SCREEN }),
         state
       );
       break;
     }
     case types.FRIENDS_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'friends' }),
+        NavigationActions.navigate({ routeName: types.FRIENDS_SCREEN }),
         state
       );
       break;
     }
     case types.DUELS_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'duels' }),
+        NavigationActions.navigate({ routeName: types.DUELS_SCREEN }),
         state
       );
       break;
     }
     case types.TOURNAMENTS_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'tournaments' }),
+        NavigationActions.navigate({ routeName: types.TOURNAMENTS_SCREEN }),
         state
       );
       break;
     }
     case types.LIGUES_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'ligues' }),
+        NavigationActions.navigate({ routeName: types.LIGUES_SCREEN }),
+        state
+      );
+      break;
+    }
+    case types.ADD_GAME_SCREEN: {
+      nextState = RootNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: types.ADD_GAME_SCREEN }),
         state
       );
       break;
