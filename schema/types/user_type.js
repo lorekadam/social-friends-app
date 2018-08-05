@@ -37,16 +37,50 @@ const UserResolvers = {
   },
   Mutation: {
     addFriend: (root, args) => {
-      let user;
+      let response;
       User.findById(args.myId, (err, user) => {
         if (err) {
-          return {
+          response = {
             success: false,
             error: 'User not found',
             data: ''
           };
         }
+        const { friends } = user;
+        let exists = false;
+        for (let i = 0; i < friends.length; i + 1) {
+          if (friends[i]._id === args.friendId) {
+            exists = true;
+            response = {
+              success: false,
+              error: 'Friend already added',
+              data: ''
+            };
+            break;
+          }
+        }
+        if (!exists) {
+          // TODO
+          // user.update(
+          //   {
+          //     $push: { friends: { _id: args.friendId, username: args.friendUsername } }
+          //   },
+          //   {
+          //     new: true
+          //   },
+          //   (err, user) => {
+          //     console.log(err);
+          //     console.log(user);
+          //   }
+          // );
+        }
       });
+      return response;
+      // return {
+      //   success: false,
+      //   error: 'User not found',
+      //   data: ''
+      // };
       // return User.findByIdAndUpdate(
       //   args.myId,
       //   {
