@@ -45,6 +45,13 @@ export default function nav(state = initialNavState, action) {
       );
       break;
     }
+    case types.PROFILE_SCREEN: {
+      nextState = RootNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: types.PROFILE_SCREEN }),
+        state
+      );
+      break;
+    }
     case types.FRIENDS_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: types.FRIENDS_SCREEN }),

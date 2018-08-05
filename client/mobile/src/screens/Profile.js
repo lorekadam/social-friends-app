@@ -9,7 +9,7 @@ import { back } from '../actions/navigationActions';
 import { GET_USER } from '../queries';
 
 @connect()
-export default class FriendsScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
   render() {
     return (
       <Query query={GET_USER}>

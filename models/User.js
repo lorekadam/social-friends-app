@@ -39,6 +39,20 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  friends: [
+    {
+      _id: {
+        type: Schema.Types.ObjectId
+      },
+      username: {
+        type: String
+      },
+      accepted: {
+        type: Boolean,
+        default: false
+      }
+    }
+  ],
   duels: [
     {
       type: Schema.Types.ObjectId,

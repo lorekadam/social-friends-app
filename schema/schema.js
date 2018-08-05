@@ -1,5 +1,6 @@
 const { makeExecutableSchema } = require('apollo-server');
 
+const { GlobalTypes } = require('./types/global_type');
 const {
   GameQueries, GameTypes, GameMutations, GameResolvers
 } = require('./types/game_type');
@@ -15,6 +16,7 @@ const Query = `
 `;
 
 const Types = `
+  ${GlobalTypes}
   ${UserTypes}
   ${GameTypes}
 `;

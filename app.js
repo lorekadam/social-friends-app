@@ -1,3 +1,7 @@
+// MONGODB_URI=mongodb://mongo12.mydevil.net/mo1130_fstats
+// MONGODB_USER=mo1130_fstats
+// MONGODB_PASSWORD=f44_$$7taAt7$sS!
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');

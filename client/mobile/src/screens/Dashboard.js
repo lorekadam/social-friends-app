@@ -29,7 +29,7 @@ export default class DashboardScreen extends React.Component {
         <Screen row>
           <HalfButton
             bgcolor="primary"
-            onPress={() => this.props.dispatch(navChange(types.FRIENDS_SCREEN))}
+            onPress={() => this.props.dispatch(navChange(types.PROFILE_SCREEN))}
           >
             <Flex aic>
               <StyledIcon fz="80" color="extra2" name="ios-people" />

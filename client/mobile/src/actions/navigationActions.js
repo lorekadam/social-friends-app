@@ -24,6 +24,10 @@ export function cameraScreen() {
   return { type: types.CAMERA_SCREEN };
 }
 
+export function profileScreen() {
+  return { type: types.PROFILE_SCREEN };
+}
+
 export function friendsScreen() {
   return { type: types.FRIENDS_SCREEN };
 }
