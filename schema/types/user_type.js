@@ -37,63 +37,50 @@ const UserResolvers = {
   },
   Mutation: {
     addFriend: (root, args) => {
-      let response;
-      User.findById(args.myId, (err, user) => {
-        if (err) {
-          response = {
-            success: false,
-            error: 'User not found',
-            data: ''
-          };
-        }
-        const { friends } = user;
-        let exists = false;
-        for (let i = 0; i < friends.length; i + 1) {
-          if (friends[i]._id === args.friendId) {
-            exists = true;
-            response = {
+      return new Promise((resolve, reject) => {
+        User.findById(args.myId, (err, user) => {
+          if (err) {
+            resolve({
               success: false,
-              error: 'Friend already added',
+              error: 'User not found',
               data: ''
-            };
-            break;
+            });
           }
-        }
-        if (!exists) {
-          // TODO
-          // user.update(
-          //   {
-          //     $push: { friends: { _id: args.friendId, username: args.friendUsername } }
-          //   },
-          //   {
-          //     new: true
-          //   },
-          //   (err, user) => {
-          //     console.log(err);
-          //     console.log(user);
-          //   }
-          // );
-        }
+          const { friends } = user;
+          let exists = false;
+          for (let i = 0; i < friends.length; i += 1) {
+            if (friends[i]._id.toString() === args.friendId) {
+              exists = true;
+              resolve({
+                success: false,
+                error: 'Friend already added',
+                data: ''
+              });
+            }
+          }
+          if (!exists) {
+            user.update(
+              {
+                $push: { friends: { _id: args.friendId, username: args.friendUsername } }
+              },
+              (error, friend) => {
+                if (error) {
+                  resolve({
+                    success: false,
+                    error: 'Something went wrong',
+                    data: ''
+                  });
+                }
+                resolve({
+                  success: true,
+                  error: '',
+                  data: friend
+                });
+              }
+            );
+          }
+        });
       });
-      return response;
-      // return {
-      //   success: false,
-      //   error: 'User not found',
-      //   data: ''
-      // };
-      // return User.findByIdAndUpdate(
-      //   args.myId,
-      //   {
-      //     $push: { friends: { _id: args.friendId, username: args.friendUsername } }
-      //   },
-      //   {
-      //     new: true
-      //   },
-      //   (err, user) => {
-      //     console.log(err);
-      //     console.log(user);
-      //   }
-      // );
     }
   }
 };
