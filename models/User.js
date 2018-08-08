@@ -4,6 +4,35 @@ const Schema = mongoose.Schema;
 const validations = require('../helpers/validations');
 const msg = require('../helpers/messages');
 
+const FriendSchema = new mongoose.Schema({
+  friendId: {
+    type: Schema.Types.ObjectId
+  },
+  friendName: {
+    type: String
+  },
+  accepted: {
+    type: Boolean,
+    default: false
+  }
+});
+
+const NotificationSchema = new mongoose.Schema({
+  requestId: {
+    type: Schema.Types.ObjectId
+  },
+  message: {
+    type: String
+  },
+  type: {
+    type: String
+  },
+  read: {
+    type: Boolean,
+    default: false
+  }
+});
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -39,34 +68,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  friends: [
-    {
-      friendId: {
-        type: Schema.Types.ObjectId
-      },
-      friendName: {
-        type: String
-      },
-      accepted: {
-        type: Boolean,
-        default: false
-      }
-    }
-  ],
-  notifications: [
-    {
-      message: {
-        type: String
-      },
-      type: {
-        type: String
-      },
-      read: {
-        type: Boolean,
-        default: false
-      }
-    }
-  ],
+  friends: [FriendSchema],
+  notifications: [NotificationSchema],
   duels: [
     {
       type: Schema.Types.ObjectId,
@@ -88,5 +91,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('user', UserSchema);
+const Friend = mongoose.model('friends', FriendSchema);
+const Notification = mongoose.model('notifications', NotificationSchema);
 
-module.exports = User;
+module.exports = { User, Friend, Notification };

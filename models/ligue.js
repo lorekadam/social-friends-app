@@ -19,4 +19,4 @@ const LigueSchema = new mongoose.Schema({
 
 const Ligue = mongoose.model('ligue', LigueSchema);
 
-module.exports = Ligue;
+module.exports = { Ligue };

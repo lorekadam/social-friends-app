@@ -1,4 +1,4 @@
-const User = require('../../models/User');
+const { User, Friend } = require('../../models/User');
 const msg = require('../../helpers/messages');
 const types = require('../../helpers/types');
 
@@ -26,6 +26,7 @@ const UserTypes = `
 const UserMutations = `
   addUser(username: String, email: String): BasicUserData
   addFriend(myId: String, friendId: String, friendName: String, accepted: Boolean): Response
+  acceptFriendRequest(requestId: String): Response
 `;
 
 const UserResolvers = {
@@ -39,7 +40,7 @@ const UserResolvers = {
   },
   Mutation: {
     addFriend: (root, args) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         User.findById(args.myId, (error, user) => {
           if (error) {
             resolve({
@@ -61,7 +62,8 @@ const UserResolvers = {
             }
           }
           if (!exists) {
-            user.update(
+            User.findByIdAndUpdate(
+              args.myId,
               {
                 $push: {
                   friends: {
@@ -71,8 +73,8 @@ const UserResolvers = {
                   }
                 }
               },
-              { new: true },
-              (error, friend) => {
+              { upsert: true, new: true },
+              (error, user) => {
                 if (error) {
                   resolve({
                     error: true,
@@ -86,6 +88,7 @@ const UserResolvers = {
                   {
                     $push: {
                       notifications: {
+                        requestId: user.friends[user.friends.length - 1]._id,
                         message: `${msg.friendRequest} ${user.username}`,
                         type: types.FRIEND_REQUEST
                       }
@@ -102,7 +105,7 @@ const UserResolvers = {
                     resolve({
                       error: false,
                       message: 'Request send',
-                      data: JSON.stringify(friend)
+                      data: user.friends[user.friends.length - 1]._id
                     });
                   }
                 );
@@ -110,6 +113,32 @@ const UserResolvers = {
             );
           }
         });
+      });
+    },
+    acceptFriendRequest: (root, args) => {
+      return new Promise((resolve) => {
+        Friend.findById(args.requestId, (err, friend) => {
+          console.log('a', friend);
+        });
+        // Friends.findByIdAndUpdate(
+        //   args.requestId,
+        //   { $set: { accepted: true } },
+        //   { upsert: true, new: true },
+        //   (error, request) => {
+        //     if (error) {
+        //       resolve({
+        //         error: true,
+        //         message: msg.basic,
+        //         data: ''
+        //       });
+        //     }
+        //     console.log(request);
+        //     resolve({
+        //       error: false,
+        //       message: msg.friendRequestAccepted
+        //     });
+        //   }
+        // );
       });
     }
   }

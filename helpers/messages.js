@@ -16,5 +16,6 @@ module.exports = {
     }
   },
   friendExists: 'Friend already exists.',
-  friendRequest: 'You have friend request from '
+  friendRequest: 'You have friend request from ',
+  friendRequestAccepted: 'You have succesfully accepted request!'
 };

@@ -19,4 +19,4 @@ const DuelSchema = new mongoose.Schema({
 
 const Duel = mongoose.model('duel', DuelSchema);
 
-module.exports = Duel;
+module.exports = { Duel };

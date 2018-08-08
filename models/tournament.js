@@ -19,4 +19,4 @@ const TournamentSchema = new mongoose.Schema({
 
 const Tournament = mongoose.model('tournament', TournamentSchema);
 
-module.exports = Tournament;
+module.exports = { Tournament };

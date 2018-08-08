@@ -1,7 +1,7 @@
 const graphql = require('graphql');
 const { GraphQLSchema, GraphQLObjectType, GraphQLString } = graphql;
-const User = require('../models/User');
-const Game = require('../models/Game');
+const { User } = require('../models/User');
+const { Game } = require('../models/Game');
 
 const UserType = require('./types/user_type');
 const GameType = require('./types/game_type');
