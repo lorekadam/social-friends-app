@@ -1,4 +1,6 @@
 const User = require('../../models/User');
+const msg = require('../../helpers/messages');
+const types = require('../../helpers/types');
 
 const UserQueries = `
   user(_id:String,username:String): BasicUserData
@@ -23,7 +25,7 @@ const UserTypes = `
 `;
 const UserMutations = `
   addUser(username: String, email: String): BasicUserData
-  addFriend(myId: String, friendId: String, friendUsername: String): Response
+  addFriend(myId: String, friendId: String, friendName: String, accepted: Boolean): Response
 `;
 
 const UserResolvers = {
@@ -38,22 +40,22 @@ const UserResolvers = {
   Mutation: {
     addFriend: (root, args) => {
       return new Promise((resolve, reject) => {
-        User.findById(args.myId, (err, user) => {
-          if (err) {
+        User.findById(args.myId, (error, user) => {
+          if (error) {
             resolve({
-              success: false,
-              error: 'User not found',
+              error: true,
+              message: msg.auth.noUser,
               data: ''
             });
           }
           const { friends } = user;
           let exists = false;
           for (let i = 0; i < friends.length; i += 1) {
-            if (friends[i]._id.toString() === args.friendId) {
+            if (friends[i].friendId.toString() === args.friendId) {
               exists = true;
               resolve({
-                success: false,
-                error: 'Friend already added',
+                error: true,
+                message: msg.friendExists,
                 data: ''
               });
             }
@@ -61,21 +63,49 @@ const UserResolvers = {
           if (!exists) {
             user.update(
               {
-                $push: { friends: { _id: args.friendId, username: args.friendUsername } }
+                $push: {
+                  friends: {
+                    friendId: args.friendId,
+                    friendName: args.friendName,
+                    accepted: args.accepted
+                  }
+                }
               },
+              { new: true },
               (error, friend) => {
                 if (error) {
                   resolve({
-                    success: false,
-                    error: 'Something went wrong',
+                    error: true,
+                    message: msg.basic,
                     data: ''
                   });
                 }
-                resolve({
-                  success: true,
-                  error: '',
-                  data: friend
-                });
+                // Friend successfully added, add notification
+                User.findByIdAndUpdate(
+                  args.friendId,
+                  {
+                    $push: {
+                      notifications: {
+                        message: `${msg.friendRequest} ${user.username}`,
+                        type: types.FRIEND_REQUEST
+                      }
+                    }
+                  },
+                  (error) => {
+                    if (error) {
+                      resolve({
+                        error: true,
+                        message: msg.basic,
+                        data: ''
+                      });
+                    }
+                    resolve({
+                      error: false,
+                      message: 'Request send',
+                      data: JSON.stringify(friend)
+                    });
+                  }
+                );
               }
             );
           }

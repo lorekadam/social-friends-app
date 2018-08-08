@@ -41,13 +41,27 @@ const UserSchema = new mongoose.Schema({
   },
   friends: [
     {
-      _id: {
+      friendId: {
         type: Schema.Types.ObjectId
       },
-      username: {
+      friendName: {
         type: String
       },
       accepted: {
+        type: Boolean,
+        default: false
+      }
+    }
+  ],
+  notifications: [
+    {
+      message: {
+        type: String
+      },
+      type: {
+        type: String
+      },
+      read: {
         type: Boolean,
         default: false
       }

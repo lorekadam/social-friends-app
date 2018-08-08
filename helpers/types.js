@@ -1,0 +1,7 @@
+// NOTIFICATIONS TYPES
+
+const FRIEND_REQUEST = 'FRIEND_REQUEST';
+
+module.exports = {
+  FRIEND_REQUEST
+};

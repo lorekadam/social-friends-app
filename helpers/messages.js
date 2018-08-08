@@ -7,12 +7,14 @@ module.exports = {
     email: 'Given email is not valid.',
     duplicateEmail: 'Account with given email already exist.',
     password: 'Password must be longer that 3 characters.',
-    noUser: 'No user found.',
+    noUser: 'User not found.',
     login: 'Invalid email or password.',
     token: {
       noToken: 'No token provided.',
       failed: 'Failed to authenticate token.',
       invalidRefresh: 'Refresh token is invalid'
     }
-  }
+  },
+  friendExists: 'Friend already exists.',
+  friendRequest: 'You have friend request from '
 };
