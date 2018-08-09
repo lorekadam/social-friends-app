@@ -26,7 +26,8 @@ const UserTypes = `
 const UserMutations = `
   addUser(username: String, email: String): BasicUserData
   addFriend(myId: String, friendId: String, friendName: String, accepted: Boolean): Response
-  acceptFriendRequest(requestId: String): Response
+  acceptFriendRequest(myId: String, requestId: String): Response
+  readNotification(myId: String, notificationId: String): Response
 `;
 
 const UserResolvers = {
@@ -45,8 +46,7 @@ const UserResolvers = {
           if (error) {
             resolve({
               error: true,
-              message: msg.auth.noUser,
-              data: ''
+              message: msg.auth.noUser
             });
           }
           const { friends } = user;
@@ -56,8 +56,7 @@ const UserResolvers = {
               exists = true;
               resolve({
                 error: true,
-                message: msg.friendExists,
-                data: ''
+                message: msg.friendExists
               });
             }
           }
@@ -78,8 +77,7 @@ const UserResolvers = {
                 if (error) {
                   resolve({
                     error: true,
-                    message: msg.basic,
-                    data: ''
+                    message: msg.basic
                   });
                 }
                 // Friend successfully added, add notification
@@ -98,8 +96,7 @@ const UserResolvers = {
                     if (error) {
                       resolve({
                         error: true,
-                        message: msg.basic,
-                        data: ''
+                        message: msg.basic
                       });
                     }
                     resolve({
@@ -117,28 +114,42 @@ const UserResolvers = {
     },
     acceptFriendRequest: (root, args) => {
       return new Promise((resolve) => {
-        Friend.findById(args.requestId, (err, friend) => {
-          console.log('a', friend);
+        User.findById(args.myId, (error, user) => {
+          const request = user.friends.id(args.requestId);
+          request.accepted = true;
+          user.save((error) => {
+            if (error) {
+              resolve({
+                error: true,
+                message: msg.basic
+              });
+            }
+            resolve({
+              error: false,
+              message: msg.friendRequestAccepted
+            });
+          });
         });
-        // Friends.findByIdAndUpdate(
-        //   args.requestId,
-        //   { $set: { accepted: true } },
-        //   { upsert: true, new: true },
-        //   (error, request) => {
-        //     if (error) {
-        //       resolve({
-        //         error: true,
-        //         message: msg.basic,
-        //         data: ''
-        //       });
-        //     }
-        //     console.log(request);
-        //     resolve({
-        //       error: false,
-        //       message: msg.friendRequestAccepted
-        //     });
-        //   }
-        // );
+      });
+    },
+    readNotification: (root, args) => {
+      return new Promise((resolve) => {
+        User.findById(args.myId, (error, user) => {
+          const notification = user.notifications.id(args.notificationId);
+          notification.read = true;
+          user.save((error) => {
+            if (error) {
+              resolve({
+                error: true,
+                message: msg.basic
+              });
+            }
+            resolve({
+              error: false,
+              message: msg.notificationRead
+            });
+          });
+        });
       });
     }
   }
