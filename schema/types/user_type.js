@@ -26,7 +26,8 @@ const UserTypes = `
 const UserMutations = `
   addUser(username: String, email: String): BasicUserData
   addFriend(myId: String, friendId: String, friendName: String, accepted: Boolean): Response
-  acceptFriendRequest(myId: String, requestId: String): Response
+  removeFriend(myId: String, friendId: String): Response
+  acceptFriendRequest(friendId: String, requestId: String): Response
   readNotification(myId: String, notificationId: String): Response
 `;
 
@@ -87,6 +88,7 @@ const UserResolvers = {
                     $push: {
                       notifications: {
                         requestId: user.friends[user.friends.length - 1]._id,
+                        fromId: user._id,
                         message: `${msg.friendRequest} ${user.username}`,
                         type: types.FRIEND_REQUEST
                       }
@@ -112,12 +114,12 @@ const UserResolvers = {
         });
       });
     },
-    acceptFriendRequest: (root, args) => {
+    removeFriend: (root, args) => {
       return new Promise((resolve) => {
-        User.findById(args.myId, (error, user) => {
-          const request = user.friends.id(args.requestId);
-          request.accepted = true;
-          user.save((error) => {
+        User.findByIdAndUpdate(
+          args.myId,
+          { $pull: { friends: { friendId: args.friendId } } },
+          (error) => {
             if (error) {
               resolve({
                 error: true,
@@ -128,6 +130,46 @@ const UserResolvers = {
               error: false,
               message: msg.friendRequestAccepted
             });
+          }
+        );
+      });
+    },
+    acceptFriendRequest: (root, args) => {
+      return new Promise((resolve) => {
+        User.findById(args.friendId, (error, user) => {
+          const request = user.friends.id(args.requestId);
+          request.accepted = true;
+          user.save((error) => {
+            if (error) {
+              resolve({
+                error: true,
+                message: msg.basic
+              });
+            }
+            User.findByIdAndUpdate(
+              request.friendId,
+              {
+                $push: {
+                  friends: {
+                    friendId: args.friendId,
+                    friendName: user.username,
+                    accepted: true
+                  }
+                }
+              },
+              (error) => {
+                if (error) {
+                  resolve({
+                    error: true,
+                    message: msg.basic
+                  });
+                }
+                resolve({
+                  error: false,
+                  message: msg.friendRequestAccepted
+                });
+              }
+            );
           });
         });
       });

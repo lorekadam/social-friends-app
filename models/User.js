@@ -21,6 +21,9 @@ const NotificationSchema = new mongoose.Schema({
   requestId: {
     type: Schema.Types.ObjectId
   },
+  fromId: {
+    type: Schema.Types.ObjectId
+  },
   message: {
     type: String
   },
