@@ -3,12 +3,7 @@ const Schema = mongoose.Schema;
 
 const DuelSchema = new mongoose.Schema({
   name: String,
-  players: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'user'
-    }
-  ],
+  players: [{ type: String }],
   games: [
     {
       type: Schema.Types.ObjectId,

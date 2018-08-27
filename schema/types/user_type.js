@@ -1,34 +1,41 @@
-const { User, Friend } = require('../../models/User');
+const { User } = require('../../models/User');
+const { Duel } = require('../../models/Duel');
 const msg = require('../../helpers/messages');
 const types = require('../../helpers/types');
 
 const UserQueries = `
   user(_id:String,username:String): BasicUserData
-  users: [OnlyUsername]
+  allUsers: [OnlyUsername]
 `;
 const UserTypes = `
   type BasicUserData {
     _id: String,
     username: String,
     email: String,
-    friends: [Friend]
+    friends: [Friend],
+    duels: [Duels]
+  }
+  type Duels {
+    _id: String
   }
   type OnlyUsername {
     _id: String,
-    username:String
+    username: String
   }
   type Friend{
     _id: String,
-    username: String,
+    friendId: String,
+    friendName: String,
     accepted: Boolean
   }
 `;
 const UserMutations = `
   addUser(username: String, email: String): BasicUserData
-  addFriend(myId: String, friendId: String, friendName: String, accepted: Boolean): Response
-  removeFriend(myId: String, friendId: String): Response
+  addFriend(_id: String, friendId: String, friendName: String, accepted: Boolean): Response
+  removeFriend(_id: String, friendId: String): Response
   acceptFriendRequest(friendId: String, requestId: String): Response
-  readNotification(myId: String, notificationId: String): Response
+  readNotification(_id: String, notificationId: String): Response
+  addDuel(_id: String, friendId: String, name: String): Response
 `;
 
 const UserResolvers = {
@@ -36,14 +43,14 @@ const UserResolvers = {
     user: (root, args) => {
       return User.findOne(args);
     },
-    users: () => {
+    allUsers: () => {
       return User.find({});
     }
   },
   Mutation: {
     addFriend: (root, args) => {
       return new Promise((resolve) => {
-        User.findById(args.myId, (error, user) => {
+        User.findById(args._id, (error, user) => {
           if (error) {
             resolve({
               error: true,
@@ -63,7 +70,7 @@ const UserResolvers = {
           }
           if (!exists) {
             User.findByIdAndUpdate(
-              args.myId,
+              args._id,
               {
                 $push: {
                   friends: {
@@ -117,7 +124,7 @@ const UserResolvers = {
     removeFriend: (root, args) => {
       return new Promise((resolve) => {
         User.findByIdAndUpdate(
-          args.myId,
+          args._id,
           { $pull: { friends: { friendId: args.friendId } } },
           (error) => {
             if (error) {
@@ -176,7 +183,7 @@ const UserResolvers = {
     },
     readNotification: (root, args) => {
       return new Promise((resolve) => {
-        User.findById(args.myId, (error, user) => {
+        User.findById(args._id, (error, user) => {
           const notification = user.notifications.id(args.notificationId);
           notification.read = true;
           user.save((error) => {
@@ -191,6 +198,57 @@ const UserResolvers = {
               message: msg.notificationRead
             });
           });
+        });
+      });
+    },
+    addDuel: (root, args) => {
+      return new Promise((resolve) => {
+        User.findById(args._id, (error, user) => {
+          if (error) {
+            resolve({
+              error: true,
+              message: msg.auth.noUser
+            });
+          }
+          const { duels } = user;
+          // if (duels.length === 0) {
+          Duel.create(
+            {
+              name: args.name,
+              players: [args._id, args.friendId]
+            },
+            (error, duel) => {
+              if (error) {
+                resolve({
+                  error: true,
+                  message: msg.basic
+                });
+              }
+              User.findByIdAndUpdate(
+                args._id,
+                {
+                  $push: {
+                    duels: {
+                      _id: duel._id
+                    }
+                  }
+                },
+                (error) => {
+                  if (error) {
+                    resolve({
+                      error: true,
+                      message: msg.basic
+                    });
+                  }
+                  resolve({
+                    error: false,
+                    message: msg.duelAdded
+                  });
+                }
+              );
+            }
+          );
+          // }
         });
       });
     }

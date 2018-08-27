@@ -18,5 +18,6 @@ module.exports = {
   friendExists: 'Friend already exists.',
   friendRequest: 'You have friend request from ',
   friendRequestAccepted: 'You have succesfully accepted request!',
-  notificationRead: 'You have read notification.'
+  notificationRead: 'You have read notification.',
+  duelAdded: 'You have created new duel!'
 };
