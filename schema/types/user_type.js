@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { User } = require('../../models/User');
 const { Duel } = require('../../models/Duel');
 const msg = require('../../helpers/messages');
@@ -203,53 +204,72 @@ const UserResolvers = {
     },
     addDuel: (root, args) => {
       return new Promise((resolve) => {
-        User.findById(args._id, (error, user) => {
-          if (error) {
-            resolve({
-              error: true,
-              message: msg.auth.noUser
-            });
-          }
-          const { duels } = user;
-          // if (duels.length === 0) {
-          Duel.create(
-            {
-              name: args.name,
-              players: [args._id, args.friendId]
-            },
-            (error, duel) => {
-              if (error) {
-                resolve({
-                  error: true,
-                  message: msg.basic
-                });
-              }
-              User.findByIdAndUpdate(
-                args._id,
+        Duel.find(
+          {
+            players: {
+              $in: [mongoose.Types.ObjectId(args._id), mongoose.Types.ObjectId(args.friendId)]
+            }
+          },
+          (error, duels) => {
+            if (error) {
+              resolve({
+                error: true,
+                message: msg.auth.basic
+              });
+            }
+            if (duels.length === 0) {
+              Duel.create(
                 {
-                  $push: {
-                    duels: {
-                      _id: duel._id
-                    }
-                  }
+                  name: args.name,
+                  players: [args._id, args.friendId]
                 },
-                (error) => {
+                (error, duel) => {
                   if (error) {
                     resolve({
                       error: true,
                       message: msg.basic
                     });
                   }
-                  resolve({
-                    error: false,
-                    message: msg.duelAdded
-                  });
+                  User.update(
+                    {
+                      _id: {
+                        $in: [
+                          mongoose.Types.ObjectId(args._id),
+                          mongoose.Types.ObjectId(args.friendId)
+                        ]
+                      }
+                    },
+                    {
+                      $push: {
+                        duels: {
+                          _id: duel._id
+                        }
+                      }
+                    },
+                    { multi: true },
+                    (error) => {
+                      if (error) {
+                        resolve({
+                          error: true,
+                          message: msg.basic
+                        });
+                      }
+                      resolve({
+                        error: false,
+                        message: msg.duelAdded
+                      });
+                    }
+                  );
                 }
               );
+            } else {
+              resolve({
+                error: true,
+                message: msg.duelExists
+              });
             }
-          );
-          // }
-        });
+          }
+        );
       });
     }
   }
