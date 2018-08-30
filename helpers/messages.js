@@ -15,10 +15,13 @@ module.exports = {
       invalidRefresh: 'Refresh token is invalid'
     }
   },
+  notificationAdded: 'Notification added',
   friendExists: 'Friend already exists.',
   friendRequest: 'You have friend request from ',
   friendRequestAccepted: 'You have succesfully accepted request!',
   notificationRead: 'You have read notification.',
   duelAdded: 'You have created new duel!',
-  duelExists: 'Duel between this players already exists!'
+  duelExists: 'Duel between this players already exists!',
+  gameAdded: 'Game successfully added!',
+  gameAccepted: 'Game score accepted!'
 };

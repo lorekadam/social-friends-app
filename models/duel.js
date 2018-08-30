@@ -4,12 +4,10 @@ const Schema = mongoose.Schema;
 const DuelSchema = new mongoose.Schema({
   name: String,
   players: [{ type: Schema.Types.ObjectId }],
-  games: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'game'
-    }
-  ]
+  accepted: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const Duel = mongoose.model('duel', DuelSchema);

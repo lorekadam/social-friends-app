@@ -47,6 +47,9 @@ const PlayerStatsSchema = new mongoose.Schema({
 });
 
 const GameSchema = new mongoose.Schema({
+  type: {
+    type: Schema.Types.ObjectId
+  },
   homePlayer: {
     type: Schema.Types.ObjectId,
     ref: 'user'
@@ -63,6 +66,10 @@ const GameSchema = new mongoose.Schema({
   },
   score: {
     type: String
+  },
+  accepted: {
+    type: Boolean,
+    default: false
   }
 });
 

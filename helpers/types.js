@@ -1,7 +1,4 @@
 // NOTIFICATIONS TYPES
 
-const FRIEND_REQUEST = 'FRIEND_REQUEST';
-
-module.exports = {
-  FRIEND_REQUEST
-};
+module.exports.FRIEND_REQUEST = 'FRIEND_REQUEST';
+module.exports.NEW_GAME = 'NEW_GAME';

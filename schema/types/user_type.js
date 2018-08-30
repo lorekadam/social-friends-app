@@ -4,6 +4,30 @@ const { Duel } = require('../../models/Duel');
 const msg = require('../../helpers/messages');
 const types = require('../../helpers/types');
 
+const addNotification = (fromId, toId, requestId, type, message) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(
+      toId,
+      {
+        $push: {
+          notifications: {
+            requestId,
+            fromId,
+            message,
+            type
+          }
+        }
+      },
+      (error) => {
+        if (error) {
+          reject();
+        }
+        resolve();
+      }
+    );
+  });
+};
+
 const UserQueries = `
   user(_id:String,username:String): BasicUserData
   allUsers: [OnlyUsername]
@@ -111,7 +135,7 @@ const UserResolvers = {
                     }
                     resolve({
                       error: false,
-                      message: 'Request send',
+                      message: msg.notificationAdded,
                       data: user.friends[user.friends.length - 1]._id
                     });
                   }
@@ -279,5 +303,6 @@ module.exports = {
   UserQueries,
   UserTypes,
   UserMutations,
-  UserResolvers
+  UserResolvers,
+  addNotification
 };

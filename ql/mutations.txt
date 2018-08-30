@@ -1,0 +1,51 @@
+mutation{
+  addGame(
+    type:"5b855be85242fd5e39c4e35d"
+    homePlayer:"5b6b2c8e7525b0be68e50fa6", 
+    awayPlayer:"5b6b2cbd7525b0be68e50fa7",
+    score:"1:2",
+    home:{
+      team:"FC Barcelona",
+      score:1,
+      shots:10,
+      shotsOnTarget:2,
+      possession:49,
+      tackles:10,
+      fouls:7,
+      yellow:2,
+      red:0,
+      injuries:2,
+      offsides:6,
+      corners:2
+      shotsAccuracy:20,
+      passAccuracy:78
+    },
+    away:{
+      team:"Real Madrid",
+      score:2,
+      shots:8,
+      shotsOnTarget:6,
+      possession:51,
+      tackles:6,
+      fouls:9,
+      yellow:4,
+      red:1,
+      injuries:0,
+      offsides:2,
+      corners:8
+      shotsAccuracy:70,
+      passAccuracy:80
+    }
+  ){
+    error,
+    message,
+  	data
+  }
+}
+
+mutation{
+  addDuel(_id:"5b6b2cbd7525b0be68e50fa7", friendId:"5b6b2c8e7525b0be68e50fa6", name:"Pierwszy duel"){
+    error,
+    message
+  }
+}
