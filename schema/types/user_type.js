@@ -4,15 +4,15 @@ const { Duel } = require('../../models/Duel');
 const msg = require('../../helpers/messages');
 const types = require('../../helpers/types');
 
-const addNotification = (fromId, toId, requestId, type, message) => {
+const addNotification = (toId, fromId, requestId, message, type) => {
   return new Promise((resolve, reject) => {
     User.findByIdAndUpdate(
       toId,
       {
         $push: {
           notifications: {
-            requestId,
             fromId,
+            requestId,
             message,
             type
           }
@@ -20,7 +20,10 @@ const addNotification = (fromId, toId, requestId, type, message) => {
       },
       (error) => {
         if (error) {
-          reject();
+          reject({
+            error: true,
+            message: msg.basic
+          });
         }
         resolve();
       }
@@ -114,32 +117,19 @@ const UserResolvers = {
                   });
                 }
                 // Friend successfully added, add notification
-                User.findByIdAndUpdate(
+                addNotification(
                   args.friendId,
-                  {
-                    $push: {
-                      notifications: {
-                        requestId: user.friends[user.friends.length - 1]._id,
-                        fromId: user._id,
-                        message: `${msg.friendRequest} ${user.username}`,
-                        type: types.FRIEND_REQUEST
-                      }
-                    }
-                  },
-                  (error) => {
-                    if (error) {
-                      resolve({
-                        error: true,
-                        message: msg.basic
-                      });
-                    }
-                    resolve({
-                      error: false,
-                      message: msg.notificationAdded,
-                      data: user.friends[user.friends.length - 1]._id
-                    });
-                  }
-                );
+                  user._id,
+                  user.friends[user.friends.length - 1]._id,
+                  `${msg.friendRequest} ${user.username}`,
+                  types.FRIEND_REQUEST
+                ).then(() => {
+                  resolve({
+                    error: false,
+                    message: msg.notificationAdded,
+                    data: user.friends[user.friends.length - 1]._id
+                  });
+                });
               }
             );
           }
@@ -278,9 +268,17 @@ const UserResolvers = {
                           message: msg.basic
                         });
                       }
-                      resolve({
-                        error: false,
-                        message: msg.duelAdded
+                      addNotification(
+                        args.friendId,
+                        args._id,
+                        duel._id,
+                        `${msg.duelRequest}`,
+                        types.DUEL_REQUEST
+                      ).then(() => {
+                        resolve({
+                          error: false,
+                          message: msg.duelAdded
+                        });
                       });
                     }
                   );

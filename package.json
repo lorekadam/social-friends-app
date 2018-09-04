@@ -42,7 +42,8 @@
       "no-underscore-dangle": 0,
       "func-names": 0,
       "no-useless-escape": 0,
-      "no-shadow": 0
+      "no-shadow": 0,
+      "prefer-promise-reject-errors": 0
     },
     "parserOptions": {
       "ecmaVersion": 6,
