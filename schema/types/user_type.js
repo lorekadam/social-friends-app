@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { User } = require('../../models/User');
+const { User, Notification } = require('../../models/User');
 const { Duel } = require('../../models/Duel');
 const msg = require('../../helpers/messages');
 const types = require('../../helpers/types');
@@ -61,9 +61,9 @@ const UserMutations = `
   addUser(username: String, email: String): BasicUserData
   addFriend(_id: String, friendId: String, friendName: String, accepted: Boolean): Response
   removeFriend(_id: String, friendId: String): Response
-  acceptFriendRequest(friendId: String, requestId: String): Response
-  readNotification(_id: String, notificationId: String): Response
+  readNotification(_id: String): Response
   addDuel(_id: String, friendId: String, name: String): Response
+  acceptNotification(_id: String): Response
 `;
 
 const UserResolvers = {
@@ -150,56 +150,16 @@ const UserResolvers = {
             }
             resolve({
               error: false,
-              message: msg.friendRequestAccepted
+              message: msg.requestAccepted
             });
           }
         );
       });
     },
-    acceptFriendRequest: (root, args) => {
-      return new Promise((resolve) => {
-        User.findById(args.friendId, (error, user) => {
-          const request = user.friends.id(args.requestId);
-          request.accepted = true;
-          user.save((error) => {
-            if (error) {
-              resolve({
-                error: true,
-                message: msg.basic
-              });
-            }
-            User.findByIdAndUpdate(
-              request.friendId,
-              {
-                $push: {
-                  friends: {
-                    friendId: args.friendId,
-                    friendName: user.username,
-                    accepted: true
-                  }
-                }
-              },
-              (error) => {
-                if (error) {
-                  resolve({
-                    error: true,
-                    message: msg.basic
-                  });
-                }
-                resolve({
-                  error: false,
-                  message: msg.friendRequestAccepted
-                });
-              }
-            );
-          });
-        });
-      });
-    },
     readNotification: (root, args) => {
       return new Promise((resolve) => {
-        User.findById(args._id, (error, user) => {
-          const notification = user.notifications.id(args.notificationId);
+        User.findOne({ 'notifications._id': args._id }, (error, user) => {
+          const notification = user.notifications.id(args._id);
           notification.read = true;
           user.save((error) => {
             if (error) {
@@ -246,12 +206,7 @@ const UserResolvers = {
                   }
                   User.update(
                     {
-                      _id: {
-                        $in: [
-                          mongoose.Types.ObjectId(args._id),
-                          mongoose.Types.ObjectId(args.friendId)
-                        ]
-                      }
+                      _id: args._id
                     },
                     {
                       $push: {
@@ -292,6 +247,86 @@ const UserResolvers = {
             }
           }
         );
+      });
+    },
+    acceptNotification: (root, args) => {
+      return new Promise((resolve) => {
+        User.findOne({ 'notifications._id': args._id }, (error, user) => {
+          const notification = user.notifications.id(args._id);
+          const type = notification.type;
+          if (type === types.FRIEND_REQUEST) {
+            User.findById(notification.fromId, (error, friend) => {
+              const request = friend.friends.id(notification.requestId);
+              request.accepted = true;
+              friend.save((error) => {
+                if (error) {
+                  resolve({
+                    error: true,
+                    message: msg.basic
+                  });
+                }
+                user.update(
+                  {
+                    $push: {
+                      friends: {
+                        friendId: notification.fromId,
+                        friendName: friend.username,
+                        accepted: true
+                      }
+                    }
+                  },
+                  (error) => {
+                    if (error) {
+                      resolve({
+                        error: true,
+                        message: msg.basic
+                      });
+                    }
+                    notification.read = true;
+                    user.save();
+                    resolve({
+                      error: false,
+                      message: msg.requestAccepted
+                    });
+                  }
+                );
+              });
+            });
+          }
+          if (type === types.DUEL_REQUEST) {
+            Duel.findOneAndUpdate(notification.requestId, { accepted: true }, (error) => {
+              if (error) {
+                resolve({
+                  error: true,
+                  message: msg.basic
+                });
+              }
+              user.update(
+                {
+                  $push: {
+                    duels: {
+                      _id: notification.requestId
+                    }
+                  }
+                },
+                (error) => {
+                  if (error) {
+                    resolve({
+                      error: true,
+                      message: msg.basic
+                    });
+                  }
+                  notification.read = true;
+                  user.save();
+                  resolve({
+                    error: false,
+                    message: msg.requestAccepted
+                  });
+                }
+              );
+            });
+          }
+        });
       });
     }
   }
