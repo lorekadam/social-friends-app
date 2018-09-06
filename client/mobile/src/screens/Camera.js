@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import RNTesseractOcr from 'react-native-tesseract-ocr';
 
 import { Constants, Camera, FileSystem, Permissions } from 'expo';
 import { StyleSheet, Text, View, TouchableOpacity, Slider } from 'react-native';
@@ -198,14 +197,6 @@ export default class CameraScreen extends React.Component {
 
       this.camera.takePictureAsync().then((data) => {
         console.log(RNTesseractOcr);
-        RNTesseractOcr.recognize(data.uri, lang, tessOptions)
-          .then((result) => {
-            console.log('OCR Result: ', result);
-          })
-          .catch((err) => {
-            console.log('OCR Error: ', err);
-          })
-          .done();
       });
     }
   };

@@ -12,7 +12,8 @@ import {
   Item,
   Card,
   CardItem,
-  Body
+  Body,
+  Form
 } from 'native-base';
 
 import { navChange } from '../actions/navigationActions';
@@ -64,15 +65,12 @@ export default class RegisterScreen extends React.Component {
             error: res.data.msg
           });
         } else {
-          const data = {
-            token: res.data.token,
-            refreshToken: res.data.refreshToken
-          };
+          const { dispatch } = this.props;
           this.setState({
             error: ''
           });
-          this.props.dispatch(authUser(data));
-          this.props.dispatch(navChange(types.DASHBOARD_SCREEN));
+          dispatch(authUser({ ...res.data }));
+          dispatch(navChange(types.DASHBOARD_SCREEN));
         }
       })
       .catch((error) => {
@@ -83,44 +81,39 @@ export default class RegisterScreen extends React.Component {
     return (
       <Container>
         <Content>
-          <Card>
-            <CardItem>
-              <Body>
-                <Text>Register new account</Text>
-                <Item stackedLabel>
-                  <Label>Username</Label>
-                  <Input value={this.state.username} onChangeText={val => this.setUsername(val)} />
-                </Item>
-                <Item stackedLabel>
-                  <Label>Email</Label>
-                  <Input value={this.state.email} onChangeText={val => this.setEmail(val)} />
-                </Item>
-                <Item stackedLabel last>
-                  <Label>Password</Label>
-                  <Input
-                    password
-                    value={this.state.password}
-                    onChangeText={val => this.setPassword(val)}
-                  />
-                </Item>
-                {this.state.error.length > 0 && <ErrorBlock message={this.state.error} />}
-              </Body>
-            </CardItem>
-          </Card>
-          <Button
-            onPress={this.submitRegister}
-            full
-            disabled={this.state.email.length === 0 && this.state.password.length > 3}
-          >
-            <Text>Register</Text>
-          </Button>
-          <Button
-            onPress={() => this.props.dispatch(navChange(types.LOGIN_SCREEN))}
-            full
-            style={{ backgroundColor: '#000000' }}
-          >
-            <Text>Go To Login Screen</Text>
-          </Button>
+          <Form>
+            <Item stackedLabel>
+              <Label>Username</Label>
+              <Input value={this.state.username} onChangeText={val => this.setUsername(val)} />
+            </Item>
+            <Item stackedLabel>
+              <Label>Email</Label>
+              <Input value={this.state.email} onChangeText={val => this.setEmail(val)} />
+            </Item>
+            <Item stackedLabel last>
+              <Label>Password</Label>
+              <Input
+                password
+                value={this.state.password}
+                onChangeText={val => this.setPassword(val)}
+              />
+            </Item>
+            {this.state.error.length > 0 && <ErrorBlock message={this.state.error} />}
+            <Button
+              onPress={this.submitRegister}
+              full
+              disabled={this.state.email.length === 0 && this.state.password.length > 3}
+            >
+              <Text>Register</Text>
+            </Button>
+            <Button
+              onPress={() => this.props.dispatch(navChange(types.LOGIN_SCREEN))}
+              full
+              style={{ backgroundColor: '#000000' }}
+            >
+              <Text>Go To Login Screen</Text>
+            </Button>
+          </Form>
         </Content>
       </Container>
     );

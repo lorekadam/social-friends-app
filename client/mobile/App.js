@@ -4,7 +4,7 @@ import Expo, { AppLoading } from 'expo';
 
 import Fstats from './src/Fstats';
 
-export class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,5 +26,3 @@ export class App extends React.Component {
 }
 
 AppRegistry.registerComponent('App', () => App);
-
-export default App;

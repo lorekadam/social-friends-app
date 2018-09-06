@@ -16,8 +16,7 @@ export default function reducer(
       return {
         ...state,
         authenticated: true,
-        token: action.payload.token,
-        refreshToken: action.payload.refreshToken
+        ...action.payload
       };
     }
     case types.UNAUTH_USER: {
@@ -25,7 +24,8 @@ export default function reducer(
         ...state,
         authenticated: false,
         token: '',
-        refreshToken: ''
+        refreshToken: '',
+        _id: ''
       };
     }
   }

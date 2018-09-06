@@ -44,15 +44,12 @@ export default class LoginScreen extends React.Component {
             error: res.data.msg
           });
         } else {
-          const data = {
-            token: res.data.token,
-            refreshToken: res.data.refreshToken
-          };
+          const { dispatch } = this.props;
           this.setState({
             error: ''
           });
-          this.props.dispatch(authUser(data));
-          this.props.dispatch(navChange(types.DASHBOARD_SCREEN));
+          dispatch(authUser({ ...res.data }));
+          dispatch(navChange(types.DASHBOARD_SCREEN));
         }
       })
       .catch((error) => {
