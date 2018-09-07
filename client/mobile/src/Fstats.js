@@ -19,7 +19,7 @@ const client = new ApolloClient({
 
 const logger = createLogger();
 
-const store = createStore(reducers, applyMiddleware(navMiddleware, thunk, logger));
+export const store = createStore(reducers, applyMiddleware(navMiddleware, thunk, logger));
 
 const Fstats = () => (
   <Provider store={store}>

@@ -1,32 +1,24 @@
 import React from 'react';
-import { Button, Spinner, Row, Form, Input, Item } from 'native-base';
+import { Button, Spinner, Row, Text } from 'native-base';
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
 
 import { ScrollScreen } from '../styled/Screen';
 import { StyledText } from '../styled/StyledComponents';
 import { back } from '../actions/navigationActions';
-import { getUser } from '../queries';
-import FriendsList from '../components/FriendsList';
+import { getUser } from '../ql/queries';
 
-@connect(store => ({
-  user: store.user
-}))
+import FriendsList from '../components/FriendsList';
+import AddFriend from '../mutations/AddFriend';
+
+@connect()
 export default class ProfileScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      loadingFriends: false,
-      friendInput: false,
-      friendInputValue: ''
+      friendInput: false
     };
   }
-
-  setFriend = (val) => {
-    this.setState({
-      friendInputValue: val
-    });
-  };
 
   toggleFriendInput = () => {
     this.setState({
@@ -35,37 +27,22 @@ export default class ProfileScreen extends React.Component {
   };
 
   render() {
-    const { user, dispatch } = this.props;
-    const { loadingFriends, friendInput, friendInputValue } = this.state;
+    const { dispatch } = this.props;
+    const { friendInput } = this.state;
     return (
-      <Query query={getUser(user._id)}>
+      <Query query={getUser()}>
         {({ loading, error, data }) => (
           <React.Fragment>
             <ScrollScreen column>
               <Row>
                 <Button onPress={() => dispatch(back())}>
-                  <StyledText>Back</StyledText>
+                  <Text>Back</Text>
                 </Button>
                 <Button onPress={this.toggleFriendInput}>
-                  <StyledText>Add friend</StyledText>
+                  <Text>Add friend</Text>
                 </Button>
               </Row>
-              {friendInput && (
-                <Form>
-                  <Row>
-                    <Item rounded>
-                      <Input
-                        value={friendInputValue}
-                        onChangeText={val => this.setFriend(val)}
-                        placeholder="Friend username..."
-                      />
-                    </Item>
-                    <Button>
-                      <StyledText>Send invite</StyledText>
-                    </Button>
-                  </Row>
-                </Form>
-              )}
+              {friendInput && <AddFriend />}
               {loading ? (
                 <Spinner />
               ) : (

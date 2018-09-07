@@ -2,20 +2,18 @@ import React from 'react';
 import { Badge, Text } from 'native-base';
 import styled from 'styled-components';
 
-import { error } from './baseColors';
+import * as color from './baseColors';
 
-const Styled = styled(Badge)`
+const Pill = styled(Badge)`
   margin-top: 10px;
   margin-bottom: 10px;
   display: flex;
   width: 100%;
-  background-color: ${error};
+  background-color: ${props => color[props.type]};
 `;
 
-const ErrorBlock = props => (
-  <Styled>
+export const InfoPill = props => (
+  <Pill type={props.type}>
     <Text>{props.message}</Text>
-  </Styled>
+  </Pill>
 );
-
-export default ErrorBlock;

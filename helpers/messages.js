@@ -15,6 +15,7 @@ module.exports = {
       invalidRefresh: 'Refresh token is invalid'
     }
   },
+  requestSended: 'Request sended',
   notificationAdded: 'Notification added',
   friendExists: 'Friend already exists.',
   friendRequest: 'You have friend request from ',

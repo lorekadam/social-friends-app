@@ -11,12 +11,13 @@ export default class FriendsList extends React.Component {
       <View>
         <List>
           {friends.map((friend, key) => (
-            <ListItem key={key} avatar onPress={this.showFriendProfile}>
+            <ListItem key={key} avatar onPress={() => this.showFriendProfile(friend._id)}>
               <Left>
-                <Thumbnail source={{ uri: 'http://i.pravatar.cc/50?img=15' }} />
+                <Thumbnail source={{ uri: `http://i.pravatar.cc/50?img=${key}` }} />
               </Left>
               <Body>
                 <Text>{friend.friendName}</Text>
+                <Text note>{!friend.accepted && 'Waitting for accept'}</Text>
               </Body>
             </ListItem>
           ))}

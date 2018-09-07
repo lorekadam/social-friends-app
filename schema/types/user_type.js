@@ -59,7 +59,7 @@ const UserTypes = `
 `;
 const UserMutations = `
   addUser(username: String, email: String): BasicUserData
-  addFriend(_id: String, friendId: String, friendName: String, accepted: Boolean): Response
+  addFriend(_id: String, friendName: String): Response
   removeFriend(_id: String, friendId: String): Response
   readNotification(_id: String): Response
   addDuel(_id: String, friendId: String, name: String): Response
@@ -78,60 +78,73 @@ const UserResolvers = {
   Mutation: {
     addFriend: (root, args) => {
       return new Promise((resolve) => {
-        User.findById(args._id, (error, user) => {
+        // find if friend exists
+        User.findOne({ username: args.friendName }, (error, friendToInvite) => {
           if (error) {
+            resolve({
+              error: true,
+              message: msg.basic
+            });
+          }
+          if (friendToInvite === null) {
             resolve({
               error: true,
               message: msg.auth.noUser
             });
-          }
-          const { friends } = user;
-          let exists = false;
-          for (let i = 0; i < friends.length; i += 1) {
-            if (friends[i].friendId.toString() === args.friendId) {
-              exists = true;
-              resolve({
-                error: true,
-                message: msg.friendExists
-              });
-            }
-          }
-          if (!exists) {
-            User.findByIdAndUpdate(
-              args._id,
-              {
-                $push: {
-                  friends: {
-                    friendId: args.friendId,
-                    friendName: args.friendName,
-                    accepted: args.accepted
-                  }
-                }
-              },
-              { upsert: true, new: true },
-              (error, user) => {
-                if (error) {
-                  resolve({
-                    error: true,
-                    message: msg.basic
-                  });
-                }
-                // Friend successfully added, add notification
-                addNotification(
-                  args.friendId,
-                  user._id,
-                  user.friends[user.friends.length - 1]._id,
-                  `${msg.friendRequest} ${user.username}`,
-                  types.FRIEND_REQUEST
-                ).then(() => {
-                  resolve({
-                    error: false,
-                    message: msg.notificationAdded,
-                    data: user.friends[user.friends.length - 1]._id
-                  });
+          } else {
+            User.findById(args._id, (error, user) => {
+              if (error) {
+                resolve({
+                  error: true,
+                  message: msg.auth.noUser
                 });
               }
-            );
+              const { friends } = user;
+              let exists = false;
+              for (let i = 0; i < friends.length; i += 1) {
+                if (friends[i].friendId.toString() === friendToInvite._id.toString()) {
+                  exists = true;
+                  resolve({
+                    error: true,
+                    message: msg.friendExists
+                  });
+                }
+              }
+              if (!exists) {
+                user.update(
+                  {
+                    $push: {
+                      friends: {
+                        friendId: friendToInvite._id,
+                        friendName: args.friendName
+                      }
+                    }
+                  },
+                  (error) => {
+                    if (error) {
+                      resolve({
+                        error: true,
+                        message: msg.basic
+                      });
+                    }
+                    // Friend successfully added, add notification
+                    addNotification(
+                      friendToInvite._id,
+                      user._id,
+                      user.friends[user.friends.length - 1]._id,
+                      `${msg.friendRequest} ${user.username}`,
+                      types.FRIEND_REQUEST
+                    ).then(() => {
+                      resolve({
+                        error: false,
+                        message: msg.requestSended,
+                        response: user.friends[user.friends.length - 1]._id
+                      });
+                    });
+                  }
+                );
+              }
+            });
           }
         });
       });

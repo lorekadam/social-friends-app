@@ -2,7 +2,7 @@ const GlobalTypes = `
     type Response {
         error: Boolean
         message: String
-        data: String
+        response: String
     }
 `;
 
