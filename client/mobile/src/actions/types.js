@@ -11,4 +11,5 @@ export const LIGUES_SCREEN = 'LIGUES_SCREEN';
 export const ADD_GAME_SCREEN = 'ADD_GAME_SCREEN';
 
 export const AUTH_USER = 'AUTH_USER';
+export const SET_USER_DATA = 'SET_USER_DATA';
 export const UNAUTH_USER = 'UNAUTH_USER';

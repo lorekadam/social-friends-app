@@ -8,6 +8,13 @@ export function authUser(data) {
   };
 }
 
+export function setUserData(data) {
+  return {
+    type: types.SET_USER_DATA,
+    payload: { ...data }
+  };
+}
+
 function logOutUser() {
   return {
     type: types.UNAUTH_USER

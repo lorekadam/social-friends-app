@@ -31,14 +31,34 @@ dotenv.load({ path: '.env' });
 const app = express();
 
 /**
+ * Socket
+ */
+
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+io.on('connect', (socket) => {
+  console.log('user connected');
+  socket.emit('hello', { hello: 'message from socket' });
+  console.log(socket.handshake.query._id);
+  io.clients((error, clients) => {
+    if (error) throw error;
+    console.log(clients);
+  });
+  socket.on('manual-disconnect', (data) => {
+    console.log(`${data.socket} ${data._id} user disconnected`);
+  });
+});
+
+/**
  * Use GraphQL
  */
 
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   schema
 });
 
-server.applyMiddleware({ app });
+apolloServer.applyMiddleware({ app });
 
 app.use(
   '/ql',
@@ -108,8 +128,8 @@ app.use(function (req, res, next) {
  * Start Express server.
  */
 
-app.listen(app.get('port'), () => {
-  console.log(`Apollo server on: ${server.graphqlPath}`);
+server.listen(app.get('port'), () => {
+  console.log(`Apollo server on: ${apolloServer.graphqlPath}`);
   console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
   console.log('Press CTRL-C to stop\n');
 });

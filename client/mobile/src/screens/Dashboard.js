@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { Header, Left, Button, Icon, Body, Title, Right } from 'native-base';
 
 import { HalfButton, StyledIcon, Flex, StyledText } from '../styled/StyledComponents';

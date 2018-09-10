@@ -1,15 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Axios from 'axios';
-
 import { Container, Form, Item, Label, Input, Button, Content, Icon, Text } from 'native-base';
-import { navChange } from '../actions/navigationActions';
+import Auth from '../components/Auth';
+
 import { api } from '../config/globals';
 
 import * as types from '../actions/types';
 import { authUser } from '../actions/authActions';
 import ErrorBlock from '../styled/InfoPill';
+import { initSocket } from '../socket';
+import { navChange } from '../actions/navigationActions';
 
+@Auth
 @connect()
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -50,6 +53,7 @@ export default class LoginScreen extends React.Component {
           });
           dispatch(authUser({ ...res.data }));
           dispatch(navChange(types.DASHBOARD_SCREEN));
+          initSocket();
         }
       })
       .catch((error) => {
