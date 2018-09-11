@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Body, ListItem, Left, Thumbnail, Text, Right, View } from 'native-base';
+import { List, Body, ListItem, Left, Thumbnail, Text, View, Button } from 'native-base';
 
 export default class FriendsList extends React.Component {
   showFriendProfile = (id) => {
@@ -17,6 +17,9 @@ export default class FriendsList extends React.Component {
               </Left>
               <Body>
                 <Text>{friend.friendName}</Text>
+                <Button>
+                  <Text>DUEL!</Text>
+                </Button>
                 <Text note>{!friend.accepted && 'Waitting for accept'}</Text>
               </Body>
             </ListItem>
