@@ -16,17 +16,6 @@ export default class DashboardScreen extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Header</Title>
-          </Body>
-          <Right />
-        </Header>
         <Screen row>
           <HalfButton
             bgcolor="primary"

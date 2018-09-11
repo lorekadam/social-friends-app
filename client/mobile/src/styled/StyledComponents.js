@@ -18,7 +18,7 @@ export const StyledIcon = styled(Icon)`
 
 export const StyledText = styled.Text`
   font-size: ${props => (props.fz ? `${props.fz}px` : '16px')};
-  color: ${props => (props.color ? colors[props.color] : '#ffffff')};
+  color: ${props => (props.color ? colors[props.color] : '#000000')};
   ${props => props.center && 'text-align:center;'};
 `;
 

@@ -41,7 +41,15 @@ const UserTypes = `
     username: String,
     email: String,
     friends: [Friend],
-    duels: [Duels]
+    duels: [Duels],
+    notifications: [Notifications]
+  }
+  type Notifications {,
+    _id: String,
+    message: String,
+    requestId: String,
+    fromId: String,
+    type: String
   }
   type Duels {
     _id: String
@@ -111,7 +119,8 @@ const UserResolvers = {
                 }
               }
               if (!exists) {
-                user.update(
+                User.findByIdAndUpdate(
+                  args._id,
                   {
                     $push: {
                       friends: {
@@ -120,7 +129,8 @@ const UserResolvers = {
                       }
                     }
                   },
-                  (error) => {
+                  { upsert: true, new: true },
+                  (error, newUser) => {
                     if (error) {
                       resolve({
                         error: true,
@@ -130,15 +140,15 @@ const UserResolvers = {
                     // Friend successfully added, add notification
                     addNotification(
                       friendToInvite._id,
-                      user._id,
-                      user.friends[user.friends.length - 1]._id,
-                      `${msg.friendRequest} ${user.username}`,
+                      newUser._id,
+                      newUser.friends[newUser.friends.length - 1]._id,
+                      `${msg.friendRequest} ${newUser.username}`,
                       types.FRIEND_REQUEST
                     ).then(() => {
                       resolve({
                         error: false,
                         message: msg.requestSended,
-                        response: user.friends[user.friends.length - 1]._id
+                        response: newUser.friends[newUser.friends.length - 1]._id
                       });
                     });
                   }
@@ -295,7 +305,7 @@ const UserResolvers = {
                         message: msg.basic
                       });
                     }
-                    notification.read = true;
+                    notification.remove();
                     user.save();
                     resolve({
                       error: false,

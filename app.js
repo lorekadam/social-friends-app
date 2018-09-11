@@ -29,6 +29,7 @@ dotenv.load({ path: '.env' });
  * Create Express server.
  */
 const app = express();
+const connectedUsers = {};
 
 /**
  * Socket
@@ -38,15 +39,12 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 io.on('connect', (socket) => {
-  console.log('user connected');
+  const _id = socket.handshake.query._id;
   socket.emit('hello', { hello: 'message from socket' });
-  console.log(socket.handshake.query._id);
-  io.clients((error, clients) => {
-    if (error) throw error;
-    console.log(clients);
-  });
+  connectedUsers[_id] = socket.id;
   socket.on('manual-disconnect', (data) => {
     console.log(`${data.socket} ${data._id} user disconnected`);
+    delete connectedUsers[_id];
   });
 });
 
@@ -145,7 +143,6 @@ app.use(errorHandler());
  */
 
 app.use(require('./routes/home'));
-
 app.use(require('./routes/api'));
 
-module.exports = app;
+module.exports = { app, io };

@@ -8,7 +8,7 @@ import { api } from '../config/globals';
 
 import * as types from '../actions/types';
 import { authUser } from '../actions/authActions';
-import ErrorBlock from '../styled/InfoPill';
+import { InfoPill } from '../styled/InfoPill';
 import { initSocket } from '../socket';
 import { navChange } from '../actions/navigationActions';
 
@@ -75,7 +75,7 @@ export default class LoginScreen extends React.Component {
               <Label>Password</Label>
               <Input value={password} onChangeText={val => this.setPassword(val)} />
             </Item>
-            {error.length > 0 && <ErrorBlock message={error} />}
+            {error.length > 0 && <InfoPill type="error" message={error} />}
             <Button
               iconLeft
               full

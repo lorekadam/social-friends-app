@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
 import { Content } from 'native-base';
-import { gray } from './baseColors';
+import { gray, dark } from './baseColors';
 
 export const Screen = styled.View`
   display: flex;
   flex-wrap: wrap;
-  flex: 1;
+  flex-grow: 1;
   background-color: ${gray};
-  padding-top: 30px;
+  padding-top: 24px;
+  position: relative;
   ${props => props.row && 'flex-direction:row;'};
   ${props => props.column && 'flex-direction:column;'};
   ${props => props.aic && 'align-items:center;'};
@@ -18,9 +19,10 @@ export const Screen = styled.View`
 export const ScrollScreen = styled.ScrollView`
   display: flex;
   flex-wrap: wrap;
-  flex: 1;
+  flex-grow: 1;
   background-color: ${gray};
-  padding-top: 30px;
+  padding-top: 24px;
+  position: relative;
   ${props => props.row && 'flex-direction:row;'};
   ${props => props.column && 'flex-direction:column;'};
   ${props => props.aic && 'align-items:center;'};

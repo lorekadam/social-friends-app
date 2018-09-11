@@ -35,7 +35,12 @@ module.exports.register = (req, res) => {
         const token = jwt.sign({ id: user._id }, config.secret, {
           expiresIn: tokenExpire
         });
-        res.status(200).send({ auth: true, token: token, refreshToken });
+        res.status(200).send({
+          auth: true,
+          token: token,
+          refreshToken,
+          _id: user._id
+        });
       }
     );
   }
@@ -56,7 +61,12 @@ module.exports.login = (req, res) => {
     const token = jwt.sign({ id: user._id }, config.secret, {
       expiresIn: tokenExpire
     });
-    res.status(200).send({ auth: true, token: token, refreshToken: user.refreshToken, _id: user._id });
+    res.status(200).send({
+      auth: true,
+      token: token,
+      refreshToken: user.refreshToken,
+      _id: user._id
+    });
   });
 };
 

@@ -2,26 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 
-import {
-  Container,
-  Button,
-  Content,
-  Text,
-  Label,
-  Input,
-  Item,
-  Card,
-  CardItem,
-  Body,
-  Form
-} from 'native-base';
+import { Container, Button, Content, Text, Label, Input, Item, Form } from 'native-base';
 
 import { navChange } from '../actions/navigationActions';
 import { api } from '../config/globals';
 import { authUser } from '../actions/authActions';
 
 import * as types from '../actions/types';
-import InfoPill from '../styled/InfoPill';
+import { InfoPill } from '../styled/InfoPill';
+import { initSocket } from '../socket';
 
 @connect()
 export default class RegisterScreen extends React.Component {
@@ -71,6 +60,7 @@ export default class RegisterScreen extends React.Component {
           });
           dispatch(authUser({ ...res.data }));
           dispatch(navChange(types.DASHBOARD_SCREEN));
+          initSocket();
         }
       })
       .catch((error) => {
@@ -102,7 +92,11 @@ export default class RegisterScreen extends React.Component {
             <Button
               onPress={this.submitRegister}
               full
-              disabled={email.length === 0 && password.length > 3}
+              disabled={
+                email.length === 0 ||
+                (password.length === 0 || password.length < 3) ||
+                username.length === 0
+              }
             >
               <Text>Register</Text>
             </Button>
