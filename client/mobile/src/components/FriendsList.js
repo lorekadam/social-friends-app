@@ -1,12 +1,13 @@
 import React from 'react';
-import { List, Body, ListItem, Left, Thumbnail, Text, View, Button } from 'native-base';
+import { List, Body, ListItem, Left, Thumbnail, Text, View } from 'native-base';
+import AddDuel from '../mutations/AddDuel';
 
 export default class FriendsList extends React.Component {
   showFriendProfile = (id) => {
     console.log(id);
   };
   render() {
-    const { friends } = this.props;
+    const { friends, myName } = this.props;
     return (
       <View>
         <List>
@@ -17,9 +18,10 @@ export default class FriendsList extends React.Component {
               </Left>
               <Body>
                 <Text>{friend.friendName}</Text>
-                <Button>
-                  <Text>DUEL!</Text>
-                </Button>
+                <AddDuel
+                  friendId={friend.friendId}
+                  duelName={`${myName} vs ${friend.friendName}`}
+                />
                 <Text note>{!friend.accepted && 'Waitting for accept'}</Text>
               </Body>
             </ListItem>

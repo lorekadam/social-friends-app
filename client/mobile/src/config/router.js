@@ -17,6 +17,7 @@ import AddGame from '../screens/AddGame';
 
 import * as types from '../actions/types';
 import ProfileScreen from '../screens/Profile';
+import DuelDetailsScreen from '../screens/DuelDetails';
 
 export const navMiddleware = createReactNavigationReduxMiddleware('root', state => state.nav);
 
@@ -30,6 +31,7 @@ export const RootNavigator = createMaterialTopTabNavigator(
           [types.DASHBOARD_SCREEN]: { screen: DashboardScreen },
           [types.PROFILE_SCREEN]: { screen: ProfileScreen },
           [types.DUELS_SCREEN]: { screen: DuelsScreen },
+          [types.DUEL_DETAILS_SCREEN]: { screen: DuelDetailsScreen },
           [types.TOURNAMENTS_SCREEN]: { screen: TournamentsScreen },
           [types.LIGUES_SCREEN]: { screen: LiguesScreen },
           [types.CAMERA_SCREEN]: { screen: CameraScreen },

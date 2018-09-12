@@ -48,7 +48,7 @@ const GameMutations = `
 const GameResolvers = {
   Query: {
     games: (root, args) => {
-      return Game.find({ homePlayer: args._id });
+      return Game.find({ type: args._id });
     }
   },
   Mutation: {

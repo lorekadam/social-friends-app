@@ -36,6 +36,12 @@ const NotificationSchema = new mongoose.Schema({
   }
 });
 
+const DuelSchema = new mongoose.Schema({
+  name: {
+    type: String
+  }
+});
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -73,12 +79,7 @@ const UserSchema = new mongoose.Schema({
   },
   friends: [FriendSchema],
   notifications: [NotificationSchema],
-  duels: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'duel'
-    }
-  ],
+  duels: [DuelSchema],
   tournaments: [
     {
       type: Schema.Types.ObjectId,

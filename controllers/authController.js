@@ -39,7 +39,9 @@ module.exports.register = (req, res) => {
           auth: true,
           token: token,
           refreshToken,
-          _id: user._id
+          _id: user._id,
+          username: user.username,
+          email: user.email
         });
       }
     );
@@ -65,7 +67,9 @@ module.exports.login = (req, res) => {
       auth: true,
       token: token,
       refreshToken: user.refreshToken,
-      _id: user._id
+      _id: user._id,
+      username: user.username,
+      email: user.email
     });
   });
 };

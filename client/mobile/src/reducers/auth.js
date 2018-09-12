@@ -1,16 +1,10 @@
 import { AsyncStorage } from 'react-native';
 import * as types from '../actions/types';
-import { socket, closeSocket } from '../socket';
+import { closeSocket } from '../socket';
 
 const _setUser = async (action) => {
-  const user = {
-    _id: action.payload._id,
-    token: action.payload.token,
-    refreshToken: action.payload.refreshToken
-  };
-
   try {
-    await AsyncStorage.setItem('user', JSON.stringify(user));
+    await AsyncStorage.setItem('user', JSON.stringify({ ...action.payload }));
   } catch (error) {
     console.log(error);
   }
@@ -19,7 +13,7 @@ const _setUser = async (action) => {
 export default function reducer(
   state = {
     error: '',
-    authenticated: false,
+    auth: false,
     token: '',
     refreshToken: '',
     loader: false,
@@ -33,14 +27,12 @@ export default function reducer(
       _setUser(action);
       return {
         ...state,
-        authenticated: true,
         ...action.payload
       };
     }
     case types.SET_USER_DATA: {
       return {
         ...state,
-        authenticated: true,
         ...action.payload
       };
     }
@@ -49,7 +41,7 @@ export default function reducer(
       closeSocket();
       return {
         ...state,
-        authenticated: false,
+        auth: false,
         token: '',
         refreshToken: '',
         _id: ''

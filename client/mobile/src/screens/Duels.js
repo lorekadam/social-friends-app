@@ -1,30 +1,52 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Text, Row, Col } from 'native-base';
+import { ScrollView } from 'react-native';
+import { Button, Text, Row, Col, Body, Spinner, List, ListItem } from 'native-base';
+import { Query } from 'react-apollo';
+
 import * as types from '../actions/types';
 
-import { Screen } from '../styled/Screen';
 import { back, navChange } from '../actions/navigationActions';
+import { getDuels } from '../ql/queries';
 
 @connect()
 export default class DuelsScreen extends React.Component {
   render() {
     const { dispatch } = this.props;
     return (
-      <Screen column>
+      <ScrollView>
         <Row>
           <Col>
             <Button onPress={() => dispatch(back())}>
               <Text>Back</Text>
             </Button>
           </Col>
-          <Col>
-            <Button onPress={() => dispatch(navChange(types.ADD_GAME_SCREEN))}>
-              <Text>Add new game</Text>
-            </Button>
-          </Col>
         </Row>
-      </Screen>
+        <Query query={getDuels()} pollInterval={500}>
+          {({ loading, data }) => (
+            <React.Fragment>
+              {loading ? (
+                <Spinner />
+              ) : (
+                <List>
+                  {data.user.duels.map((duel, i) => (
+                    <ListItem
+                      key={i}
+                      onPress={() =>
+                        dispatch(navChange(types.DUEL_DETAILS_SCREEN, { _id: duel._id }))
+                      }
+                    >
+                      <Body>
+                        <Text>{duel.name}</Text>
+                      </Body>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </React.Fragment>
+          )}
+        </Query>
+      </ScrollView>
     );
   }
 }

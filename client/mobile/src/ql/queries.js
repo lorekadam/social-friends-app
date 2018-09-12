@@ -5,6 +5,7 @@ export const getUser = () => gql`
   {
     user(_id: "${store.getState().user._id}") {
       email,
+      username,
       notifications{
         _id,
         message,
@@ -14,9 +15,27 @@ export const getUser = () => gql`
       },
       friends{
         _id,
+        friendId,
         friendName,
         accepted
       }
     }
   }
+`;
+
+export const getDuels = () => gql`
+  {
+    user(_id: "${store.getState().user._id}") {
+      duels{
+        _id,
+        name
+      }
+    }
+  }
+`;
+
+export const getDuelDetails = () => gql`
+{
+  
+}
 `;

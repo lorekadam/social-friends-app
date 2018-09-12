@@ -1,7 +1,11 @@
 import * as types from '../actions/types';
 
-export function navChange(nav) {
-  return { type: nav };
+export function navChange(nav, params = null) {
+  const send = { type: nav };
+  if (params !== null) {
+    send.payload = params;
+  }
+  return send;
 }
 
 export function back() {

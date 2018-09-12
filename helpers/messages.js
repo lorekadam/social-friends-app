@@ -23,7 +23,7 @@ module.exports = {
   notificationRead: 'You have read notification.',
   duelAdded: 'You have created new duel!',
   duelExists: 'Duel between this players already exists!',
-  duelRequest: 'You have duel request',
+  duelRequest: 'You have duel request from ',
   gameAdded: 'Game successfully added!',
   gameAccepted: 'Game score accepted!'
 };

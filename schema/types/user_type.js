@@ -18,7 +18,7 @@ const addNotification = (toId, fromId, requestId, message, type) => {
           }
         }
       },
-      (error) => {
+      (error, user) => {
         if (error) {
           reject({
             error: true,
@@ -52,7 +52,8 @@ const UserTypes = `
     type: String
   }
   type Duels {
-    _id: String
+    _id: String,
+    name: String
   }
   type OnlyUsername {
     _id: String,
@@ -70,7 +71,7 @@ const UserMutations = `
   addFriend(_id: String, friendName: String): Response
   removeFriend(_id: String, friendId: String): Response
   readNotification(_id: String): Response
-  addDuel(_id: String, friendId: String, name: String): Response
+  addDuel(_id: String, friendId: String, duelName: String): Response
   acceptNotification(_id: String): Response
 `;
 
@@ -204,7 +205,7 @@ const UserResolvers = {
         Duel.find(
           {
             players: {
-              $in: [mongoose.Types.ObjectId(args._id), mongoose.Types.ObjectId(args.friendId)]
+              $all: [args._id, args.friendId]
             }
           },
           (error, duels) => {
@@ -217,7 +218,7 @@ const UserResolvers = {
             if (duels.length === 0) {
               Duel.create(
                 {
-                  name: args.name,
+                  name: args.duelName,
                   players: [args._id, args.friendId]
                 },
                 (error, duel) => {
@@ -227,19 +228,18 @@ const UserResolvers = {
                       message: msg.basic
                     });
                   }
-                  User.update(
-                    {
-                      _id: args._id
-                    },
+                  User.findByIdAndUpdate(
+                    args._id,
                     {
                       $push: {
                         duels: {
-                          _id: duel._id
+                          _id: duel._id,
+                          name: args.duelName
                         }
                       }
                     },
-                    { multi: true },
-                    (error) => {
+                    { multi: true, upsert: true, new: true },
+                    (error, user) => {
                       if (error) {
                         resolve({
                           error: true,
@@ -250,9 +250,15 @@ const UserResolvers = {
                         args.friendId,
                         args._id,
                         duel._id,
-                        `${msg.duelRequest}`,
+                        `${msg.duelRequest}${user.username}`,
                         types.DUEL_REQUEST
-                      ).then(() => {
+                      ).then((error) => {
+                        if (error) {
+                          resolve({
+                            error: true,
+                            message: msg.basic
+                          });
+                        }
                         resolve({
                           error: false,
                           message: msg.duelAdded
@@ -317,7 +323,7 @@ const UserResolvers = {
             });
           }
           if (type === types.DUEL_REQUEST) {
-            Duel.findOneAndUpdate(notification.requestId, { accepted: true }, (error) => {
+            Duel.findOneAndUpdate(notification.requestId, { accepted: true }, (error, duel) => {
               if (error) {
                 resolve({
                   error: true,
@@ -328,7 +334,8 @@ const UserResolvers = {
                 {
                   $push: {
                     duels: {
-                      _id: notification.requestId
+                      _id: notification.requestId,
+                      name: duel.name
                     }
                   }
                 },
@@ -339,7 +346,7 @@ const UserResolvers = {
                       message: msg.basic
                     });
                   }
-                  notification.read = true;
+                  notification.remove();
                   user.save();
                   resolve({
                     error: false,

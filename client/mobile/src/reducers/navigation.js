@@ -66,6 +66,16 @@ export default function nav(state = initialNavState, action) {
       );
       break;
     }
+    case types.DUEL_DETAILS_SCREEN: {
+      nextState = RootNavigator.router.getStateForAction(
+        NavigationActions.navigate({
+          routeName: types.DUEL_DETAILS_SCREEN,
+          params: { ...action.payload }
+        }),
+        state
+      );
+      break;
+    }
     case types.TOURNAMENTS_SCREEN: {
       nextState = RootNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: types.TOURNAMENTS_SCREEN }),

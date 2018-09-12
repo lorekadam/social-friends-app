@@ -20,3 +20,13 @@ export const acceptNotification = () => gql`
     }
   }
 `;
+
+export const addDuel = () => gql`
+  mutation AddDuel($friendId: String, $duelName: String) {
+    addDuel(_id: "${store.getState().user._id}", friendId: $friendId, duelName: $duelName) {
+      error
+      message
+      response
+    }
+  }
+`;
