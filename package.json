@@ -22,8 +22,11 @@
     "jsonwebtoken": "^8.1.1",
     "mongoose": "^5.0.7",
     "nodemailer": "^4.6.0",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
     "pug": "^2.0.0-rc.4",
     "rand-token": "^0.4.0",
+    "sequelize": "^4.38.1",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
