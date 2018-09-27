@@ -1,5 +1,5 @@
 module.exports = (sequelize) => {
-  const Friend = sequelize.define('friend');
+  const Friend = sequelize.define('Friend');
   Friend.associate = (models) => {
     // 1:M
     Friend.belongsTo(models.User, {

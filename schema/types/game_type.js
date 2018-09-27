@@ -1,4 +1,4 @@
-const { Game } = require('../../models/Game');
+const { Game } = require('../../models/OLD/Game');
 const msg = require('../../helpers/messages');
 
 const stats = `

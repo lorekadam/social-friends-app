@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { User, Notification } = require('../../models/User');
-const { Duel } = require('../../models/Duel');
+const { User, Notification } = require('../../models/OLD/User');
+const { Duel } = require('../../models/OLD/Duel');
 const msg = require('../../helpers/messages');
 const types = require('../../helpers/types');
 

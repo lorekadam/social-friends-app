@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const validations = require('../helpers/validations');
-const msg = require('../helpers/messages');
+const validations = require('../../helpers/validations');
+const msg = require('../../helpers/messages');
 
 const FriendSchema = new mongoose.Schema({
   friendId: {

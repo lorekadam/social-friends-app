@@ -1,7 +1,3 @@
-// MONGODB_URI=mongodb://mongo12.mydevil.net/mo1130_fstats
-// MONGODB_USER=mo1130_fstats
-// MONGODB_PASSWORD=f44_$$7taAt7$sS!
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
@@ -13,7 +9,7 @@ const config = require('./config/config');
 const msg = require('./helpers/messages');
 const expressGraphQL = require('express-graphql');
 const { ApolloServer } = require('apollo-server-express');
-const models = require('./models');
+const models = require('./db/models');
 
 /**
  * SCHEMA
@@ -131,13 +127,13 @@ app.use(function (req, res, next) {
  * PGSQL SYNC
  */
 
-models.sequelize.sync({ force: true }).then(() => {
-  server.listen(app.get('port'), () => {
-    console.log(`Apollo server on: ${apolloServer.graphqlPath}`);
-    console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
-    console.log('Press CTRL-C to stop\n');
-  });
+// models.sequelize.sync().then(() => {
+server.listen(app.get('port'), () => {
+  console.log(`Apollo server on: ${apolloServer.graphqlPath}`);
+  console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
+  console.log('Press CTRL-C to stop\n');
 });
+// });
 
 /**
  * Error handler

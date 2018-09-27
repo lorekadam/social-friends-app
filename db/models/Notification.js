@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Notification = sequelize.define('notification', {
+  const Notification = sequelize.define('Notification', {
     uniqid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
