@@ -9,7 +9,7 @@ const config = require('./config/config');
 const msg = require('./helpers/messages');
 const expressGraphQL = require('express-graphql');
 const { ApolloServer } = require('apollo-server-express');
-const models = require('./db/models');
+const db = require('./db/models');
 
 /**
  * SCHEMA
@@ -127,7 +127,7 @@ app.use(function (req, res, next) {
  * PGSQL SYNC
  */
 
-// models.sequelize.sync().then(() => {
+// db.sequelize.sync({ force: true }).then(() => {
 server.listen(app.get('port'), () => {
   console.log(`Apollo server on: ${apolloServer.graphqlPath}`);
   console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));

@@ -19,7 +19,7 @@ fs.readdirSync(__dirname)
   })
   .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
-    db[model.name] = model;
+    db[model.name.charAt(0).toLocaleUpperCase() + model.name.slice(1)] = model;
   });
 
 Object.keys(db).forEach((modelName) => {

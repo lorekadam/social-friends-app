@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Competition = sequelize.define('Competition', {
+  const Competition = sequelize.define('competition', {
     uniqid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
