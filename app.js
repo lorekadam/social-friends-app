@@ -127,13 +127,13 @@ app.use(function (req, res, next) {
  * PGSQL SYNC
  */
 
-// db.sequelize.sync({ force: true }).then(() => {
-server.listen(app.get('port'), () => {
-  console.log(`Apollo server on: ${apolloServer.graphqlPath}`);
-  console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
-  console.log('Press CTRL-C to stop\n');
+db.sequelize.sync({ force: true }).then(() => {
+  server.listen(app.get('port'), () => {
+    console.log(`Apollo server on: ${apolloServer.graphqlPath}`);
+    console.log('App is running at http://localhost:', app.get('port'), 'in', app.get('env'));
+    console.log('Press CTRL-C to stop\n');
+  });
 });
-// });
 
 /**
  * Error handler

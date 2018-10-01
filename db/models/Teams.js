@@ -1,16 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
-  const Competition = sequelize.define('competition', {
+  const Team = sequelize.define('team', {
     uniqid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
     name: {
       type: DataTypes.STRING,
-      uniqie: true
-    },
-    description: {
-      type: DataTypes.TEXT
+      unique: true
     }
   });
-  return Competition;
+  return Team;
 };
