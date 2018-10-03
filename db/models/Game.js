@@ -1,8 +1,8 @@
 const uuidv4 = require('uuid/v4');
 
 module.exports = (sequelize, DataTypes) => {
-  const TeamMember = sequelize.define(
-    'team_member',
+  const Game = sequelize.define(
+    'game',
     {
       uniqid: {
         type: DataTypes.UUID,
@@ -13,18 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       indexes: [
         {
           unique: true,
-          fields: ['userId']
+          fields: ['duelId']
         },
         {
           unique: true,
-          fields: ['teamId']
+          fields: ['sportId']
         }
       ]
     }
   );
-  TeamMember.associate = (models) => {
-    TeamMember.belongsTo(models.Team);
-    TeamMember.belongsTo(models.User);
+  Game.associate = (models) => {
+    Game.belongsTo(models.Duel);
+    Game.belongsTo(models.Sport);
   };
-  return TeamMember;
+  return Game;
 };

@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const randtoken = require('rand-token');
-// const { User } = require('../models/OLD/User');
 const { User } = require('../db/models/User');
 const config = require('../config/config');
 const msg = require('../helpers/messages');
@@ -18,42 +17,34 @@ module.exports.register = (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const refreshToken = randtoken.uid(64);
     db.User.create({
-      username: req.body.username,
+      name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
       refreshToken
     })
       .then((inserted) => {
-        // console.log(inserted);
-        // console.log(inserted.dataValues);
+        const { uniqid, name, email } = inserted.dataValues;
+        const token = jwt.sign({ uniqid }, config.secret, {
+          expiresIn: tokenExpire
+        });
+        res.status(200).send({
+          auth: true,
+          token,
+          refreshToken,
+          uniqid,
+          name,
+          email
+        });
       })
-      .catch((error) => {
-        console.log('error');
-        // console.log(error);
+      .catch((err) => {
+        if (err) {
+          const error = err.errors[0];
+          if (error.type === 'unique violation') {
+            return res.status(200).send({ error: true, msg: msg.auth.unique[error.path] });
+          }
+          return res.status(200).send({ error: true, msg: error.message });
+        }
       });
-    //   (err, user) => {
-    //     if (err) {
-    //       if (err.errors !== undefined && err.errors.username) {
-    //         return res.status(200).send({ error: true, msg: err.errors.username.message });
-    //       }
-    //       if (err.errors !== undefined && err.errors.email) {
-    //         return res.status(200).send({ error: true, msg: err.errors.email.message });
-    //       }
-    //       return res.status(200).send({ error: true, msg: msg.auth.duplicateEmail });
-    //     }
-    //     const token = jwt.sign({ id: user._id }, config.secret, {
-    //       expiresIn: tokenExpire
-    //     });
-    //     res.status(200).send({
-    //       auth: true,
-    //       token: token,
-    //       refreshToken,
-    //       _id: user._id,
-    //       username: user.username,
-    //       email: user.email
-    //     });
-    //   }
-    // );
   }
 };
 

@@ -1,10 +1,12 @@
+const uuidv4 = require('uuid/v4');
+
 module.exports = (sequelize, DataTypes) => {
   const Notification = sequelize.define(
     'notification',
     {
       uniqid: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: uuidv4()
       },
       message: {
         type: DataTypes.STRING

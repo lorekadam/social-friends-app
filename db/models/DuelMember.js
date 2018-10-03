@@ -1,10 +1,12 @@
+const uuidv4 = require('uuid/v4');
+
 module.exports = (sequelize, DataTypes) => {
   const DuelMember = sequelize.define(
     'duel_member',
     {
       uniqid: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: uuidv4()
       },
       name: {
         type: DataTypes.STRING,

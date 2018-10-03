@@ -1,11 +1,13 @@
 module.exports = {
   basic: 'Ups, something went wrong.',
   auth: {
+    unique: {
+      name: 'Given name already exists.',
+      email: 'Account with given email already exists.'
+    },
     required: 'All fields are required.',
-    username:
-      'Given username is not valid. 3-16 characters including numbers, without special or spaces.',
+    name: 'Given name is not valid. 3-16 characters including numbers, without special or spaces.',
     email: 'Given email is not valid.',
-    duplicateEmail: 'Account with given email already exist.',
     password: 'Password must be longer that 3 characters.',
     noUser: 'User not found.',
     login: 'Invalid email or password.',
