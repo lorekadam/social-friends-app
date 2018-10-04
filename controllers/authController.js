@@ -49,29 +49,38 @@ module.exports.register = (req, res) => {
 };
 
 module.exports.login = (req, res) => {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    if (err) {
-      return res.status(200).send({ error: true, msg: msg.basic });
+  db.User.findAll({
+    where: {
+      email: req.body.email
     }
-    if (!user) {
-      return res.status(200).send({ error: true, msg: msg.auth.noUser });
-    }
-    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if (!passwordIsValid) {
-      return res.status(200).send({ error: true, msg: msg.auth.login });
-    }
-    const token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: tokenExpire
+  })
+    .then((result) => {
+      if (result.length === 0) {
+        return res.status(200).send({ error: true, msg: msg.auth.noUser });
+      }
+      const {
+        uniqid, name, refreshToken, email, password
+      } = result[0];
+      const passwordIsValid = bcrypt.compareSync(req.body.password, password);
+
+      if (!passwordIsValid) {
+        return res.status(200).send({ error: true, msg: msg.auth.login });
+      }
+      const token = jwt.sign({ uniqid }, config.secret, {
+        expiresIn: tokenExpire
+      });
+      res.status(200).send({
+        auth: true,
+        token,
+        refreshToken,
+        uniqid,
+        name,
+        email
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-    res.status(200).send({
-      auth: true,
-      token: token,
-      refreshToken: user.refreshToken,
-      _id: user._id,
-      username: user.username,
-      email: user.email
-    });
-  });
 };
 
 module.exports.getUser = (req, res) => {
