@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { User, Notification } = require('../../models/OLD/User');
+const db = require('../../db/models');
 const { Duel } = require('../../models/OLD/Duel');
 const msg = require('../../helpers/messages');
 const types = require('../../helpers/types');
@@ -32,17 +33,14 @@ const addNotification = (toId, fromId, requestId, message, type) => {
 };
 
 const UserQueries = `
-  user(_id:String,username:String): BasicUserData
+  user(uniqid:String): BasicUserData
   allUsers: [OnlyUsername]
 `;
 const UserTypes = `
   type BasicUserData {
-    _id: String,
-    username: String,
-    email: String,
-    friends: [Friend],
-    duels: [Duels],
-    notifications: [Notifications]
+    uniqid: String,
+    name: String,
+    email: String
   }
   type Notifications {,
     _id: String,
@@ -78,7 +76,13 @@ const UserMutations = `
 const UserResolvers = {
   Query: {
     user: (root, args) => {
-      return User.findOne(args);
+      return new Promise((resolve) => {
+        db.User.findOne({
+          where: args
+        }).then((res) => {
+          resolve({ name: res.name });
+        });
+      });
     },
     allUsers: () => {
       return User.find({});

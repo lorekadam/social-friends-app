@@ -49,7 +49,7 @@ module.exports.register = (req, res) => {
 };
 
 module.exports.login = (req, res) => {
-  db.User.findAll({
+  db.User.findOne({
     where: {
       email: req.body.email
     }
@@ -60,7 +60,7 @@ module.exports.login = (req, res) => {
       }
       const {
         uniqid, name, refreshToken, email, password
-      } = result[0];
+      } = result;
       const passwordIsValid = bcrypt.compareSync(req.body.password, password);
 
       if (!passwordIsValid) {
