@@ -13,5 +13,10 @@
   },
   "author": "Adam Lorek",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/adamlorek/fstats#readme"
+  "homepage": "https://bitbucket.org/adamlorek/fstats#readme",
+  "dependencies": {
+    "graphql": "^14.0.2",
+    "graphql-cli": "^2.16.7",
+    "prisma": "^1.19.0"
+  }
 }
