@@ -1,4 +1,4 @@
-endpoint: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
+endpoint: ${env:PRISMA_ENDPOINT}
 datamodel: datamodel.prisma
 # secret: ${env:PRISMA_SECRET}
 hooks:
