@@ -17,7 +17,7 @@ export default class Sports extends Component {
     return (
       <Query query={ALL_SPORTS_QUERY}>
         {(payload) => {
-          console.log(payload);
+          console.log(payload.data);
           return <Text>Sports</Text>;
         }}
       </Query>
