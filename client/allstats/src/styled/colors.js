@@ -8,3 +8,4 @@ export const extra3 = '#F45B69';
 export const error = '#F45B69';
 export const success = '#12c06a';
 export const dark = '#000000';
+export const defaultText = '#0f033c';
