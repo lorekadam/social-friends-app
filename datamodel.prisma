@@ -11,6 +11,7 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission]
+  jwt: String
 }
 
 type Sport {

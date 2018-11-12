@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Tue Nov 06 2018 20:56:47 GMT+0100 (Środkowoeuropejski czas stand.)
+# timestamp: Mon Nov 12 2018 17:58:15 GMT+0100 (Środkowoeuropejski czas stand.)
 
 type AggregateSport {
   count: Int!
@@ -331,6 +331,7 @@ type User implements Node {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission!]!
+  jwt: String
 }
 
 """A connection to a list of items."""
@@ -349,6 +350,7 @@ input UserCreateInput {
   password: String!
   resetToken: String
   resetTokenExpiry: Float
+  jwt: String
   permissions: UserCreatepermissionsInput
 }
 
@@ -378,6 +380,8 @@ enum UserOrderByInput {
   resetToken_DESC
   resetTokenExpiry_ASC
   resetTokenExpiry_DESC
+  jwt_ASC
+  jwt_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -392,6 +396,7 @@ type UserPreviousValues {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission!]!
+  jwt: String
 }
 
 type UserSubscriptionPayload {
@@ -439,6 +444,7 @@ input UserUpdateInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
+  jwt: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -448,6 +454,7 @@ input UserUpdateManyMutationInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
+  jwt: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -686,6 +693,46 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   resetTokenExpiry_gte: Float
+  jwt: String
+
+  """All values that are not equal to given value."""
+  jwt_not: String
+
+  """All values that are contained in given list."""
+  jwt_in: [String!]
+
+  """All values that are not contained in given list."""
+  jwt_not_in: [String!]
+
+  """All values less than the given value."""
+  jwt_lt: String
+
+  """All values less than or equal the given value."""
+  jwt_lte: String
+
+  """All values greater than the given value."""
+  jwt_gt: String
+
+  """All values greater than or equal the given value."""
+  jwt_gte: String
+
+  """All values containing the given string."""
+  jwt_contains: String
+
+  """All values not containing the given string."""
+  jwt_not_contains: String
+
+  """All values starting with the given string."""
+  jwt_starts_with: String
+
+  """All values not starting with the given string."""
+  jwt_not_starts_with: String
+
+  """All values ending with the given string."""
+  jwt_ends_with: String
+
+  """All values not ending with the given string."""
+  jwt_not_ends_with: String
 }
 
 input UserWhereUniqueInput {

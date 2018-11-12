@@ -1,17 +1,48 @@
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
+import ProfilePage from '../pages/Profile';
 
-export default createStackNavigator(
+export const SignedOut = createStackNavigator(
   {
     Login: {
-      screen: LoginPage
+      screen: LoginPage,
+      title: 'Login'
     },
     Register: {
-      screen: RegisterPage
+      screen: RegisterPage,
+      title: 'Register'
     }
   },
   {
     initialRouteName: 'Login'
   }
 );
+
+export const SignedIn = createStackNavigator(
+  {
+    Profile: {
+      screen: ProfilePage,
+      title: 'Profile'
+    }
+  },
+  {
+    initialRouteName: 'Profile'
+  }
+);
+
+export const createRootNavigator = (signedIn = false) => {
+  return createSwitchNavigator(
+    {
+      SignedIn: {
+        screen: SignedIn
+      },
+      SignedOut: {
+        screen: SignedOut
+      }
+    },
+    {
+      initialRouteName: signedIn ? 'SignedIn' : 'SignedOut'
+    }
+  );
+};

@@ -27,7 +27,7 @@ const Mutation = {
       info
     );
 
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    user.jwt = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     return user;
   },
   async signin(parent, { email, password }, ctx, info) {
@@ -40,7 +40,7 @@ const Mutation = {
     if (!valid) {
       throw new Error(`Invalid password!`);
     }
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    user.jwt = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     return user;
   }
 };

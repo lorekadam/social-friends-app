@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import * as colors from '../styled/colors';
 import { Input } from '../styled/Input';
 import { Button } from '../styled/Button';
@@ -15,6 +15,7 @@ const SIGNIN_MUTATION = gql`
       id
       email
       name
+      jwt
     }
   }
 `;
@@ -23,11 +24,14 @@ export default class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'lorekkadam@gmail.com',
+      password: '102587',
       success: false
     };
   }
+  signInUser = async (jwt) => {
+    return await AsyncStorage.setItem('user', jwt);
+  };
   setValue = (name, val) => {
     this.setState({
       [name]: val
@@ -60,9 +64,9 @@ export default class LoginPage extends Component {
                 onPress={async () => {
                   const res = await signin();
                   if (res) {
+                    await AsyncStorage.setItem('user', res.data.signin.jwt);
+                    this.props.navigation.navigate('Profile');
                     this.setState({
-                      email: '',
-                      password: '',
                       success: true
                     });
                   }
