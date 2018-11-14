@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import * as colors from '../styled/colors';
 import { Input } from '../styled/Input';
 import { Button } from '../styled/Button';
@@ -19,6 +19,7 @@ const SIGNUP_MUTATION = gql`
       id
       email
       name
+      jwt
     }
   }
 `;
@@ -70,12 +71,8 @@ export default class RegisterPage extends Component {
                 onPress={async () => {
                   const res = await signup();
                   if (res) {
-                    this.setState({
-                      name: '',
-                      email: '',
-                      password: '',
-                      success: true
-                    });
+                    await AsyncStorage.setItem('user', res.data.signup.jwt);
+                    this.props.navigation.navigate('Profile');
                   }
                 }}
               />

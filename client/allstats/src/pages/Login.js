@@ -66,9 +66,6 @@ export default class LoginPage extends Component {
                   if (res) {
                     await AsyncStorage.setItem('user', res.data.signin.jwt);
                     this.props.navigation.navigate('Profile');
-                    this.setState({
-                      success: true
-                    });
                   }
                 }}
               />
