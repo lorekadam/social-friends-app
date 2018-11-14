@@ -71,7 +71,7 @@ export default class RegisterPage extends Component {
                 onPress={async () => {
                   const res = await signup();
                   if (res) {
-                    await AsyncStorage.setItem('user', res.data.signup.jwt);
+                    await AsyncStorage.setItem('token', res.data.signup.jwt);
                     this.props.navigation.navigate('Profile');
                   }
                 }}

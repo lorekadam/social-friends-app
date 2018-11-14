@@ -1,7 +1,7 @@
 import ApolloClient from 'apollo-boost';
 import { endpoint } from '../config';
 
-export default function createClient() {
+export default function createClient(token) {
   return new ApolloClient({
     uri: endpoint,
     request: (operation) => {
@@ -10,6 +10,9 @@ export default function createClient() {
           credentials: 'include'
         }
       });
+    },
+    headers: {
+      authorization: token ? `Bearer ${token}` : ''
     }
   });
 }

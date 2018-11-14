@@ -9,7 +9,7 @@ export default class ProfilePage extends Component {
         <Button
           title="Logout"
           onPress={async () => {
-            await AsyncStorage.removeItem('user');
+            await AsyncStorage.removeItem('token');
             this.props.navigation.navigate('Login');
           }}
         />

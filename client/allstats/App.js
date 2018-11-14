@@ -10,28 +10,29 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
+      token: null,
       signedIn: false,
       checkedSignIn: false
     };
   }
 
   componentDidMount = async () => {
-    const jwt = await AsyncStorage.getItem('user');
+    const jwt = await AsyncStorage.getItem('token');
     if (jwt) {
-      this.setState({ signedIn: true, checkedSignIn: true });
+      this.setState({ token: jwt, signedIn: true, checkedSignIn: true });
     } else {
       this.setState({ checkedSignIn: true });
     }
   };
 
   render() {
-    const { signedIn, checkedSignIn } = this.state;
+    const { token, signedIn, checkedSignIn } = this.state;
     const RootNavigation = createRootNavigator(signedIn);
     if (!checkedSignIn) {
       return <Loader />;
     } else {
       return (
-        <ApolloProvider client={createClient()}>
+        <ApolloProvider client={createClient(token)}>
           <RootNavigation />
         </ApolloProvider>
       );

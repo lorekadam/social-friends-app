@@ -64,7 +64,7 @@ export default class LoginPage extends Component {
                 onPress={async () => {
                   const res = await signin();
                   if (res) {
-                    await AsyncStorage.setItem('user', res.data.signin.jwt);
+                    await AsyncStorage.setItem('token', res.data.signin.jwt);
                     this.props.navigation.navigate('Profile');
                   }
                 }}
