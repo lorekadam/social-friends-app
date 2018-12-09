@@ -8,6 +8,7 @@ import { Button } from '../styled/Button';
 import { Error } from '../styled/Error';
 import { Success } from '../styled/Success';
 import { Text } from '../styled/Text';
+import { facebookAppId } from '../../config';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -31,6 +32,32 @@ export default class LoginPage extends Component {
   }
   signInUser = async (jwt) => {
     return await AsyncStorage.setItem('user', jwt);
+  };
+  logInWithFacebook = async () => {
+    try {
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions
+      } = await Expo.Facebook.logInWithReadPermissionsAsync(facebookAppId, {
+        permissions: ['public_profile'],
+        behavior: 'native'
+      });
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`
+        );
+        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+      console.log(message);
+    }
   };
   setValue = (name, val) => {
     this.setState({
@@ -62,12 +89,17 @@ export default class LoginPage extends Component {
               <Button
                 title="Login"
                 onPress={async () => {
+                  console.log('login begin');
                   const res = await signin();
                   if (res) {
                     await AsyncStorage.setItem('token', res.data.signin.jwt);
                     this.props.navigation.navigate('Profile');
                   }
                 }}
+              />
+              <Button
+                title="Login with Facebook"
+                onPress={this.logInWithFacebook}
               />
               {error && (
                 <Error>
