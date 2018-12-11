@@ -50,7 +50,8 @@ export default class LoginPage extends Component {
         const response = await fetch(
           `https://graph.facebook.com/me?access_token=${token}`
         );
-        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+        alert('Logged in!', `Hi ${(await response.json()).name}!`);
+        console.log(await response);
       } else {
         // type === 'cancel'
       }
