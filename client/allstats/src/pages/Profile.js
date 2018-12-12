@@ -3,6 +3,10 @@ import { Text, View, AsyncStorage } from 'react-native';
 import { Button } from '../styled/Button';
 
 export default class ProfilePage extends Component {
+  componentDidMount = async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(token);
+  };
   render() {
     return (
       <View>
