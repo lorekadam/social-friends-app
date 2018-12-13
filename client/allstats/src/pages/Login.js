@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { View, AsyncStorage } from 'react-native';
+import { ImageBackground, Image, AsyncStorage } from 'react-native';
+import { View } from '../styled/View';
 import * as colors from '../styled/colors';
 import { Input } from '../styled/Input';
-import { Button } from '../styled/Button';
+import { Button, TextButton } from '../styled/Buttons';
 import { Error } from '../styled/Error';
 import { Success } from '../styled/Success';
 import { Text } from '../styled/Text';
@@ -75,59 +76,71 @@ export default class LoginPage extends Component {
       <Mutation mutation={SIGNIN_MUTATION} variables={this.state}>
         {(signin, { error, loading }) => {
           return (
-            <View>
-              {loginLoading ? (
-                <Text color={colors.primary}>Logging...</Text>
-              ) : (
-                <React.Fragment>
-                  <Button
-                    title="Register page"
-                    onPress={() => this.props.navigation.navigate('Register')}
-                  />
-                  <Input
-                    value={email}
-                    onChangeText={(val) => this.setValue('email', val)}
-                    placeholder="Email"
-                  />
-                  <Input
-                    value={password}
-                    onChangeText={(val) => this.setValue('password', val)}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                  />
-                  <Button
-                    title="Login"
-                    onPress={async () => {
-                      console.log('login begin');
-                      const res = await signin();
-                      if (res) {
-                        await AsyncStorage.setItem(
-                          'token',
-                          res.data.signin.jwt
-                        );
-                        this.props.navigation.navigate('Profile');
-                      }
-                    }}
-                  />
-                  <Button
-                    title="Login with Facebook"
-                    onPress={this.logInWithFacebook}
-                  />
-                  {error && (
-                    <Error>
-                      <Text color={colors.white}>
-                        {error.message.replace('GraphQL error: ', '')}
-                      </Text>
-                    </Error>
-                  )}
-                  {success && (
-                    <Success>
-                      <Text color={colors.white}>Logged in!</Text>
-                    </Success>
-                  )}
-                </React.Fragment>
-              )}
-            </View>
+            <ImageBackground
+              source={require('../../assets/bg.jpg')}
+              style={{ width: '100%', height: '100%' }}
+            >
+              <View>
+                {loginLoading ? (
+                  <Text color={colors.primary}>Logging...</Text>
+                ) : (
+                  <React.Fragment>
+                    <Image
+                      source={require('../../assets/logo.png')}
+                      style={{ width: 220, height: 220 }}
+                    />
+                    <Input
+                      value={email}
+                      onChangeText={(val) => this.setValue('email', val)}
+                      placeholder="Email"
+                    />
+                    <Input
+                      value={password}
+                      onChangeText={(val) => this.setValue('password', val)}
+                      placeholder="Password"
+                      secureTextEntry={true}
+                    />
+                    <TextButton
+                      onPress={() => this.props.navigation.navigate('Register')}
+                      align="flex-start"
+                    >
+                      <Text color={colors.white}>Create account</Text>
+                    </TextButton>
+                    <Button
+                      title="Login"
+                      onPress={async () => {
+                        console.log('login begin');
+                        const res = await signin();
+                        if (res) {
+                          await AsyncStorage.setItem(
+                            'token',
+                            res.data.signin.jwt
+                          );
+                          this.props.navigation.navigate('Profile');
+                        }
+                      }}
+                    >
+                      <Text color={colors.white}>Login</Text>
+                    </Button>
+                    <Button onPress={this.logInWithFacebook}>
+                      <Text color={colors.white}>Login with Facebook</Text>
+                    </Button>
+                    {error && (
+                      <Error>
+                        <Text color={colors.white}>
+                          {error.message.replace('GraphQL error: ', '')}
+                        </Text>
+                      </Error>
+                    )}
+                    {success && (
+                      <Success>
+                        <Text color={colors.white}>Logged in!</Text>
+                      </Success>
+                    )}
+                  </React.Fragment>
+                )}
+              </View>
+            </ImageBackground>
           );
         }}
       </Mutation>

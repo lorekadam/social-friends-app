@@ -3,7 +3,7 @@ import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
 import ProfilePage from '../pages/Profile';
 
-export const SignedOut = createStackNavigator(
+export const SignedOut = createSwitchNavigator(
   {
     Login: {
       screen: LoginPage,

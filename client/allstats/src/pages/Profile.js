@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, AsyncStorage } from 'react-native';
-import { Button } from '../styled/Button';
+import { View, AsyncStorage } from 'react-native';
+import { Button } from '../styled/Buttons';
 
 export default class ProfilePage extends Component {
   componentDidMount = async () => {

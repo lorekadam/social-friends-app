@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { View, AsyncStorage } from 'react-native';
 import * as colors from '../styled/colors';
 import { Input } from '../styled/Input';
-import { Button } from '../styled/Button';
+import { Button } from '../styled/Buttons';
 import { Error } from '../styled/Error';
 import { Success } from '../styled/Success';
 import { Text } from '../styled/Text';
