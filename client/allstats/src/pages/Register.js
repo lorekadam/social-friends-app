@@ -11,6 +11,7 @@ import { Error } from '../styled/Error';
 import { Success } from '../styled/Success';
 import { Text } from '../styled/Text';
 import BackButton from '../components/BackButton';
+import { emailValidation, nameValidation } from '../helpers/validations';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -81,7 +82,9 @@ export default class RegisterPage extends Component {
                   disabled={
                     !(
                       name.length > 0 &&
+                      nameValidation(name) &&
                       email.length > 0 &&
+                      emailValidation(email) &&
                       password.length > 0
                     )
                   }

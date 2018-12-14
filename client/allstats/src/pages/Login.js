@@ -10,6 +10,7 @@ import { Error } from '../styled/Error';
 import { Success } from '../styled/Success';
 import { Text } from '../styled/Text';
 import FacebookLogin from '../components/FacebookLogin';
+import { emailValidation } from '../helpers/validations';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -79,8 +80,14 @@ export default class LoginPage extends Component {
                 </TextButton>
                 <Button
                   title="Login"
+                  disabled={
+                    !(
+                      password.length > 0 &&
+                      email.length > 0 &&
+                      emailValidation(email)
+                    )
+                  }
                   onPress={async () => {
-                    console.log('login begin');
                     const res = await signin();
                     if (res) {
                       await this.logIn(res.data.signin.jwt);
