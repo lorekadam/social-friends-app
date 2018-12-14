@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { View, AsyncStorage } from 'react-native';
-import * as colors from '../styled/colors';
+import { ImageBackground, Image, AsyncStorage } from 'react-native';
+
+import colors from '../styled/colors';
+import { View } from '../styled/View';
 import { Input } from '../styled/Input';
 import { Button } from '../styled/Buttons';
 import { Error } from '../styled/Error';
 import { Success } from '../styled/Success';
 import { Text } from '../styled/Text';
+import BackButton from '../components/BackButton';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -45,50 +48,68 @@ export default class RegisterPage extends Component {
       <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
         {(signup, { error, loading }) => {
           return (
-            <View>
-              <Button
-                title="Login page"
-                onPress={() => this.props.navigation.navigate('Login')}
-              />
-              <Input
-                value={name}
-                onChangeText={(val) => this.setValue('name', val)}
-                placeholder="Name"
-              />
-              <Input
-                value={email}
-                onChangeText={(val) => this.setValue('email', val)}
-                placeholder="Email"
-              />
-              <Input
-                value={password}
-                onChangeText={(val) => this.setValue('password', val)}
-                placeholder="Password"
-                secureTextEntry={true}
-              />
-              <Button
-                title="Register"
-                onPress={async () => {
-                  const res = await signup();
-                  if (res) {
-                    await AsyncStorage.setItem('token', res.data.signup.jwt);
-                    this.props.navigation.navigate('Profile');
+            <ImageBackground
+              source={require('../../assets/bg1.jpg')}
+              style={{ width: '100%', height: '100%' }}
+            >
+              <View>
+                <BackButton
+                  navigation={() => this.props.navigation.navigate('Login')}
+                />
+                <Image
+                  source={require('../../assets/logo1.png')}
+                  style={{ width: 280, height: 280, marginBottom: 13 }}
+                />
+                <Input
+                  value={name}
+                  onChangeText={(val) => this.setValue('name', val)}
+                  placeholder="Name"
+                />
+                <Input
+                  value={email}
+                  onChangeText={(val) => this.setValue('email', val)}
+                  placeholder="Email"
+                />
+                <Input
+                  value={password}
+                  onChangeText={(val) => this.setValue('password', val)}
+                  placeholder="Password"
+                  secureTextEntry={true}
+                />
+                <Button
+                  title="Register"
+                  disabled={
+                    !(
+                      name.length > 0 &&
+                      email.length > 0 &&
+                      password.length > 0
+                    )
                   }
-                }}
-              />
-              {error && (
-                <Error>
-                  <Text color={colors.white}>
-                    {error.message.replace('GraphQL error: ', '')}
-                  </Text>
-                </Error>
-              )}
-              {success && (
-                <Success>
-                  <Text color={colors.white}>User created</Text>
-                </Success>
-              )}
-            </View>
+                  onPress={async () => {
+                    const res = await signup();
+                    if (res) {
+                      console.log(res);
+                      await AsyncStorage.setItem('token', res.data.signup.jwt);
+                      this.props.navigation.navigate('Profile');
+                    }
+                  }}
+                >
+                  <Text color={colors.white}>Register</Text>
+                </Button>
+                {error && (
+                  <Error>
+                    <Text color={colors.white}>
+                      {error.message.replace('GraphQL error: ', '')}
+                    </Text>
+                  </Error>
+                )}
+                {success && (
+                  <Success>
+                    <Text color={colors.white}>User created</Text>
+                  </Success>
+                )}
+              </View>
+            </ImageBackground>
           );
         }}
       </Mutation>

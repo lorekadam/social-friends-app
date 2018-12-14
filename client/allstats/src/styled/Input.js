@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as colors from './colors';
+import colors from './colors';
 
 export const Input = styled.TextInput`
   padding: 10px;

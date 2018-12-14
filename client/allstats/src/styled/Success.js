@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as colors from './colors';
+import colors from './colors';
 
 export const Success = styled.View`
   padding: 10px;
