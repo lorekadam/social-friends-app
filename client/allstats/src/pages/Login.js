@@ -6,11 +6,11 @@ import { View } from '../styled/View';
 import colors from '../styled/colors';
 import { Input } from '../styled/Input';
 import { Button, TextButton } from '../styled/Buttons';
-import { Error } from '../styled/Error';
-import { Success } from '../styled/Success';
+import { Notification } from '../styled/Notification';
 import { Text } from '../styled/Text';
 import FacebookLogin from '../components/FacebookLogin';
 import { emailValidation } from '../helpers/validations';
+import { Row, Col } from '../styled/Grid';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -32,19 +32,25 @@ export default class LoginPage extends Component {
       success: false
     };
   }
-  signInUser = async (jwt) => {
-    return await AsyncStorage.setItem('user', jwt);
-  };
 
   setValue = (name, val) => {
     this.setState({
       [name]: val
     });
   };
+
   logIn = async (token) => {
     await AsyncStorage.setItem('token', token);
     this.props.navigation.navigate('Profile');
   };
+
+  signin = async (signin) => {
+    const res = await signin();
+    if (res) {
+      await this.logIn(res.data.signin.jwt);
+    }
+  };
+
   render() {
     const { email, password, success, loginLoading } = this.state;
     return (
@@ -71,13 +77,28 @@ export default class LoginPage extends Component {
                   placeholder="Password"
                   secureTextEntry={true}
                 />
-                <TextButton
-                  onPress={() => this.props.navigation.navigate('Register')}
-                >
-                  <Text color={colors.white} align="left">
-                    Create account
-                  </Text>
-                </TextButton>
+                <Row>
+                  <Col>
+                    <TextButton
+                      onPress={() => this.props.navigation.navigate('Register')}
+                    >
+                      <Text color={colors.white} align="left">
+                        Create account
+                      </Text>
+                    </TextButton>
+                  </Col>
+                  <Col>
+                    <TextButton
+                      onPress={() =>
+                        this.props.navigation.navigate('ForgotPassword')
+                      }
+                    >
+                      <Text color={colors.white} align="left">
+                        Forgot password?
+                      </Text>
+                    </TextButton>
+                  </Col>
+                </Row>
                 <Button
                   title="Login"
                   disabled={
@@ -87,27 +108,22 @@ export default class LoginPage extends Component {
                       emailValidation(email)
                     )
                   }
-                  onPress={async () => {
-                    const res = await signin();
-                    if (res) {
-                      await this.logIn(res.data.signin.jwt);
-                    }
-                  }}
+                  onPress={() => this.signin(signin)}
                 >
                   <Text color={colors.white}>Login</Text>
                 </Button>
                 <FacebookLogin logIn={this.logIn} />
                 {error && (
-                  <Error>
+                  <Notification error>
                     <Text color={colors.white}>
                       {error.message.replace('GraphQL error: ', '')}
                     </Text>
-                  </Error>
+                  </Notification>
                 )}
                 {success && (
-                  <Success>
+                  <Notification success>
                     <Text color={colors.white}>Logged in!</Text>
-                  </Success>
+                  </Notification>
                 )}
               </View>
             </ImageBackground>

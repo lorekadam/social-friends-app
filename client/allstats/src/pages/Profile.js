@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { Button } from '../styled/Buttons';
+import { View } from '../styled/View';
+import { Text } from '../styled/Text';
+import colors from '../styled/colors';
 
 export default class ProfilePage extends Component {
   componentDidMount = async () => {
@@ -16,14 +19,9 @@ export default class ProfilePage extends Component {
             await AsyncStorage.removeItem('token');
             this.props.navigation.navigate('Login');
           }}
-        />
-        <Button
-          title="Test query hot"
-          onPress={async () => {
-            await AsyncStorage.removeItem('token');
-            this.props.navigation.navigate('Login');
-          }}
-        />
+        >
+          <Text color={colors.white}>Log out</Text>
+        </Button>
       </View>
     );
   }

@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { ImageBackground, Image, AsyncStorage } from 'react-native';
+import { emailValidation, nameValidation } from '../helpers/validations';
 
 import colors from '../styled/colors';
 import { View } from '../styled/View';
 import { Input } from '../styled/Input';
 import { Button } from '../styled/Buttons';
-import { Error } from '../styled/Error';
-import { Success } from '../styled/Success';
+import { Notification } from '../styled/Notification';
 import { Text } from '../styled/Text';
 import BackButton from '../components/BackButton';
-import { emailValidation, nameValidation } from '../helpers/validations';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -100,16 +99,16 @@ export default class RegisterPage extends Component {
                   <Text color={colors.white}>Register</Text>
                 </Button>
                 {error && (
-                  <Error>
+                  <Notification error>
                     <Text color={colors.white}>
                       {error.message.replace('GraphQL error: ', '')}
                     </Text>
-                  </Error>
+                  </Notification>
                 )}
                 {success && (
-                  <Success>
+                  <Notification success>
                     <Text color={colors.white}>User created</Text>
-                  </Success>
+                  </Notification>
                 )}
               </View>
             </ImageBackground>

@@ -1,6 +1,7 @@
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
+import ForgotPasswordPage from '../pages/ForgotPassword';
 import ProfilePage from '../pages/Profile';
 
 export const SignedOut = createSwitchNavigator(
@@ -12,6 +13,10 @@ export const SignedOut = createSwitchNavigator(
     Register: {
       screen: RegisterPage,
       title: 'Register'
+    },
+    ForgotPassword: {
+      screen: ForgotPasswordPage,
+      title: 'ForgotPassword'
     }
   },
   {
@@ -19,7 +24,7 @@ export const SignedOut = createSwitchNavigator(
   }
 );
 
-export const SignedIn = createStackNavigator(
+export const SignedIn = createSwitchNavigator(
   {
     Profile: {
       screen: ProfilePage,

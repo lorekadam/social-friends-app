@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Mon Nov 12 2018 17:58:15 GMT+0100 (Środkowoeuropejski czas stand.)
+# timestamp: Tue Dec 18 2018 14:51:41 GMT+0100 (GMT+01:00)
 
 type AggregateSport {
   count: Int!

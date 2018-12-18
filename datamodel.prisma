@@ -13,10 +13,3 @@ type User {
   permissions: [Permission]
   jwt: String
 }
-
-type Sport {
-  id: ID! @unique
-  name: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
