@@ -9,6 +9,7 @@
     "playground": "graphql playground --dotenv variables.env",
     "serve": "npm-run-all --parallel serve-dev playground",
     "deploy": "prisma deploy -e variables.env",
+    "deploy-force": "prisma deploy -e variables.env --force",
     "schema": "graphql get-schema -p prisma"
   },
   "repository": {
