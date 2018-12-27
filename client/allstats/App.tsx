@@ -5,12 +5,20 @@ import { ApolloProvider } from 'react-apollo';
 import createClient from './src/withData';
 import Loader from './src/components/Loader';
 
-export default class App extends React.Component {
-  constructor(props) {
+interface Props {}
+
+interface State {
+  token: string;
+  signedIn: boolean;
+  checkedSignIn: boolean;
+}
+
+export default class App extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      token: null,
+      token: '',
       signedIn: false,
       checkedSignIn: false
     };
