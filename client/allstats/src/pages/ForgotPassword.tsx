@@ -11,6 +11,15 @@ import { Text } from '../styled/Text';
 import colors from '../styled/colors';
 import { Notification } from '../styled/Notification';
 
+interface Props {
+  navigation: Object;
+}
+
+interface State {
+  email: string;
+  success: boolean;
+}
+
 const REQUEST_RESET_MUTATION = gql`
   mutation REQUEST_RESET_MUTATION($email: String!) {
     requestReset(email: $email) {
@@ -19,8 +28,8 @@ const REQUEST_RESET_MUTATION = gql`
   }
 `;
 
-export default class ForgotPassword extends Component {
-  constructor(props) {
+export default class ForgotPassword extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       email: '',
@@ -28,13 +37,13 @@ export default class ForgotPassword extends Component {
     };
   }
 
-  setValue = (name, val) => {
+  setValue = (name: string, val: string) => {
     this.setState({
       [name]: val
     });
   };
 
-  requestReset = async (requestReset) => {
+  requestReset = async (requestReset: Function) => {
     this.setState({
       success: false
     });
@@ -67,7 +76,7 @@ export default class ForgotPassword extends Component {
                 />
                 <Input
                   value={email}
-                  onChangeText={(val) => this.setValue('email', val)}
+                  onChangeText={(val: string) => this.setValue('email', val)}
                   placeholder="E-mail"
                 />
                 <Button

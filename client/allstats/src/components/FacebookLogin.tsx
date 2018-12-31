@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Facebook } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -7,16 +8,20 @@ import { Button } from '../styled/Buttons';
 import colors from '../styled/colors';
 import { Text } from '../styled/Text';
 
-export default class FacebookLogin extends Component {
+interface Props {
+  logIn: Function;
+}
+
+export default class FacebookLogin extends Component<Props> {
   logInWithFacebook = async () => {
     try {
       const {
         type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions
-      } = await Expo.Facebook.logInWithReadPermissionsAsync(facebookAppId, {
+        token
+        // expires,
+        // permissions,
+        // declinedPermissions
+      } = await Facebook.logInWithReadPermissionsAsync(facebookAppId, {
         permissions: ['public_profile'],
         behavior: 'native'
       });

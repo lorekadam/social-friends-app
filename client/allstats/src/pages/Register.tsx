@@ -11,6 +11,18 @@ import { Button } from '../styled/Buttons';
 import { Notification } from '../styled/Notification';
 import { Text } from '../styled/Text';
 import BackButton from '../components/BackButton';
+import { NavigationScreenProp } from 'react-navigation';
+
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+interface State {
+  name: string;
+  email: string;
+  password: string;
+  success: boolean;
+}
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -27,8 +39,8 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-export default class RegisterPage extends Component {
-  constructor(props) {
+export default class RegisterPage extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       name: '',
@@ -62,17 +74,17 @@ export default class RegisterPage extends Component {
                 />
                 <Input
                   value={name}
-                  onChangeText={(val) => this.setValue('name', val)}
+                  onChangeText={(val: string) => this.setValue('name', val)}
                   placeholder="Name"
                 />
                 <Input
                   value={email}
-                  onChangeText={(val) => this.setValue('email', val)}
+                  onChangeText={(val: string) => this.setValue('email', val)}
                   placeholder="Email"
                 />
                 <Input
                   value={password}
-                  onChangeText={(val) => this.setValue('password', val)}
+                  onChangeText={(val: string) => this.setValue('password', val)}
                   placeholder="Password"
                   secureTextEntry={true}
                 />

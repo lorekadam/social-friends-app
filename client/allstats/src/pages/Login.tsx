@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
+import { NavigationScreenProp } from 'react-navigation';
 import gql from 'graphql-tag';
 import { ImageBackground, Image, AsyncStorage } from 'react-native';
 import { View } from '../styled/View';
@@ -12,6 +13,16 @@ import FacebookLogin from '../components/FacebookLogin';
 import { emailValidation } from '../helpers/validations';
 import { Row, Col } from '../styled/Grid';
 
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+interface State {
+  email: string;
+  password: string;
+  success: boolean;
+}
+
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
@@ -23,8 +34,8 @@ const SIGNIN_MUTATION = gql`
   }
 `;
 
-export default class LoginPage extends Component {
-  constructor(props) {
+export default class LoginPage extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       email: 'lorekkadam@gmail.com',
@@ -33,18 +44,18 @@ export default class LoginPage extends Component {
     };
   }
 
-  setValue = (name, val) => {
+  setValue = (name: keyof State, val: string) => {
     this.setState({
       [name]: val
     });
   };
 
-  logIn = async (token) => {
+  logIn = async (token: string) => {
     await AsyncStorage.setItem('token', token);
     this.props.navigation.navigate('Profile');
   };
 
-  signin = async (signin) => {
+  signin = async (signin: Function) => {
     const res = await signin();
     if (res) {
       await this.logIn(res.data.signin.jwt);
@@ -68,12 +79,12 @@ export default class LoginPage extends Component {
                 />
                 <Input
                   value={email}
-                  onChangeText={(val) => this.setValue('email', val)}
+                  onChangeText={(val: string) => this.setValue('email', val)}
                   placeholder="Email"
                 />
                 <Input
                   value={password}
-                  onChangeText={(val) => this.setValue('password', val)}
+                  onChangeText={(val: string) => this.setValue('password', val)}
                   placeholder="Password"
                   secureTextEntry={true}
                 />

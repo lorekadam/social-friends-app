@@ -1,4 +1,4 @@
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
 import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
 import ForgotPasswordPage from '../pages/ForgotPassword';

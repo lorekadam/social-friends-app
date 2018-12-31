@@ -4,8 +4,13 @@ import { Button } from '../styled/Buttons';
 import { View } from '../styled/View';
 import { Text } from '../styled/Text';
 import colors from '../styled/colors';
+import { NavigationScreenProp } from 'react-navigation';
 
-export default class ProfilePage extends Component {
+interface State {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+export default class ProfilePage extends Component<{}, State> {
   componentDidMount = async () => {
     const token = await AsyncStorage.getItem('token');
     console.log(token);

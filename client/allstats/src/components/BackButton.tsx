@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { CircleButton } from '../styled/Buttons';
 import { Ionicons } from '@expo/vector-icons';
 
-export default class BackButton extends Component {
+interface Props {
+  navigation: Function
+}
+
+export default class BackButton extends Component<Props> {
   render() {
     return (
       <CircleButton onPress={() => this.props.navigation()}>
