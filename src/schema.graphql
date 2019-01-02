@@ -5,7 +5,6 @@ type SuccessMessage {
 }
 
 type Mutation {
-  createSport(name: String): Sport!
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
   requestReset(email: String!): SuccessMessage

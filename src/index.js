@@ -6,13 +6,12 @@ const db = require('./db');
 const server = createServer();
 
 server.express.use((req, res, next) => {
-  console.log(req.headers);
-  // const { token } = req.cookies;
-  // if (token) {
-  //   const { userId } = jwt.verify(token, process.env.APP_SECRET);
-  //   // put the userId onto the req for future requests to access
-  //   req.userId = userId;
-  // }
+  const token = req.headers.authorization.replace('Bearer ', '');
+  if (token) {
+    const { userId } = jwt.verify(token, process.env.APP_SECRET);
+    // put the userId onto the req for future requests to access
+    req.userId = userId;
+  }
   next();
 });
 
