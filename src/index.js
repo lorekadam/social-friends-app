@@ -6,9 +6,12 @@ const db = require('./db');
 const server = createServer();
 
 server.express.use((req, res, next) => {
-  const token = req.headers.authorization.replace('Bearer ', '');
+  const token = req.headers.authorization;
   if (token) {
-    const { userId } = jwt.verify(token, process.env.APP_SECRET);
+    const { userId } = jwt.verify(
+      token.replace('Bearer ', ''),
+      process.env.APP_SECRET
+    );
     // put the userId onto the req for future requests to access
     req.userId = userId;
   }

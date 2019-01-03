@@ -30,7 +30,7 @@ export default class FacebookLogin extends Component<Props> {
         // const response = await fetch(
         //   `https://graph.facebook.com/me?access_token=${token}`
         // );
-        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('token', token ? token : '');
         await this.props.logIn(token);
       } else {
         // type === 'cancel'

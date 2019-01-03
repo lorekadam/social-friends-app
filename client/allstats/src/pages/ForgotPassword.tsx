@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavigationScreenProp } from 'react-navigation';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { ImageBackground, Image } from 'react-native';
@@ -12,7 +13,7 @@ import colors from '../styled/colors';
 import { Notification } from '../styled/Notification';
 
 interface Props {
-  navigation: Object;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 interface State {
@@ -40,7 +41,7 @@ export default class ForgotPassword extends Component<Props, State> {
   setValue = (name: string, val: string) => {
     this.setState({
       [name]: val
-    });
+    } as any);
   };
 
   requestReset = async (requestReset: Function) => {

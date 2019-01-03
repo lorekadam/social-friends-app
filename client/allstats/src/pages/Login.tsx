@@ -12,6 +12,7 @@ import { Text } from '../styled/Text';
 import FacebookLogin from '../components/FacebookLogin';
 import { emailValidation } from '../helpers/validations';
 import { Row, Col } from '../styled/Grid';
+import Loader from '../components/Loader';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -47,7 +48,7 @@ export default class LoginPage extends Component<Props, State> {
   setValue = (name: keyof State, val: string) => {
     this.setState({
       [name]: val
-    });
+    } as any);
   };
 
   logIn = async (token: string) => {
@@ -110,6 +111,7 @@ export default class LoginPage extends Component<Props, State> {
                     </TextButton>
                   </Col>
                 </Row>
+                <Loader dotSize={20} />
                 <Button
                   title="Login"
                   disabled={
