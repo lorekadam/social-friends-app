@@ -1,10 +1,81 @@
 import React, { Component } from 'react';
+import Animated, { Easing } from 'react-native-reanimated';
 import styled from 'styled-components';
-import { View } from 'react-native';
 import colors from '../styled/colors';
+
+const {
+  set,
+  cond,
+  startClock,
+  stopClock,
+  clockRunning,
+  block,
+  timing,
+  debug,
+  Value,
+  Clock,
+  divide,
+  concat
+} = Animated;
+
+function runTiming(clock, value, dest) {
+  const state = {
+    finished: new Value(0),
+    position: new Value(0),
+    time: new Value(0),
+    frameTime: new Value(0)
+  };
+
+  const config = {
+    duration: 1000,
+    toValue: new Value(0),
+    easing: Easing.inOut(Easing.ease)
+  };
+
+  function resetAnimation(from, to) {
+    return [
+      set(state.finished, 0),
+      set(state.time, 0),
+      set(state.position, from),
+      set(state.frameTime, 0),
+      set(config.toValue, to),
+      startClock(clock)
+    ];
+  }
+
+  return block([
+    cond(clockRunning(clock), 0, resetAnimation(value, dest)),
+    timing(clock, state, config),
+    cond(state.finished, resetAnimation(dest, value)),
+    cond(
+      state.finished,
+      debug(`stop clock ${state.finished}`, stopClock(clock))
+    ),
+    // cond(state.finished, runAnimation(dest, value)),
+    state.position
+    // cond(clockRunning(clock), 0, [
+    //   set(state.finished, 0),
+    //   set(state.time, 0),
+    //   set(state.position, value),
+    //   set(state.frameTime, 0),
+    //   set(config.toValue, dest),
+    //   startClock(clock)
+    // ]),
+    // timing(clock, state, config),
+    // cond(
+    //   state.finished,
+    //   debug(`stop clock ${state.finished}`, stopClock(clock))
+    // ),
+    // state.position
+  ]);
+}
 
 interface Props {
   dotSize: number;
+}
+
+interface State {
+  animation: any;
 }
 
 const StyledLoader = styled.View`
@@ -21,17 +92,37 @@ const Dot = styled.View`
   margin: 0 2px;
 `;
 
-export default class Loader extends Component<Props, {}> {
+export default class Loader extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.dot1 = runTiming(new Clock(), 0, 1.05);
+    // this.dot2 = runTiming(new Clock(), 0, 1.05);
+    // this.dot3 = runTiming(new Clock(), 0, 1.05);
+  }
+
+  componentDidMount() {
+    // Animated.loop(
+    //   Animated.timing(this.state.animation, {
+    //     toValue: 1
+    //   })
+    // ).start();
+    // this._anim.start();
+  }
+
   render() {
     const { dotSize } = this.props;
     return (
-      <View>
-        <StyledLoader>
+      <StyledLoader>
+        <Animated.View style={{ transform: [{ scale: this.dot1 }] }}>
           <Dot dotSize={dotSize} />
-          <Dot dotSize={dotSize} />
-          <Dot dotSize={dotSize} />
-        </StyledLoader>
-      </View>
+        </Animated.View>
+        {/* <Animated.View style={{ transform: [{ scale: this.dot2 }] }}> */}
+        <Dot dotSize={dotSize} />
+        {/* </Animated.View> */}
+        {/* <Animated.View style={{ transform: [{ scale: this.dot3 }] }}> */}
+        <Dot dotSize={dotSize} />
+        {/* </Animated.View> */}
+      </StyledLoader>
     );
   }
 }
