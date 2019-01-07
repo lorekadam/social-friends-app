@@ -10,7 +10,8 @@ import { Input } from '../styled/Input';
 import { Button } from '../styled/Buttons';
 import { Text } from '../styled/Text';
 import colors from '../styled/colors';
-import { Notification } from '../styled/Notification';
+import QLNotifications from '../components/QLNotifications';
+import Loader from 'src/components/Loader';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -68,36 +69,38 @@ export default class ForgotPassword extends Component<Props, State> {
               style={{ width: '100%', height: '100%' }}
             >
               <View>
-                <BackButton
-                  navigation={() => this.props.navigation.navigate('Login')}
-                />
-                <Image
-                  source={require('../../assets/logo1.png')}
-                  style={{ width: 280, height: 280, marginBottom: 13 }}
-                />
-                <Input
-                  value={email}
-                  onChangeText={(val: string) => this.setValue('email', val)}
-                  placeholder="E-mail"
-                />
-                <Button
-                  title="Send"
-                  disabled={!(email.length > 0 && emailValidation(email))}
-                  onPress={() => this.requestReset(requestReset)}
-                >
-                  <Text color={colors.white}>Send</Text>
-                </Button>
-                {error && (
-                  <Notification error>
-                    <Text color={colors.white}>
-                      {error.message.replace('GraphQL error: ', '')}
-                    </Text>
-                  </Notification>
-                )}
-                {success && (
-                  <Notification success>
-                    <Text color={colors.white}>Check your mailbox</Text>
-                  </Notification>
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <React.Fragment>
+                    <BackButton
+                      navigation={() => this.props.navigation.navigate('Login')}
+                    />
+                    <Image
+                      source={require('../../assets/logo1.png')}
+                      style={{ width: 280, height: 280, marginBottom: 13 }}
+                    />
+                    <Input
+                      value={email}
+                      onChangeText={(val: string) =>
+                        this.setValue('email', val)
+                      }
+                      placeholder="E-mail"
+                    />
+                    <Button
+                      title="Send"
+                      disabled={!(email.length > 0 && emailValidation(email))}
+                      onPress={() => this.requestReset(requestReset)}
+                    >
+                      <Text color={colors.white}>Send</Text>
+                    </Button>
+
+                    <QLNotifications
+                      error={error}
+                      success={success}
+                      message={error ? error.message : 'Check your mailbox'}
+                    />
+                  </React.Fragment>
                 )}
               </View>
             </ImageBackground>

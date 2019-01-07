@@ -13,6 +13,7 @@ import FacebookLogin from '../components/FacebookLogin';
 import { emailValidation } from '../helpers/validations';
 import { Row, Col } from '../styled/Grid';
 import Loader from '../components/Loader';
+import QLNotifications from '../components/QLNotifications';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -64,7 +65,7 @@ export default class LoginPage extends Component<Props, State> {
   };
 
   render() {
-    const { email, password, success, loginLoading } = this.state;
+    const { email, password, success } = this.state;
     return (
       <Mutation mutation={SIGNIN_MUTATION} variables={this.state}>
         {(signin, { error, loading }) => {
@@ -78,65 +79,69 @@ export default class LoginPage extends Component<Props, State> {
                   source={require('../../assets/logo1.png')}
                   style={{ width: 280, height: 280 }}
                 />
-                <Input
-                  value={email}
-                  onChangeText={(val: string) => this.setValue('email', val)}
-                  placeholder="Email"
-                />
-                <Input
-                  value={password}
-                  onChangeText={(val: string) => this.setValue('password', val)}
-                  placeholder="Password"
-                  secureTextEntry={true}
-                />
-                <Row>
-                  <Col>
-                    <TextButton
-                      onPress={() => this.props.navigation.navigate('Register')}
-                    >
-                      <Text color={colors.white} align="left">
-                        Create account
-                      </Text>
-                    </TextButton>
-                  </Col>
-                  <Col>
-                    <TextButton
-                      onPress={() =>
-                        this.props.navigation.navigate('ForgotPassword')
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <React.Fragment>
+                    <Input
+                      value={email}
+                      onChangeText={(val: string) =>
+                        this.setValue('email', val)
                       }
+                      placeholder="Email"
+                    />
+                    <Input
+                      value={password}
+                      onChangeText={(val: string) =>
+                        this.setValue('password', val)
+                      }
+                      placeholder="Password"
+                      secureTextEntry={true}
+                    />
+                    <Row>
+                      <Col>
+                        <TextButton
+                          onPress={() =>
+                            this.props.navigation.navigate('Register')
+                          }
+                        >
+                          <Text color={colors.white} align="left">
+                            Create account
+                          </Text>
+                        </TextButton>
+                      </Col>
+                      <Col>
+                        <TextButton
+                          onPress={() =>
+                            this.props.navigation.navigate('ForgotPassword')
+                          }
+                        >
+                          <Text color={colors.white} align="left">
+                            Forgot password?
+                          </Text>
+                        </TextButton>
+                      </Col>
+                    </Row>
+                    <Button
+                      title="Login"
+                      disabled={
+                        !(
+                          password.length > 0 &&
+                          email.length > 0 &&
+                          emailValidation(email)
+                        )
+                      }
+                      onPress={() => this.signin(signin)}
                     >
-                      <Text color={colors.white} align="left">
-                        Forgot password?
-                      </Text>
-                    </TextButton>
-                  </Col>
-                </Row>
-                <Loader dotSize={20} />
-                <Button
-                  title="Login"
-                  disabled={
-                    !(
-                      password.length > 0 &&
-                      email.length > 0 &&
-                      emailValidation(email)
-                    )
-                  }
-                  onPress={() => this.signin(signin)}
-                >
-                  <Text color={colors.white}>Login</Text>
-                </Button>
-                <FacebookLogin logIn={this.logIn} />
-                {error && (
-                  <Notification error>
-                    <Text color={colors.white}>
-                      {error.message.replace('GraphQL error: ', '')}
-                    </Text>
-                  </Notification>
-                )}
-                {success && (
-                  <Notification success>
-                    <Text color={colors.white}>Logged in!</Text>
-                  </Notification>
+                      <Text color={colors.white}>Login</Text>
+                    </Button>
+                    <FacebookLogin logIn={this.logIn} />
+                    <QLNotifications
+                      error={error}
+                      success={success}
+                      message={error ? error.message : 'Logged in!'}
+                    />
+                  </React.Fragment>
                 )}
               </View>
             </ImageBackground>

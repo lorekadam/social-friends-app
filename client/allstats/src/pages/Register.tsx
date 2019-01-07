@@ -12,6 +12,8 @@ import { Notification } from '../styled/Notification';
 import { Text } from '../styled/Text';
 import BackButton from '../components/BackButton';
 import { NavigationScreenProp } from 'react-navigation';
+import Loader from 'src/components/Loader';
+import QLNotifications from 'src/components/QLNotifications';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -49,10 +51,10 @@ export default class RegisterPage extends Component<Props, State> {
       success: false
     };
   }
-  setValue = (name, val) => {
+  setValue = (name: keyof State, val: string) => {
     this.setState({
       [name]: val
-    });
+    } as any);
   };
   render() {
     const { name, email, password, success } = this.state;
@@ -65,62 +67,68 @@ export default class RegisterPage extends Component<Props, State> {
               style={{ width: '100%', height: '100%' }}
             >
               <View>
-                <BackButton
-                  navigation={() => this.props.navigation.navigate('Login')}
-                />
-                <Image
-                  source={require('../../assets/logo1.png')}
-                  style={{ width: 280, height: 280, marginBottom: 13 }}
-                />
-                <Input
-                  value={name}
-                  onChangeText={(val: string) => this.setValue('name', val)}
-                  placeholder="Name"
-                />
-                <Input
-                  value={email}
-                  onChangeText={(val: string) => this.setValue('email', val)}
-                  placeholder="Email"
-                />
-                <Input
-                  value={password}
-                  onChangeText={(val: string) => this.setValue('password', val)}
-                  placeholder="Password"
-                  secureTextEntry={true}
-                />
-                <Button
-                  title="Register"
-                  disabled={
-                    !(
-                      name.length > 0 &&
-                      nameValidation(name) &&
-                      email.length > 0 &&
-                      emailValidation(email) &&
-                      password.length > 0
-                    )
-                  }
-                  onPress={async () => {
-                    const res = await signup();
-                    if (res) {
-                      console.log(res);
-                      await AsyncStorage.setItem('token', res.data.signup.jwt);
-                      this.props.navigation.navigate('Profile');
-                    }
-                  }}
-                >
-                  <Text color={colors.white}>Register</Text>
-                </Button>
-                {error && (
-                  <Notification error>
-                    <Text color={colors.white}>
-                      {error.message.replace('GraphQL error: ', '')}
-                    </Text>
-                  </Notification>
-                )}
-                {success && (
-                  <Notification success>
-                    <Text color={colors.white}>User created</Text>
-                  </Notification>
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <React.Fragment>
+                    <BackButton
+                      navigation={() => this.props.navigation.navigate('Login')}
+                    />
+                    <Image
+                      source={require('../../assets/logo1.png')}
+                      style={{ width: 280, height: 280, marginBottom: 13 }}
+                    />
+                    <Input
+                      value={name}
+                      onChangeText={(val: string) => this.setValue('name', val)}
+                      placeholder="Name"
+                    />
+                    <Input
+                      value={email}
+                      onChangeText={(val: string) =>
+                        this.setValue('email', val)
+                      }
+                      placeholder="Email"
+                    />
+                    <Input
+                      value={password}
+                      onChangeText={(val: string) =>
+                        this.setValue('password', val)
+                      }
+                      placeholder="Password"
+                      secureTextEntry={true}
+                    />
+                    <Button
+                      title="Register"
+                      disabled={
+                        !(
+                          name.length > 0 &&
+                          nameValidation(name) &&
+                          email.length > 0 &&
+                          emailValidation(email) &&
+                          password.length > 0
+                        )
+                      }
+                      onPress={async () => {
+                        const res = await signup();
+                        if (res) {
+                          console.log(res);
+                          await AsyncStorage.setItem(
+                            'token',
+                            res.data.signup.jwt
+                          );
+                          this.props.navigation.navigate('Profile');
+                        }
+                      }}
+                    >
+                      <Text color={colors.white}>Register</Text>
+                    </Button>
+                    <QLNotifications
+                      error={error}
+                      success={success}
+                      message={error ? error.message : 'User created'}
+                    />
+                  </React.Fragment>
                 )}
               </View>
             </ImageBackground>
