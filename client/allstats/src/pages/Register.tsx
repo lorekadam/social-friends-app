@@ -8,12 +8,11 @@ import colors from '../styled/colors';
 import { View } from '../styled/View';
 import { Input } from '../styled/Input';
 import { Button } from '../styled/Buttons';
-import { Notification } from '../styled/Notification';
 import { Text } from '../styled/Text';
 import BackButton from '../components/BackButton';
 import { NavigationScreenProp } from 'react-navigation';
-import Loader from 'src/components/Loader';
-import QLNotifications from 'src/components/QLNotifications';
+import Loader from '../components/Loader';
+import QLNotifications from '../components/QLNotifications';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;

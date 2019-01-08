@@ -11,7 +11,7 @@ import { Button } from '../styled/Buttons';
 import { Text } from '../styled/Text';
 import colors from '../styled/colors';
 import QLNotifications from '../components/QLNotifications';
-import Loader from 'src/components/Loader';
+import Loader from '../components/Loader';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
