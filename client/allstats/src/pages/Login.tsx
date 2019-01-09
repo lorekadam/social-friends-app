@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import { NavigationScreenProp } from 'react-navigation';
 import gql from 'graphql-tag';
-import { ImageBackground, Image, AsyncStorage } from 'react-native';
-import { View } from '../styled/View';
+import { ImageBackground, AsyncStorage } from 'react-native';
+import { PaddingView } from '../styled/View';
 import colors from '../styled/colors';
 import { Input } from '../styled/Input';
 import { Button, TextButton } from '../styled/Buttons';
-import { Notification } from '../styled/Notification';
 import { Text } from '../styled/Text';
 import FacebookLogin from '../components/FacebookLogin';
 import { emailValidation } from '../helpers/validations';
 import { Row, Col } from '../styled/Grid';
 import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
+import Logo from '../components/Logo';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -74,11 +74,8 @@ export default class LoginPage extends Component<Props, State> {
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
             >
-              <View>
-                <Image
-                  source={require('../../assets/logo1.png')}
-                  style={{ width: 280, height: 280 }}
-                />
+              <PaddingView>
+                <Logo />
                 {loading ? (
                   <Loader />
                 ) : (
@@ -143,7 +140,7 @@ export default class LoginPage extends Component<Props, State> {
                     />
                   </React.Fragment>
                 )}
-              </View>
+              </PaddingView>
             </ImageBackground>
           );
         }}

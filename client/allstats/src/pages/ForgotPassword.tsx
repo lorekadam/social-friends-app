@@ -5,13 +5,14 @@ import gql from 'graphql-tag';
 import { ImageBackground, Image } from 'react-native';
 import { emailValidation } from '../helpers/validations';
 import BackButton from '../components/BackButton';
-import { View } from '../styled/View';
+import { PaddingView } from '../styled/View';
 import { Input } from '../styled/Input';
 import { Button } from '../styled/Buttons';
 import { Text } from '../styled/Text';
 import colors from '../styled/colors';
 import QLNotifications from '../components/QLNotifications';
 import Loader from '../components/Loader';
+import Logo from '../components/Logo';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -68,7 +69,7 @@ export default class ForgotPassword extends Component<Props, State> {
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
             >
-              <View>
+              <PaddingView>
                 {loading ? (
                   <Loader />
                 ) : (
@@ -76,10 +77,7 @@ export default class ForgotPassword extends Component<Props, State> {
                     <BackButton
                       navigation={() => this.props.navigation.navigate('Login')}
                     />
-                    <Image
-                      source={require('../../assets/logo1.png')}
-                      style={{ width: 280, height: 280, marginBottom: 13 }}
-                    />
+                    <Logo />
                     <Input
                       value={email}
                       onChangeText={(val: string) =>
@@ -102,7 +100,7 @@ export default class ForgotPassword extends Component<Props, State> {
                     />
                   </React.Fragment>
                 )}
-              </View>
+              </PaddingView>
             </ImageBackground>
           );
         }}

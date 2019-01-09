@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground, Image, AsyncStorage } from 'react-native';
+import { ImageBackground, AsyncStorage } from 'react-native';
 import { emailValidation, nameValidation } from '../helpers/validations';
 
 import colors from '../styled/colors';
-import { View } from '../styled/View';
+import { PaddingView } from '../styled/View';
 import { Input } from '../styled/Input';
 import { Button } from '../styled/Buttons';
 import { Text } from '../styled/Text';
@@ -13,6 +13,7 @@ import BackButton from '../components/BackButton';
 import { NavigationScreenProp } from 'react-navigation';
 import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
+import Logo from '../components/Logo';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -65,7 +66,7 @@ export default class RegisterPage extends Component<Props, State> {
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
             >
-              <View>
+              <PaddingView>
                 {loading ? (
                   <Loader />
                 ) : (
@@ -73,10 +74,7 @@ export default class RegisterPage extends Component<Props, State> {
                     <BackButton
                       navigation={() => this.props.navigation.navigate('Login')}
                     />
-                    <Image
-                      source={require('../../assets/logo1.png')}
-                      style={{ width: 280, height: 280, marginBottom: 13 }}
-                    />
+                    <Logo style={{ marginBottom: 13 }} />
                     <Input
                       value={name}
                       onChangeText={(val: string) => this.setValue('name', val)}
@@ -129,7 +127,7 @@ export default class RegisterPage extends Component<Props, State> {
                     />
                   </React.Fragment>
                 )}
-              </View>
+              </PaddingView>
             </ImageBackground>
           );
         }}

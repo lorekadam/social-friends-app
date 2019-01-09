@@ -3,13 +3,16 @@ import { CircleButton } from '../styled/Buttons';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props {
-  navigation: Function
+  navigation: Function;
 }
 
 export default class BackButton extends Component<Props> {
   render() {
     return (
-      <CircleButton onPress={() => this.props.navigation()}>
+      <CircleButton
+        style={{ position: 'absolute', top: 10, left: 10 }}
+        onPress={() => this.props.navigation()}
+      >
         <Ionicons name="md-arrow-back" size={28} color="white" />
       </CircleButton>
     );

@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import colors from './colors';
 
 interface Props {
-  bg: string;
-  disabled: boolean;
-  align: string;
-  size: number;
+  bg?: string;
+  disabled?: boolean;
+  align?: string;
+  size?: number;
 }
 
 export const Button = styled.TouchableOpacity`
@@ -33,9 +33,6 @@ export const CircleButton = styled.TouchableOpacity`
   background-color: ${(props: Props) => (props.bg ? props.bg : colors.pink)};
   width: ${(props: Props) => (props.size ? props.size : 35)};
   height: ${(props: Props) => (props.size ? props.size : 35)};
-  position: absolute;
-  top: 10;
-  left: 10;
   display: flex;
   justify-content: center;
   align-items: center;
