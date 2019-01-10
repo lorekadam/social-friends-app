@@ -1,1 +1,2 @@
-export const defaultSize = '14';
+export const defaultSize: string = '14';
+export const avatarDimension: number = 100;

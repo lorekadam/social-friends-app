@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-boost';
-import { endpoint } from '../config';
-import { LOCAL_STATE_QUERY } from './pages/Profile';
+import { endpoint } from './config';
+import { LOCAL_SETTINGS_QUERY } from './pages/PageSpine';
 
 export default function createClient(token: string) {
   return new ApolloClient({
@@ -21,14 +21,14 @@ export default function createClient(token: string) {
     clientState: {
       resolvers: {
         Mutation: {
-          toggleCart(_, variables, { cache }) {
+          toggleSettings(_, variables, { cache }) {
             //read state
-            const { cartOpen } = cache.readQuery({
-              query: LOCAL_STATE_QUERY
+            const { settingsOpen } = cache.readQuery({
+              query: LOCAL_SETTINGS_QUERY
             });
             // write state
             const data = {
-              data: { cartOpen: !cartOpen }
+              data: { settingsOpen: !settingsOpen }
             };
             cache.writeData(data);
             return data;
@@ -36,7 +36,7 @@ export default function createClient(token: string) {
         }
       },
       defaults: {
-        cartOpen: false
+        settingsOpen: false
       }
     }
   });

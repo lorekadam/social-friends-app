@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { CircleButton } from '../styled/Buttons';
+import { Feather } from '@expo/vector-icons';
+import colors from '../styled/colors';
 
-export default class NotificationsButton extends Component {
+interface Props {
+  size?: number;
+}
+
+export default class NotificationsButton extends Component<Props, {}> {
   render() {
+    const { size } = this.props;
     return (
-      <CircleButton size={40}>
-        <Ionicons name="md-mail" size={20} />
+      <CircleButton size={size ? size : 40}>
+        <Feather color={colors.white} name="mail" size={size ? size / 2 : 20} />
       </CircleButton>
     );
   }

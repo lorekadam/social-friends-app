@@ -3,7 +3,7 @@ import { Facebook } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { facebookAppId } from '../../config';
+import { facebookAppId } from '../config';
 import { Button } from '../styled/Buttons';
 import colors from '../styled/colors';
 import { Text } from '../styled/Text';

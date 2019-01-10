@@ -14,7 +14,7 @@ type ArrayTwoOrMore<T> = {
 } & Array<T>;
 
 const Line = styled.View`
-  height: 5px;
+  height: 4px;
   position: relative;
   display: flex;
   background-color: ${colors.pink};

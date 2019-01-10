@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import colors from '../styled/colors';
 import { Image } from 'react-native';
+import { avatarDimension } from '../styled/globals';
 
 const AvatarWrapper = styled.View`
-  width: 120px;
-  height: 120px;
+  width: ${avatarDimension}px;
+  height: ${avatarDimension}px;
   background-color: ${colors.pink};
-  border-radius: 60px;
+  border-radius: ${avatarDimension / 2}px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 5px solid ${colors.pink};
+  border: 4px solid ${colors.pink};
 `;
 
 export default class Avatar extends Component {
@@ -23,7 +24,7 @@ export default class Avatar extends Component {
           source={{
             uri: 'https://api.adorable.io/avatars/200/adam@adorable.io.png'
           }}
-          style={{ height: 120, width: 120 }}
+          style={{ height: avatarDimension, width: avatarDimension }}
         />
       </AvatarWrapper>
     );

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 interface Props {
+  noGutters?: boolean;
   direction?: string;
   align?: string;
   justify?: string;
@@ -14,7 +15,7 @@ export const Row = styled.View`
   align-items: ${(props: Props) => (props.align ? props.align : 'flex-start')};
   justify-content: ${(props: Props) =>
     props.justify ? props.justify : 'flex-start'};
-  margin: 0 -10px;
+  margin: ${(props: Props) => (props.noGutters ? 0 : '0 -10px')};
 `;
 
 export const Col = styled.View`
@@ -25,5 +26,5 @@ export const Col = styled.View`
   align-items: ${(props: Props) => (props.align ? props.align : 'flex-start')};
   justify-content: ${(props: Props) =>
     props.justify ? props.justify : 'flex-start'};
-  flex: 1;
+  flex: ${(props: Props) => (props.flex ? props.flex : 1)};
 `;
