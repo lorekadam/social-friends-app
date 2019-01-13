@@ -8,14 +8,18 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Settings from '../components/Settings';
 import { NavigationScreenProp } from 'react-navigation';
+import Friends from '../components/Friends';
+import Notifications from '../components/Notifications';
 
 interface Props {
   name: string;
   navigation: NavigationScreenProp<any, any>;
 }
 
-export const LOCAL_SETTINGS_QUERY = gql`
+export const LOCAL_TOGGLE_QUERY = gql`
   query {
+    friendsOpen @client
+    notificationsOpen @client
     settingsOpen @client
   }
 `;
@@ -32,12 +36,14 @@ export default class PageSpine extends Component<Props, {}> {
   render() {
     const topSize = 15;
     return (
-      <Query query={LOCAL_SETTINGS_QUERY}>
+      <Query query={LOCAL_TOGGLE_QUERY}>
         {({ data }) => {
           return (
             <MainView>
               <ColorizedTop height={`${topSize}%`} />
               <CenteredTop />
+              {data.friendsOpen && <Friends />}
+              {data.notificationsOpen && <Notifications />}
               {data.settingsOpen && <Settings />}
               <PaddingView
                 style={{ backgroundColor: 'gray' }}

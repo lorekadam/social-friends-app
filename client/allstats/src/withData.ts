@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-boost';
 import { endpoint } from './config';
-import { LOCAL_SETTINGS_QUERY } from './pages/PageSpine';
+import { LOCAL_TOGGLE_QUERY } from './pages/PageSpine';
 
 export default function createClient(token: string) {
   return new ApolloClient({
@@ -24,11 +24,47 @@ export default function createClient(token: string) {
           toggleSettings(_, variables, { cache }) {
             //read state
             const { settingsOpen } = cache.readQuery({
-              query: LOCAL_SETTINGS_QUERY
+              query: LOCAL_TOGGLE_QUERY
             });
             // write state
             const data = {
-              data: { settingsOpen: !settingsOpen }
+              data: {
+                settingsOpen: !settingsOpen,
+                friendsOpen: false,
+                notificationsOpen: false
+              }
+            };
+            cache.writeData(data);
+            return data;
+          },
+          toggleFriends(_, variables, { cache }) {
+            //read state
+            const { friendsOpen } = cache.readQuery({
+              query: LOCAL_TOGGLE_QUERY
+            });
+            // write state
+            const data = {
+              data: {
+                friendsOpen: !friendsOpen,
+                settingsOpen: false,
+                notificationsOpen: false
+              }
+            };
+            cache.writeData(data);
+            return data;
+          },
+          toggleNotifications(_, variables, { cache }) {
+            //read state
+            const { notificationsOpen } = cache.readQuery({
+              query: LOCAL_TOGGLE_QUERY
+            });
+            // write state
+            const data = {
+              data: {
+                notificationsOpen: !notificationsOpen,
+                friendsOpen: false,
+                settingsOpen: false
+              }
             };
             cache.writeData(data);
             return data;
@@ -36,7 +72,9 @@ export default function createClient(token: string) {
         }
       },
       defaults: {
-        settingsOpen: false
+        notificationsOpen: false,
+        settingsOpen: false,
+        friendsOpen: false
       }
     }
   });

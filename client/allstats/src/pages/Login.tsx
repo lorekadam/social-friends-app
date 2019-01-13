@@ -53,6 +53,7 @@ export default class LoginPage extends Component<Props, State> {
   };
 
   logIn = async (token: string) => {
+    console.log(token);
     await AsyncStorage.setItem('token', token);
     this.props.navigation.navigate('Profile');
   };

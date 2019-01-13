@@ -13,6 +13,7 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
+  # addFriend(id: )
 }
 
 type Query {
@@ -25,4 +26,11 @@ type User {
   email: String!
   permissions: [Permission!]!
   jwt: String
+  friends: [Friend!]!
+}
+
+type Friend {
+  id: ID!
+  friend: User
+  accepted: Boolean
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from '../styled/Grid';
-import FriendsButton from './FirendsButton';
+import FriendsButton from './FriendsButton';
 import NotificationsButton from './NotificationsButton';
 import SettingsButton from './SettingsButton';
 
