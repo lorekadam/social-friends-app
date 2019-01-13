@@ -9,7 +9,7 @@ import { Input } from '../styled/Input';
 import { Button, TextButton } from '../styled/Buttons';
 import { Text } from '../styled/Text';
 import FacebookLogin from '../components/FacebookLogin';
-import { emailValidation } from '../helpers/validations';
+import { emailValidation } from '../utils/validations';
 import { Row, Col } from '../styled/Grid';
 import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
@@ -121,6 +121,7 @@ export default class LoginPage extends Component<Props, State> {
                     </Row>
                     <Button
                       title="Login"
+                      full
                       disabled={
                         !(
                           password.length > 0 &&

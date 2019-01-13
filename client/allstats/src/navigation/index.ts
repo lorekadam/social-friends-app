@@ -3,24 +3,25 @@ import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
 import ForgotPasswordPage from '../pages/ForgotPassword';
 import ProfilePage from '../pages/Profile';
+import * as pages from './pageTypes';
 
 export const SignedOut = createSwitchNavigator(
   {
     Login: {
       screen: LoginPage,
-      title: 'Login'
+      title: pages.LOGIN_PAGE
     },
     Register: {
       screen: RegisterPage,
-      title: 'Register'
+      title: pages.REGISTER_PAGE
     },
     ForgotPassword: {
       screen: ForgotPasswordPage,
-      title: 'ForgotPassword'
+      title: pages.FORGOT_PASSWORD_PAGE
     }
   },
   {
-    initialRouteName: 'Login'
+    initialRouteName: pages.LOGIN_PAGE
   }
 );
 
@@ -28,11 +29,11 @@ export const SignedIn = createSwitchNavigator(
   {
     Profile: {
       screen: ProfilePage,
-      title: 'Profile'
+      title: pages.PROFILE_PAGE
     }
   },
   {
-    initialRouteName: 'Profile'
+    initialRouteName: pages.PROFILE_PAGE
   }
 );
 

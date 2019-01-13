@@ -42,14 +42,14 @@ export default class FacebookLogin extends Component<Props> {
   };
   render() {
     return (
-      <Button bg={colors.facebook} onPress={this.logInWithFacebook}>
+      <Button full bgc={colors.facebook} onPress={this.logInWithFacebook}>
+        <Text color={colors.white}>Login with Facebook</Text>
         <Ionicons
           name="logo-facebook"
           size={22}
           color="white"
-          style={{ marginRight: 5 }}
+          style={{ marginLeft: 5 }}
         />
-        <Text color={colors.white}>Login with Facebook</Text>
       </Button>
     );
   }

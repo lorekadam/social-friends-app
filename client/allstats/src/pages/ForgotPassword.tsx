@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground, Image } from 'react-native';
-import { emailValidation } from '../helpers/validations';
+import { ImageBackground } from 'react-native';
+
+import { emailValidation } from '../utils/validations';
 import BackButton from '../components/BackButton';
 import { PaddingView } from '../styled/View';
 import { Input } from '../styled/Input';
@@ -13,6 +14,7 @@ import colors from '../styled/colors';
 import QLNotifications from '../components/QLNotifications';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
+import { LOGIN_PAGE } from '../navigation/pageTypes';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -74,9 +76,7 @@ export default class ForgotPassword extends Component<Props, State> {
                   <Loader />
                 ) : (
                   <React.Fragment>
-                    <BackButton
-                      navigation={() => this.props.navigation.navigate('Login')}
-                    />
+                    <BackButton path={LOGIN_PAGE} />
                     <Logo />
                     <Input
                       value={email}
@@ -86,7 +86,7 @@ export default class ForgotPassword extends Component<Props, State> {
                       placeholder="E-mail"
                     />
                     <Button
-                      title="Send"
+                      full
                       disabled={!(email.length > 0 && emailValidation(email))}
                       onPress={() => this.requestReset(requestReset)}
                     >

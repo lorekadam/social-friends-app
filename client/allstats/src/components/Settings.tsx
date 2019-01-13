@@ -1,25 +1,37 @@
 import React, { Component } from 'react';
-import { Button } from '../styled/Buttons';
 import { AsyncStorage } from 'react-native';
-import { Text } from '../styled/Text';
-import colors from '../styled/colors';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, withNavigation } from 'react-navigation';
+import styled from 'styled-components';
+
+import { LOGIN_PAGE } from '../navigation/pageTypes';
+import CircleIconButton from './display/CircleIconButton';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
 
-export default class Settings extends Component<Props, {}> {
+const SettingsSection = styled.View`
+  background-color: #abb908;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  overflow: hidden;
+`;
+
+class Settings extends Component<Props, {}> {
   render() {
     return (
-      <Button
-        onPress={async () => {
-          await AsyncStorage.removeItem('token');
-          this.props.navigation.navigate('Login');
-        }}
-      >
-        <Text color={colors.white}>Log out</Text>
-      </Button>
+      <SettingsSection>
+        <CircleIconButton
+          action={async () => {
+            await AsyncStorage.removeItem('token');
+            this.props.navigation.navigate(LOGIN_PAGE);
+          }}
+          icon="log-out"
+        />
+      </SettingsSection>
     );
   }
 }
+
+export default withNavigation(Settings);

@@ -10,13 +10,13 @@ export default class SocialButtons extends Component {
       <React.Fragment>
         <Row noGutters>
           <Col justify="center">
-            <FriendsButton size={36} />
+            <FriendsButton />
           </Col>
           <Col justify="center">
-            <NotificationsButton size={36} />
+            <NotificationsButton />
           </Col>
           <Col justify="center">
-            <SettingsButton size={36} />
+            <SettingsButton />
           </Col>
         </Row>
       </React.Fragment>

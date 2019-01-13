@@ -30,17 +30,21 @@ const MainView = styled.View`
 
 export default class PageSpine extends Component<Props, {}> {
   render() {
+    const topSize = 15;
     return (
       <Query query={LOCAL_SETTINGS_QUERY}>
         {({ data }) => {
           return (
             <MainView>
-              <ColorizedTop height="13%" />
+              <ColorizedTop height={`${topSize}%`} />
               <CenteredTop />
-              {data.settingsOpen && (
-                <Settings navigation={this.props.navigation} />
-              )}
-              <PaddingView height="87%">{this.props.children}</PaddingView>
+              {data.settingsOpen && <Settings />}
+              <PaddingView
+                style={{ backgroundColor: 'gray' }}
+                height={`${100 - topSize}%`}
+              >
+                {this.props.children}
+              </PaddingView>
             </MainView>
           );
         }}

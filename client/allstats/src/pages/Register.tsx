@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { ImageBackground, AsyncStorage } from 'react-native';
-import { emailValidation, nameValidation } from '../helpers/validations';
-
+import { emailValidation, nameValidation } from '../utils/validations';
 import colors from '../styled/colors';
 import { PaddingView } from '../styled/View';
 import { Input } from '../styled/Input';
@@ -14,6 +13,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
 import Logo from '../components/Logo';
+import { LOGIN_PAGE } from '../navigation/pageTypes';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -71,9 +71,7 @@ export default class RegisterPage extends Component<Props, State> {
                   <Loader />
                 ) : (
                   <React.Fragment>
-                    <BackButton
-                      navigation={() => this.props.navigation.navigate('Login')}
-                    />
+                    <BackButton path={LOGIN_PAGE} />
                     <Logo style={{ marginBottom: 13 }} />
                     <Input
                       value={name}
@@ -96,7 +94,7 @@ export default class RegisterPage extends Component<Props, State> {
                       secureTextEntry={true}
                     />
                     <Button
-                      title="Register"
+                      full
                       disabled={
                         !(
                           name.length > 0 &&

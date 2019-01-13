@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-import { CircleButton } from '../styled/Buttons';
-import { Feather } from '@expo/vector-icons';
-import colors from '../styled/colors';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-
-interface Props {
-  size?: number;
-}
+import CircleIconButton from './display/CircleIconButton';
 
 export const TOGGLE_SETTINGS_MUTATION = gql`
   mutation {
@@ -15,24 +9,17 @@ export const TOGGLE_SETTINGS_MUTATION = gql`
   }
 `;
 
-export default class SettingsButton extends Component<Props, {}> {
+export default class SettingsButton extends Component {
   render() {
-    const { size } = this.props;
     return (
       <Mutation mutation={TOGGLE_SETTINGS_MUTATION}>
         {(toggleSettings) => (
-          <CircleButton
-            onPress={() => {
+          <CircleIconButton
+            icon="settings"
+            action={() => {
               toggleSettings();
             }}
-            size={size ? size : 40}
-          >
-            <Feather
-              color={colors.white}
-              name="settings"
-              size={size ? size / 2 : 20}
-            />
-          </CircleButton>
+          />
         )}
       </Mutation>
     );
