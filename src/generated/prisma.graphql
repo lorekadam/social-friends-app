@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Sun Jan 13 2019 17:46:10 GMT+0100 (Środkowoeuropejski czas stand.)
+# timestamp: Tue Jan 15 2019 20:45:32 GMT+0100 (Środkowoeuropejski czas stand.)
 
 type AggregateFriend {
+  count: Int!
+}
+
+type AggregateNotification {
   count: Int!
 }
 
@@ -16,7 +20,8 @@ type BatchPayload {
 
 type Friend implements Node {
   id: ID!
-  friend: User
+  friendOne: User!
+  friendTwo: User
   accepted: Boolean!
 }
 
@@ -32,16 +37,13 @@ type FriendConnection {
 
 input FriendCreateInput {
   accepted: Boolean
-  friend: UserCreateOneWithoutFriendsInput
+  friendOne: UserCreateOneInput!
+  friendTwo: UserCreateOneInput
 }
 
-input FriendCreateManyWithoutFriendInput {
-  create: [FriendCreateWithoutFriendInput!]
-  connect: [FriendWhereUniqueInput!]
-}
-
-input FriendCreateWithoutFriendInput {
-  accepted: Boolean
+input FriendCreateOneInput {
+  create: FriendCreateInput
+  connect: FriendWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -67,61 +69,6 @@ enum FriendOrderByInput {
 type FriendPreviousValues {
   id: ID!
   accepted: Boolean!
-}
-
-input FriendScalarWhereInput {
-  """Logical AND on all given filters."""
-  AND: [FriendScalarWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [FriendScalarWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [FriendScalarWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  accepted: Boolean
-
-  """All values that are not equal to given value."""
-  accepted_not: Boolean
 }
 
 type FriendSubscriptionPayload {
@@ -163,49 +110,34 @@ input FriendSubscriptionWhereInput {
   node: FriendWhereInput
 }
 
-input FriendUpdateInput {
+input FriendUpdateDataInput {
   accepted: Boolean
-  friend: UserUpdateOneWithoutFriendsInput
+  friendOne: UserUpdateOneRequiredInput
+  friendTwo: UserUpdateOneInput
 }
 
-input FriendUpdateManyDataInput {
+input FriendUpdateInput {
   accepted: Boolean
+  friendOne: UserUpdateOneRequiredInput
+  friendTwo: UserUpdateOneInput
 }
 
 input FriendUpdateManyMutationInput {
   accepted: Boolean
 }
 
-input FriendUpdateManyWithoutFriendInput {
-  create: [FriendCreateWithoutFriendInput!]
-  connect: [FriendWhereUniqueInput!]
-  set: [FriendWhereUniqueInput!]
-  disconnect: [FriendWhereUniqueInput!]
-  delete: [FriendWhereUniqueInput!]
-  update: [FriendUpdateWithWhereUniqueWithoutFriendInput!]
-  updateMany: [FriendUpdateManyWithWhereNestedInput!]
-  deleteMany: [FriendScalarWhereInput!]
-  upsert: [FriendUpsertWithWhereUniqueWithoutFriendInput!]
+input FriendUpdateOneInput {
+  create: FriendCreateInput
+  connect: FriendWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: FriendUpdateDataInput
+  upsert: FriendUpsertNestedInput
 }
 
-input FriendUpdateManyWithWhereNestedInput {
-  where: FriendScalarWhereInput!
-  data: FriendUpdateManyDataInput!
-}
-
-input FriendUpdateWithoutFriendDataInput {
-  accepted: Boolean
-}
-
-input FriendUpdateWithWhereUniqueWithoutFriendInput {
-  where: FriendWhereUniqueInput!
-  data: FriendUpdateWithoutFriendDataInput!
-}
-
-input FriendUpsertWithWhereUniqueWithoutFriendInput {
-  where: FriendWhereUniqueInput!
-  update: FriendUpdateWithoutFriendDataInput!
-  create: FriendCreateWithoutFriendInput!
+input FriendUpsertNestedInput {
+  update: FriendUpdateDataInput!
+  create: FriendCreateInput!
 }
 
 input FriendWhereInput {
@@ -261,7 +193,8 @@ input FriendWhereInput {
 
   """All values that are not equal to given value."""
   accepted_not: Boolean
-  friend: UserWhereInput
+  friendOne: UserWhereInput
+  friendTwo: UserWhereInput
 }
 
 input FriendWhereUniqueInput {
@@ -275,18 +208,24 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
+  createNotification(data: NotificationCreateInput!): Notification!
   createFriend(data: FriendCreateInput!): Friend!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  createUser(data: UserCreateInput!): User!
+  updateNotification(data: NotificationUpdateInput!, where: NotificationWhereUniqueInput!): Notification
   updateFriend(data: FriendUpdateInput!, where: FriendWhereUniqueInput!): Friend
-  deleteUser(where: UserWhereUniqueInput!): User
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deleteNotification(where: NotificationWhereUniqueInput!): Notification
   deleteFriend(where: FriendWhereUniqueInput!): Friend
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  upsertNotification(where: NotificationWhereUniqueInput!, create: NotificationCreateInput!, update: NotificationUpdateInput!): Notification!
   upsertFriend(where: FriendWhereUniqueInput!, create: FriendCreateInput!, update: FriendUpdateInput!): Friend!
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  updateManyNotifications(data: NotificationUpdateManyMutationInput!, where: NotificationWhereInput): BatchPayload!
   updateManyFriends(data: FriendUpdateManyMutationInput!, where: FriendWhereInput): BatchPayload!
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  deleteManyNotifications(where: NotificationWhereInput): BatchPayload!
   deleteManyFriends(where: FriendWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -299,6 +238,174 @@ enum MutationType {
 interface Node {
   """The id of the object."""
   id: ID!
+}
+
+type Notification implements Node {
+  id: ID!
+  user: User!
+  type: NotificationType!
+  friend: Friend
+}
+
+"""A connection to a list of items."""
+type NotificationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [NotificationEdge]!
+  aggregate: AggregateNotification!
+}
+
+input NotificationCreateInput {
+  type: NotificationType!
+  user: UserCreateOneInput!
+  friend: FriendCreateOneInput
+}
+
+"""An edge in a connection."""
+type NotificationEdge {
+  """The item at the end of the edge."""
+  node: Notification!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum NotificationOrderByInput {
+  id_ASC
+  id_DESC
+  type_ASC
+  type_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type NotificationPreviousValues {
+  id: ID!
+  type: NotificationType!
+}
+
+type NotificationSubscriptionPayload {
+  mutation: MutationType!
+  node: Notification
+  updatedFields: [String!]
+  previousValues: NotificationPreviousValues
+}
+
+input NotificationSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [NotificationSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [NotificationSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [NotificationSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: NotificationWhereInput
+}
+
+enum NotificationType {
+  FRIEND_INVITE
+}
+
+input NotificationUpdateInput {
+  type: NotificationType
+  user: UserUpdateOneRequiredInput
+  friend: FriendUpdateOneInput
+}
+
+input NotificationUpdateManyMutationInput {
+  type: NotificationType
+}
+
+input NotificationWhereInput {
+  """Logical AND on all given filters."""
+  AND: [NotificationWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [NotificationWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [NotificationWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  type: NotificationType
+
+  """All values that are not equal to given value."""
+  type_not: NotificationType
+
+  """All values that are contained in given list."""
+  type_in: [NotificationType!]
+
+  """All values that are not contained in given list."""
+  type_not_in: [NotificationType!]
+  user: UserWhereInput
+  friend: FriendWhereInput
+}
+
+input NotificationWhereUniqueInput {
+  id: ID
 }
 
 """Information about pagination in a connection."""
@@ -322,12 +429,15 @@ enum Permission {
 }
 
 type Query {
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification]!
   friends(where: FriendWhereInput, orderBy: FriendOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Friend]!
-  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  notification(where: NotificationWhereUniqueInput!): Notification
   friend(where: FriendWhereUniqueInput!): Friend
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  user(where: UserWhereUniqueInput!): User
+  notificationsConnection(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotificationConnection!
   friendsConnection(where: FriendWhereInput, orderBy: FriendOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FriendConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -337,8 +447,9 @@ type Query {
 }
 
 type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  notification(where: NotificationSubscriptionWhereInput): NotificationSubscriptionPayload
   friend(where: FriendSubscriptionWhereInput): FriendSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type User implements Node {
@@ -350,7 +461,6 @@ type User implements Node {
   resetTokenExpiry: Float
   permissions: [Permission!]!
   jwt: String
-  friends(where: FriendWhereInput, orderBy: FriendOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Friend!]
 }
 
 """A connection to a list of items."""
@@ -371,26 +481,15 @@ input UserCreateInput {
   resetTokenExpiry: Float
   jwt: String
   permissions: UserCreatepermissionsInput
-  friends: FriendCreateManyWithoutFriendInput
 }
 
-input UserCreateOneWithoutFriendsInput {
-  create: UserCreateWithoutFriendsInput
+input UserCreateOneInput {
+  create: UserCreateInput
   connect: UserWhereUniqueInput
 }
 
 input UserCreatepermissionsInput {
   set: [Permission!]
-}
-
-input UserCreateWithoutFriendsInput {
-  name: String!
-  email: String!
-  password: String!
-  resetToken: String
-  resetTokenExpiry: Float
-  jwt: String
-  permissions: UserCreatepermissionsInput
 }
 
 """An edge in a connection."""
@@ -473,6 +572,16 @@ input UserSubscriptionWhereInput {
   node: UserWhereInput
 }
 
+input UserUpdateDataInput {
+  name: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  jwt: String
+  permissions: UserUpdatepermissionsInput
+}
+
 input UserUpdateInput {
   name: String
   email: String
@@ -481,7 +590,6 @@ input UserUpdateInput {
   resetTokenExpiry: Float
   jwt: String
   permissions: UserUpdatepermissionsInput
-  friends: FriendUpdateManyWithoutFriendInput
 }
 
 input UserUpdateManyMutationInput {
@@ -494,32 +602,29 @@ input UserUpdateManyMutationInput {
   permissions: UserUpdatepermissionsInput
 }
 
-input UserUpdateOneWithoutFriendsInput {
-  create: UserCreateWithoutFriendsInput
+input UserUpdateOneInput {
+  create: UserCreateInput
   connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UserUpdateWithoutFriendsDataInput
-  upsert: UserUpsertWithoutFriendsInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
 }
 
 input UserUpdatepermissionsInput {
   set: [Permission!]
 }
 
-input UserUpdateWithoutFriendsDataInput {
-  name: String
-  email: String
-  password: String
-  resetToken: String
-  resetTokenExpiry: Float
-  jwt: String
-  permissions: UserUpdatepermissionsInput
-}
-
-input UserUpsertWithoutFriendsInput {
-  update: UserUpdateWithoutFriendsDataInput!
-  create: UserCreateWithoutFriendsInput!
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
@@ -793,12 +898,10 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   jwt_not_ends_with: String
-  friends_every: FriendWhereInput
-  friends_some: FriendWhereInput
-  friends_none: FriendWhereInput
 }
 
 input UserWhereUniqueInput {
   id: ID
+  name: String
   email: String
 }

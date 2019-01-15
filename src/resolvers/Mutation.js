@@ -78,6 +78,86 @@ const Mutation = {
       process.env.APP_SECRET
     );
     return updatedUser;
+  },
+  async addFriend(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    // 1. Get Friend to invite
+    const friendToAdd = await ctx.db.query.user({
+      where: {
+        name: args.name
+      }
+    });
+    // 2. Check if they are already friends
+    const alreadyFriends = await ctx.db.query.friends({
+      where: {
+        friendOne: {
+          OR: [{ id: friendToAdd.id }, { id: userId }]
+        },
+        friendTwo: {
+          OR: [{ id: friendToAdd.id }, { id: userId }]
+        }
+      }
+    });
+    // 3. Add friend
+    if (alreadyFriends.length === 0) {
+      const friendAdded = await ctx.db.mutation.createFriend({
+        data: {
+          friendOne: {
+            connect: {
+              id: userId
+            }
+          },
+          friendTwo: {
+            connect: {
+              id: friendToAdd.id
+            }
+          }
+        }
+      });
+
+      // 4. Add Notification for friend to add
+      await ctx.db.mutation.createNotification({
+        data: {
+          type: 'FRIEND_INVITE',
+          user: {
+            connect: {
+              id: friendToAdd.id
+            }
+          },
+          friend: {
+            connect: {
+              id: friendAdded.id
+            }
+          }
+        }
+      });
+      return { message: 'Friend invitation has been sended' };
+    } else {
+      if (alreadyFriends[0].accepted) {
+        return { message: 'You are already friends!' };
+      } else {
+        return { message: 'Waitting for accept' };
+      }
+    }
+  },
+  async handleNotification(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    // 1. Get notification
+    const notification = ctx.db.query.notification({
+      where: {
+        id: args.id
+      }
+    });
+    // 2. Check type
+    // 3. do proper action
+    console.log(notification);
+    return { message: 'notification' };
   }
 };
 

@@ -3,20 +3,31 @@ enum Permission {
   USER
 }
 
+enum NotificationType {
+  FRIEND_INVITE
+}
+
 type User {
   id: ID! @unique
-  name: String!
+  name: String! @unique
   email: String! @unique
   password: String!
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission]
   jwt: String
-  friends: [Friend!]!
 }
 
 type Friend {
   id: ID! @unique
-  friend: User
+  friendOne: User! @relation(name: "UserOne")
+  friendTwo: User @relation(name: "UserTwo")
   accepted: Boolean! @default(value: "false")
+}
+
+type Notification {
+  id: ID! @unique
+  user: User!
+  type: NotificationType!
+  friend: Friend
 }
