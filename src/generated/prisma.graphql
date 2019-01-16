@@ -1,7 +1,7 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Tue Jan 15 2019 20:45:32 GMT+0100 (Środkowoeuropejski czas stand.)
+# timestamp: Wed Jan 16 2019 16:20:08 GMT+0100 (GMT+01:00)
 
-type AggregateFriend {
+type AggregateFriendship {
   count: Int!
 }
 
@@ -18,7 +18,7 @@ type BatchPayload {
   count: Long!
 }
 
-type Friend implements Node {
+type Friendship implements Node {
   id: ID!
   friendOne: User!
   friendTwo: User
@@ -26,36 +26,36 @@ type Friend implements Node {
 }
 
 """A connection to a list of items."""
-type FriendConnection {
+type FriendshipConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [FriendEdge]!
-  aggregate: AggregateFriend!
+  edges: [FriendshipEdge]!
+  aggregate: AggregateFriendship!
 }
 
-input FriendCreateInput {
+input FriendshipCreateInput {
   accepted: Boolean
   friendOne: UserCreateOneInput!
   friendTwo: UserCreateOneInput
 }
 
-input FriendCreateOneInput {
-  create: FriendCreateInput
-  connect: FriendWhereUniqueInput
+input FriendshipCreateOneInput {
+  create: FriendshipCreateInput
+  connect: FriendshipWhereUniqueInput
 }
 
 """An edge in a connection."""
-type FriendEdge {
+type FriendshipEdge {
   """The item at the end of the edge."""
-  node: Friend!
+  node: Friendship!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum FriendOrderByInput {
+enum FriendshipOrderByInput {
   id_ASC
   id_DESC
   accepted_ASC
@@ -66,27 +66,27 @@ enum FriendOrderByInput {
   createdAt_DESC
 }
 
-type FriendPreviousValues {
+type FriendshipPreviousValues {
   id: ID!
   accepted: Boolean!
 }
 
-type FriendSubscriptionPayload {
+type FriendshipSubscriptionPayload {
   mutation: MutationType!
-  node: Friend
+  node: Friendship
   updatedFields: [String!]
-  previousValues: FriendPreviousValues
+  previousValues: FriendshipPreviousValues
 }
 
-input FriendSubscriptionWhereInput {
+input FriendshipSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [FriendSubscriptionWhereInput!]
+  AND: [FriendshipSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [FriendSubscriptionWhereInput!]
+  OR: [FriendshipSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [FriendSubscriptionWhereInput!]
+  NOT: [FriendshipSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -107,48 +107,48 @@ input FriendSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: FriendWhereInput
+  node: FriendshipWhereInput
 }
 
-input FriendUpdateDataInput {
+input FriendshipUpdateDataInput {
   accepted: Boolean
   friendOne: UserUpdateOneRequiredInput
   friendTwo: UserUpdateOneInput
 }
 
-input FriendUpdateInput {
+input FriendshipUpdateInput {
   accepted: Boolean
   friendOne: UserUpdateOneRequiredInput
   friendTwo: UserUpdateOneInput
 }
 
-input FriendUpdateManyMutationInput {
+input FriendshipUpdateManyMutationInput {
   accepted: Boolean
 }
 
-input FriendUpdateOneInput {
-  create: FriendCreateInput
-  connect: FriendWhereUniqueInput
+input FriendshipUpdateOneInput {
+  create: FriendshipCreateInput
+  connect: FriendshipWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: FriendUpdateDataInput
-  upsert: FriendUpsertNestedInput
+  update: FriendshipUpdateDataInput
+  upsert: FriendshipUpsertNestedInput
 }
 
-input FriendUpsertNestedInput {
-  update: FriendUpdateDataInput!
-  create: FriendCreateInput!
+input FriendshipUpsertNestedInput {
+  update: FriendshipUpdateDataInput!
+  create: FriendshipCreateInput!
 }
 
-input FriendWhereInput {
+input FriendshipWhereInput {
   """Logical AND on all given filters."""
-  AND: [FriendWhereInput!]
+  AND: [FriendshipWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [FriendWhereInput!]
+  OR: [FriendshipWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [FriendWhereInput!]
+  NOT: [FriendshipWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -197,7 +197,7 @@ input FriendWhereInput {
   friendTwo: UserWhereInput
 }
 
-input FriendWhereUniqueInput {
+input FriendshipWhereUniqueInput {
   id: ID
 }
 
@@ -209,22 +209,22 @@ scalar Long
 
 type Mutation {
   createNotification(data: NotificationCreateInput!): Notification!
-  createFriend(data: FriendCreateInput!): Friend!
+  createFriendship(data: FriendshipCreateInput!): Friendship!
   createUser(data: UserCreateInput!): User!
   updateNotification(data: NotificationUpdateInput!, where: NotificationWhereUniqueInput!): Notification
-  updateFriend(data: FriendUpdateInput!, where: FriendWhereUniqueInput!): Friend
+  updateFriendship(data: FriendshipUpdateInput!, where: FriendshipWhereUniqueInput!): Friendship
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteNotification(where: NotificationWhereUniqueInput!): Notification
-  deleteFriend(where: FriendWhereUniqueInput!): Friend
+  deleteFriendship(where: FriendshipWhereUniqueInput!): Friendship
   deleteUser(where: UserWhereUniqueInput!): User
   upsertNotification(where: NotificationWhereUniqueInput!, create: NotificationCreateInput!, update: NotificationUpdateInput!): Notification!
-  upsertFriend(where: FriendWhereUniqueInput!, create: FriendCreateInput!, update: FriendUpdateInput!): Friend!
+  upsertFriendship(where: FriendshipWhereUniqueInput!, create: FriendshipCreateInput!, update: FriendshipUpdateInput!): Friendship!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyNotifications(data: NotificationUpdateManyMutationInput!, where: NotificationWhereInput): BatchPayload!
-  updateManyFriends(data: FriendUpdateManyMutationInput!, where: FriendWhereInput): BatchPayload!
+  updateManyFriendships(data: FriendshipUpdateManyMutationInput!, where: FriendshipWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyNotifications(where: NotificationWhereInput): BatchPayload!
-  deleteManyFriends(where: FriendWhereInput): BatchPayload!
+  deleteManyFriendships(where: FriendshipWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
@@ -244,7 +244,7 @@ type Notification implements Node {
   id: ID!
   user: User!
   type: NotificationType!
-  friend: Friend
+  friendship: Friendship
 }
 
 """A connection to a list of items."""
@@ -260,7 +260,7 @@ type NotificationConnection {
 input NotificationCreateInput {
   type: NotificationType!
   user: UserCreateOneInput!
-  friend: FriendCreateOneInput
+  friendship: FriendshipCreateOneInput
 }
 
 """An edge in a connection."""
@@ -334,7 +334,7 @@ enum NotificationType {
 input NotificationUpdateInput {
   type: NotificationType
   user: UserUpdateOneRequiredInput
-  friend: FriendUpdateOneInput
+  friendship: FriendshipUpdateOneInput
 }
 
 input NotificationUpdateManyMutationInput {
@@ -401,7 +401,7 @@ input NotificationWhereInput {
   """All values that are not contained in given list."""
   type_not_in: [NotificationType!]
   user: UserWhereInput
-  friend: FriendWhereInput
+  friendship: FriendshipWhereInput
 }
 
 input NotificationWhereUniqueInput {
@@ -430,13 +430,13 @@ enum Permission {
 
 type Query {
   notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification]!
-  friends(where: FriendWhereInput, orderBy: FriendOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Friend]!
+  friendships(where: FriendshipWhereInput, orderBy: FriendshipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Friendship]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   notification(where: NotificationWhereUniqueInput!): Notification
-  friend(where: FriendWhereUniqueInput!): Friend
+  friendship(where: FriendshipWhereUniqueInput!): Friendship
   user(where: UserWhereUniqueInput!): User
   notificationsConnection(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotificationConnection!
-  friendsConnection(where: FriendWhereInput, orderBy: FriendOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FriendConnection!
+  friendshipsConnection(where: FriendshipWhereInput, orderBy: FriendshipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FriendshipConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
@@ -448,7 +448,7 @@ type Query {
 
 type Subscription {
   notification(where: NotificationSubscriptionWhereInput): NotificationSubscriptionPayload
-  friend(where: FriendSubscriptionWhereInput): FriendSubscriptionPayload
+  friendship(where: FriendshipSubscriptionWhereInput): FriendshipSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 

@@ -18,7 +18,7 @@ type User {
   jwt: String
 }
 
-type Friend {
+type Friendship {
   id: ID! @unique
   friendOne: User! @relation(name: "UserOne")
   friendTwo: User @relation(name: "UserTwo")
@@ -29,5 +29,5 @@ type Notification {
   id: ID! @unique
   user: User!
   type: NotificationType!
-  friend: Friend
+  friendship: Friendship
 }

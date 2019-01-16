@@ -28,7 +28,7 @@ type User {
   jwt: String
 }
 
-type Friend {
+type Friendship {
   id: ID!
   friendOne: User!
   friendTwo: User
@@ -39,5 +39,5 @@ type Notification {
   id: ID!
   user: User!
   type: NotificationType!
-  friend: Friend
+  friendship: Friendship
 }

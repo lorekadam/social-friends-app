@@ -90,8 +90,9 @@ const Mutation = {
         name: args.name
       }
     });
+    console.log(friendToAdd);
     // 2. Check if they are already friends
-    const alreadyFriends = await ctx.db.query.friends({
+    const alreadyFriends = await ctx.db.query.friendships({
       where: {
         friendOne: {
           OR: [{ id: friendToAdd.id }, { id: userId }]
@@ -103,7 +104,7 @@ const Mutation = {
     });
     // 3. Add friend
     if (alreadyFriends.length === 0) {
-      const friendAdded = await ctx.db.mutation.createFriend({
+      const friendAdded = await ctx.db.mutation.createFriendship({
         data: {
           friendOne: {
             connect: {
@@ -127,7 +128,7 @@ const Mutation = {
               id: friendToAdd.id
             }
           },
-          friend: {
+          friendship: {
             connect: {
               id: friendAdded.id
             }
@@ -149,15 +150,42 @@ const Mutation = {
       return null;
     }
     // 1. Get notification
-    const notification = ctx.db.query.notification({
-      where: {
-        id: args.id
-      }
-    });
+    const notification = await ctx.db.query.notification(
+      {
+        where: {
+          id: args.id
+        }
+      },
+      `{
+        id,
+        type,
+        friendship{
+         id
+        }
+      }`
+    );
     // 2. Check type
-    // 3. do proper action
-    console.log(notification);
-    return { message: 'notification' };
+    switch (notification.type) {
+      case 'FRIEND_INVITE': {
+        const acceptInvitation = await ctx.db.mutation.updateFriendship({
+          data: {
+            accepted: true
+          },
+          where: {
+            id: notification.friendship.id
+          }
+        });
+        if (acceptInvitation.accepted) {
+          return { message: 'Success!' };
+        } else {
+          return { message: 'Something went wrong :(' };
+        }
+      }
+
+      default: {
+        return { message: 'Notification' };
+      }
+    }
   }
 };
 
