@@ -20,8 +20,8 @@ type User {
 
 type Friendship {
   id: ID! @unique
-  friendOne: User! @relation(name: "UserOne")
-  friendTwo: User @relation(name: "UserTwo")
+  user: User! @relation(name: "User")
+  friend: User @relation(name: "Friend")
   accepted: Boolean! @default(value: "false")
 }
 
@@ -29,5 +29,5 @@ type Notification {
   id: ID! @unique
   user: User!
   type: NotificationType!
-  friendship: Friendship
+  friendship: [Friendship!]
 }

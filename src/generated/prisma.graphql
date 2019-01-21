@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Wed Jan 16 2019 16:20:08 GMT+0100 (GMT+01:00)
+# timestamp: Mon Jan 21 2019 20:32:27 GMT+0100 (Środkowoeuropejski czas stand.)
 
 type AggregateFriendship {
   count: Int!
@@ -20,8 +20,8 @@ type BatchPayload {
 
 type Friendship implements Node {
   id: ID!
-  friendOne: User!
-  friendTwo: User
+  user: User!
+  friend: User
   accepted: Boolean!
 }
 
@@ -37,13 +37,13 @@ type FriendshipConnection {
 
 input FriendshipCreateInput {
   accepted: Boolean
-  friendOne: UserCreateOneInput!
-  friendTwo: UserCreateOneInput
+  user: UserCreateOneInput!
+  friend: UserCreateOneInput
 }
 
-input FriendshipCreateOneInput {
-  create: FriendshipCreateInput
-  connect: FriendshipWhereUniqueInput
+input FriendshipCreateManyInput {
+  create: [FriendshipCreateInput!]
+  connect: [FriendshipWhereUniqueInput!]
 }
 
 """An edge in a connection."""
@@ -69,6 +69,61 @@ enum FriendshipOrderByInput {
 type FriendshipPreviousValues {
   id: ID!
   accepted: Boolean!
+}
+
+input FriendshipScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FriendshipScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FriendshipScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FriendshipScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  accepted: Boolean
+
+  """All values that are not equal to given value."""
+  accepted_not: Boolean
 }
 
 type FriendshipSubscriptionPayload {
@@ -112,30 +167,48 @@ input FriendshipSubscriptionWhereInput {
 
 input FriendshipUpdateDataInput {
   accepted: Boolean
-  friendOne: UserUpdateOneRequiredInput
-  friendTwo: UserUpdateOneInput
+  user: UserUpdateOneRequiredInput
+  friend: UserUpdateOneInput
 }
 
 input FriendshipUpdateInput {
   accepted: Boolean
-  friendOne: UserUpdateOneRequiredInput
-  friendTwo: UserUpdateOneInput
+  user: UserUpdateOneRequiredInput
+  friend: UserUpdateOneInput
+}
+
+input FriendshipUpdateManyDataInput {
+  accepted: Boolean
+}
+
+input FriendshipUpdateManyInput {
+  create: [FriendshipCreateInput!]
+  connect: [FriendshipWhereUniqueInput!]
+  set: [FriendshipWhereUniqueInput!]
+  disconnect: [FriendshipWhereUniqueInput!]
+  delete: [FriendshipWhereUniqueInput!]
+  update: [FriendshipUpdateWithWhereUniqueNestedInput!]
+  updateMany: [FriendshipUpdateManyWithWhereNestedInput!]
+  deleteMany: [FriendshipScalarWhereInput!]
+  upsert: [FriendshipUpsertWithWhereUniqueNestedInput!]
 }
 
 input FriendshipUpdateManyMutationInput {
   accepted: Boolean
 }
 
-input FriendshipUpdateOneInput {
-  create: FriendshipCreateInput
-  connect: FriendshipWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: FriendshipUpdateDataInput
-  upsert: FriendshipUpsertNestedInput
+input FriendshipUpdateManyWithWhereNestedInput {
+  where: FriendshipScalarWhereInput!
+  data: FriendshipUpdateManyDataInput!
 }
 
-input FriendshipUpsertNestedInput {
+input FriendshipUpdateWithWhereUniqueNestedInput {
+  where: FriendshipWhereUniqueInput!
+  data: FriendshipUpdateDataInput!
+}
+
+input FriendshipUpsertWithWhereUniqueNestedInput {
+  where: FriendshipWhereUniqueInput!
   update: FriendshipUpdateDataInput!
   create: FriendshipCreateInput!
 }
@@ -193,8 +266,8 @@ input FriendshipWhereInput {
 
   """All values that are not equal to given value."""
   accepted_not: Boolean
-  friendOne: UserWhereInput
-  friendTwo: UserWhereInput
+  user: UserWhereInput
+  friend: UserWhereInput
 }
 
 input FriendshipWhereUniqueInput {
@@ -244,7 +317,7 @@ type Notification implements Node {
   id: ID!
   user: User!
   type: NotificationType!
-  friendship: Friendship
+  friendship(where: FriendshipWhereInput, orderBy: FriendshipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Friendship!]
 }
 
 """A connection to a list of items."""
@@ -260,7 +333,7 @@ type NotificationConnection {
 input NotificationCreateInput {
   type: NotificationType!
   user: UserCreateOneInput!
-  friendship: FriendshipCreateOneInput
+  friendship: FriendshipCreateManyInput
 }
 
 """An edge in a connection."""
@@ -334,7 +407,7 @@ enum NotificationType {
 input NotificationUpdateInput {
   type: NotificationType
   user: UserUpdateOneRequiredInput
-  friendship: FriendshipUpdateOneInput
+  friendship: FriendshipUpdateManyInput
 }
 
 input NotificationUpdateManyMutationInput {
@@ -401,7 +474,9 @@ input NotificationWhereInput {
   """All values that are not contained in given list."""
   type_not_in: [NotificationType!]
   user: UserWhereInput
-  friendship: FriendshipWhereInput
+  friendship_every: FriendshipWhereInput
+  friendship_some: FriendshipWhereInput
+  friendship_none: FriendshipWhereInput
 }
 
 input NotificationWhereUniqueInput {

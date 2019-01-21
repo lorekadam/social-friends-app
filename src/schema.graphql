@@ -18,7 +18,8 @@ type Mutation {
 }
 
 type Query {
-  me: User
+  me: User!
+  friendships: [Friendship!]!
 }
 
 type User {
@@ -30,8 +31,8 @@ type User {
 
 type Friendship {
   id: ID!
-  friendOne: User!
-  friendTwo: User
+  user: User!
+  friend: User
   accepted: Boolean!
 }
 
@@ -39,5 +40,5 @@ type Notification {
   id: ID!
   user: User!
   type: NotificationType!
-  friendship: Friendship
+  friendship: [Friendship!]
 }

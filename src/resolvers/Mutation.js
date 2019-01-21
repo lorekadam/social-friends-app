@@ -94,26 +94,41 @@ const Mutation = {
       // 2. Check if they are already friends
       const alreadyFriends = await ctx.db.query.friendships({
         where: {
-          friendOne: {
-            OR: [{ id: friendToAdd.id }, { id: userId }]
+          user: {
+            id: userId
           },
-          friendTwo: {
-            OR: [{ id: friendToAdd.id }, { id: userId }]
+          friend: {
+            id: friendToAdd.id
           }
         }
       });
       // 3. Add friend
       if (alreadyFriends.length === 0) {
-        const friendAdded = await ctx.db.mutation.createFriendship({
+        const userFriendship = await ctx.db.mutation.createFriendship({
           data: {
-            friendOne: {
+            user: {
               connect: {
                 id: userId
               }
             },
-            friendTwo: {
+            friend: {
               connect: {
                 id: friendToAdd.id
+              }
+            }
+          }
+        });
+
+        const friendFriendship = await ctx.db.mutation.createFriendship({
+          data: {
+            user: {
+              connect: {
+                id: friendToAdd.id
+              }
+            },
+            friend: {
+              connect: {
+                id: userId
               }
             }
           }
@@ -129,9 +144,7 @@ const Mutation = {
               }
             },
             friendship: {
-              connect: {
-                id: friendAdded.id
-              }
+              connect: [{ id: userFriendship.id }, { id: friendFriendship.id }]
             }
           }
         });
@@ -170,15 +183,15 @@ const Mutation = {
     // 2. Check type
     switch (notification.type) {
       case 'FRIEND_INVITE': {
-        const acceptInvitation = await ctx.db.mutation.updateFriendship({
+        const acceptInvitation = await ctx.db.mutation.updateManyFriendships({
           data: {
             accepted: true
           },
           where: {
-            id: notification.friendship.id
+            OR: notification.friendship
           }
         });
-        if (acceptInvitation.accepted) {
+        if (acceptInvitation.count === 2) {
           return { message: 'Success!' };
         } else {
           return { message: 'Something went wrong :(' };
