@@ -22,7 +22,7 @@ interface Props {
 interface State {
   email: string;
   password: string;
-  success: boolean;
+  success: string;
 }
 
 const SIGNIN_MUTATION = gql`
@@ -42,7 +42,7 @@ export default class LoginPage extends Component<Props, State> {
     this.state = {
       email: 'lorekkadam@gmail.com',
       password: '102587',
-      success: false
+      success: ''
     };
   }
 

@@ -6,24 +6,25 @@ import { ApolloError } from 'apollo-boost';
 
 interface Props {
   error?: ApolloError;
-  success?: boolean;
-  message: string;
+  success?: string;
 }
 export default class QLNotifications extends Component<Props, {}> {
   render() {
-    const { error, success, message } = this.props;
+    const { error, success } = this.props;
     return (
       <React.Fragment>
         {error && (
           <Notification error>
             <Text color={colors.white}>
-              {message.replace('GraphQL error: ', '')}
+              {error.message.replace('GraphQL error: ', '')}
             </Text>
           </Notification>
         )}
-        {success && (
+        {success !== undefined && success.length > 0 && (
           <Notification success>
-            <Text color={colors.white}>Logged in!</Text>
+            <Text color={colors.white}>
+              {success.replace('GraphQL error: ', '')}
+            </Text>
           </Notification>
         )}
       </React.Fragment>

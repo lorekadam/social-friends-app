@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { PaddingView } from '../styled/View';
+import FriendInvitation from './FriendInvitation';
+import FriendList from './FriendList';
 
 export default class Friends extends Component {
   render() {
     return (
-      <View>
-        <Text>Friends component</Text>
-      </View>
+      <PaddingView>
+        <FriendInvitation />
+        <FriendList />
+      </PaddingView>
     );
   }
 }

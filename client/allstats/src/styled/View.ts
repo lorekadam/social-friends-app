@@ -15,3 +15,11 @@ export const PaddingView = styled.View`
   align-items: center;
   padding: 20px;
 `;
+
+export const FullView = styled.View`
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+`;

@@ -23,7 +23,7 @@ interface State {
   name: string;
   email: string;
   password: string;
-  success: boolean;
+  success: string;
 }
 
 const SIGNUP_MUTATION = gql`
@@ -48,7 +48,7 @@ export default class RegisterPage extends Component<Props, State> {
       name: '',
       email: '',
       password: '',
-      success: false
+      success: ''
     };
   }
   setValue = (name: keyof State, val: string) => {
@@ -107,7 +107,6 @@ export default class RegisterPage extends Component<Props, State> {
                       onPress={async () => {
                         const res = await signup();
                         if (res) {
-                          console.log(res);
                           await AsyncStorage.setItem(
                             'token',
                             res.data.signup.jwt

@@ -79,7 +79,7 @@ const Mutation = {
     );
     return updatedUser;
   },
-  async addFriend(parent, args, ctx, info) {
+  async inviteFriend(parent, args, ctx, info) {
     const userId = ctx.request.userId;
     if (!userId) {
       return null;
@@ -90,58 +90,61 @@ const Mutation = {
         name: args.name
       }
     });
-    console.log(friendToAdd);
-    // 2. Check if they are already friends
-    const alreadyFriends = await ctx.db.query.friendships({
-      where: {
-        friendOne: {
-          OR: [{ id: friendToAdd.id }, { id: userId }]
-        },
-        friendTwo: {
-          OR: [{ id: friendToAdd.id }, { id: userId }]
-        }
-      }
-    });
-    // 3. Add friend
-    if (alreadyFriends.length === 0) {
-      const friendAdded = await ctx.db.mutation.createFriendship({
-        data: {
+    if (friendToAdd) {
+      // 2. Check if they are already friends
+      const alreadyFriends = await ctx.db.query.friendships({
+        where: {
           friendOne: {
-            connect: {
-              id: userId
-            }
+            OR: [{ id: friendToAdd.id }, { id: userId }]
           },
           friendTwo: {
-            connect: {
-              id: friendToAdd.id
-            }
+            OR: [{ id: friendToAdd.id }, { id: userId }]
           }
         }
       });
+      // 3. Add friend
+      if (alreadyFriends.length === 0) {
+        const friendAdded = await ctx.db.mutation.createFriendship({
+          data: {
+            friendOne: {
+              connect: {
+                id: userId
+              }
+            },
+            friendTwo: {
+              connect: {
+                id: friendToAdd.id
+              }
+            }
+          }
+        });
 
-      // 4. Add Notification for friend to add
-      await ctx.db.mutation.createNotification({
-        data: {
-          type: 'FRIEND_INVITE',
-          user: {
-            connect: {
-              id: friendToAdd.id
-            }
-          },
-          friendship: {
-            connect: {
-              id: friendAdded.id
+        // 4. Add Notification for friend to add
+        await ctx.db.mutation.createNotification({
+          data: {
+            type: 'FRIEND_INVITE',
+            user: {
+              connect: {
+                id: friendToAdd.id
+              }
+            },
+            friendship: {
+              connect: {
+                id: friendAdded.id
+              }
             }
           }
-        }
-      });
-      return { message: 'Friend invitation has been sended' };
-    } else {
-      if (alreadyFriends[0].accepted) {
-        return { message: 'You are already friends!' };
+        });
+        return { message: 'Friend invitation has been sended' };
       } else {
-        return { message: 'Waitting for accept' };
+        if (alreadyFriends[0].accepted) {
+          return { message: 'You are already friends!' };
+        } else {
+          return { message: 'Waitting for accept' };
+        }
       }
+    } else {
+      return { message: 'There is no user with this name :(' };
     }
   },
   async handleNotification(parent, args, ctx, info) {

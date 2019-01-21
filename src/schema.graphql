@@ -13,7 +13,7 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
-  addFriend(name: String!): SuccessMessage!
+  inviteFriend(name: String!): SuccessMessage!
   handleNotification(id: String!): SuccessMessage!
 }
 
