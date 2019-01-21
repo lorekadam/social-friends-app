@@ -1,5 +1,5 @@
 import ApolloClient from 'apollo-boost';
-import { endpoint } from './config';
+import { endpoint } from './endpoint';
 import { LOCAL_TOGGLE_QUERY } from './pages/PageSpine';
 
 export default function createClient(token: string) {
