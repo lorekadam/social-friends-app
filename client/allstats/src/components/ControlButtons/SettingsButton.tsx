@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import CircleIconButton from './display/CircleIconButton';
+import CircleIconButton from '../display/CircleIconButton';
 
 export const TOGGLE_SETTINGS_MUTATION = gql`
   mutation {

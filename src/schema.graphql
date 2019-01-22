@@ -14,12 +14,13 @@ type Mutation {
     confirmPassword: String!
   ): User!
   inviteFriend(name: String!): SuccessMessage!
-  handleNotification(id: String!): SuccessMessage!
+  acceptFriendInvite(id: String!): SuccessMessage!
 }
 
 type Query {
   me: User!
   friendships: [Friendship!]!
+  notifications: [Notification!]!
 }
 
 type User {

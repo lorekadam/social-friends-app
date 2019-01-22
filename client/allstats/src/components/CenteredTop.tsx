@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Avatar from '../components/Avatar';
 import SocialButtons from './SocialButtons';
 import { Row, Col } from '../styled/Grid';
-import StartGameButton from './StartGameButton';
+import StartGameButton from './ControlButtons/StartGameButton';
 import { avatarDimension } from '../styled/globals';
 
 export default class CenteredTop extends Component {

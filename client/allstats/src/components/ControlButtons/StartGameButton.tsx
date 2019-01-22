@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PillTextIconButton from './display/PillTextIconButton';
+import PillTextIconButton from '../display/PillTextIconButton';
 
 export default class StartGameButton extends Component {
   render() {

@@ -18,7 +18,7 @@ const Query = {
     if (!userId) {
       return null;
     }
-    const friendships = await ctx.db.query.friendships(
+    return await ctx.db.query.friendships(
       {
         where: {
           user: { id: userId }
@@ -26,7 +26,20 @@ const Query = {
       },
       info
     );
-    return friendships;
+  },
+  async notifications(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    return await ctx.db.query.notifications(
+      {
+        where: {
+          user: { id: userId }
+        }
+      },
+      info
+    );
   }
 };
 

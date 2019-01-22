@@ -27,7 +27,7 @@ export default class ProfilePage extends Component<Props, {}> {
           return (
             <PageSpine
               navigation={this.props.navigation}
-              name={data.me ? data.me.name : ''}
+              name={data && data.me ? data.me.name : ''}
             >
               <Text>Content</Text>
             </PageSpine>

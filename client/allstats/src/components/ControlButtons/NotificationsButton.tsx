@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CircleIconButton from './display/CircleIconButton';
+import CircleIconButton from '../display/CircleIconButton';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 

@@ -160,7 +160,7 @@ const Mutation = {
       return { message: 'There is no user with this name :(' };
     }
   },
-  async handleNotification(parent, args, ctx, info) {
+  async acceptFriendInvite(parent, args, ctx, info) {
     const userId = ctx.request.userId;
     if (!userId) {
       return null;
@@ -181,26 +181,22 @@ const Mutation = {
       }`
     );
     // 2. Check type
-    switch (notification.type) {
-      case 'FRIEND_INVITE': {
-        const acceptInvitation = await ctx.db.mutation.updateManyFriendships({
-          data: {
-            accepted: true
-          },
-          where: {
-            OR: notification.friendship
-          }
-        });
-        if (acceptInvitation.count === 2) {
-          return { message: 'Success!' };
-        } else {
-          return { message: 'Something went wrong :(' };
+    if (notification.type === 'FRIEND_INVITE') {
+      const acceptInvitation = await ctx.db.mutation.updateManyFriendships({
+        data: {
+          accepted: true
+        },
+        where: {
+          OR: notification.friendship
         }
+      });
+      if (acceptInvitation.count === 2) {
+        return { message: 'Success!' };
+      } else {
+        return { message: 'Something went wrong :(' };
       }
-
-      default: {
-        return { message: 'Notification' };
-      }
+    } else {
+      return null;
     }
   }
 };

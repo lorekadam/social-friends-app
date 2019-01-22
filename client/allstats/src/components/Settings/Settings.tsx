@@ -3,8 +3,8 @@ import { AsyncStorage } from 'react-native';
 import { NavigationScreenProp, withNavigation } from 'react-navigation';
 import styled from 'styled-components';
 
-import { LOGIN_PAGE } from '../navigation/pageTypes';
-import CircleIconButton from './display/CircleIconButton';
+import { LOGIN_PAGE } from '../../navigation/pageTypes';
+import CircleIconButton from '../display/CircleIconButton';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;

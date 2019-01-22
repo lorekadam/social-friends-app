@@ -3,15 +3,11 @@ import { LinearGradient } from 'expo';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import colors from '../styled/colors';
+import { ArrayTwoOrMore } from '../types/globals';
 
 interface Props {
   height: number | string;
 }
-
-type ArrayTwoOrMore<T> = {
-  0: T;
-  1: T;
-} & Array<T>;
 
 const Line = styled.View`
   height: 4px;

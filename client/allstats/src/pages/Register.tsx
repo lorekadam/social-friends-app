@@ -111,17 +111,16 @@ export default class RegisterPage extends Component<Props, State> {
                             'token',
                             res.data.signup.jwt
                           );
+                          this.setState({
+                            success: res.data.signup.message
+                          });
                           this.props.navigation.navigate('Profile');
                         }
                       }}
                     >
                       <Text color={colors.white}>Register</Text>
                     </Button>
-                    <QLNotifications
-                      error={error}
-                      success={success}
-                      message={error ? error.message : 'User created'}
-                    />
+                    <QLNotifications error={error} success={success} />
                   </React.Fragment>
                 )}
               </PaddingView>

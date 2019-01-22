@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Input } from '../styled/Input';
-import colors from '../styled/colors';
-import { FullView } from '../styled/View';
-import { Button } from '../styled/Buttons';
-import { Row, Col } from '../styled/Grid';
-import { nameValidation } from '../utils/validations';
-import QLNotifications from './QLNotifications';
-import Loader from './Loader';
+import { Input } from '../../styled/Input';
+import colors from '../../styled/colors';
+import { FullView } from '../../styled/View';
+import { Button } from '../../styled/Buttons';
+import { Row, Col } from '../../styled/Grid';
+import { nameValidation } from '../../utils/validations';
+import QLNotifications from '../QLNotifications';
+import Loader from '../Loader';
 
 interface State {
   name: string;

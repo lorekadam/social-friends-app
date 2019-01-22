@@ -6,10 +6,10 @@ import ColorizedTop from '../components/ColorizedTop';
 import CenteredTop from '../components/CenteredTop';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import Settings from '../components/Settings';
+import Settings from '../components/Settings/Settings';
 import { NavigationScreenProp } from 'react-navigation';
-import Friends from '../components/Friends';
-import Notifications from '../components/Notifications';
+import Friends from '../components/Friends/Friends';
+import Notifications from '../components/Notifications/Notifications';
 
 interface Props {
   name: string;
