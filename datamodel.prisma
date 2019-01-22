@@ -16,6 +16,8 @@ type User {
   resetTokenExpiry: Float
   permissions: [Permission]
   jwt: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Friendship {
@@ -23,6 +25,8 @@ type Friendship {
   user: User! @relation(name: "User")
   friend: User @relation(name: "Friend")
   accepted: Boolean! @default(value: "false")
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Notification {
@@ -30,4 +34,7 @@ type Notification {
   user: User!
   type: NotificationType!
   friendship: [Friendship!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  viewed: Boolean! @default(value: "false")
 }

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Mon Jan 21 2019 20:32:27 GMT+0100 (Środkowoeuropejski czas stand.)
+# timestamp: Tue Jan 22 2019 19:37:08 GMT+0100 (Środkowoeuropejski czas stand.)
 
 type AggregateFriendship {
   count: Int!
@@ -18,11 +18,15 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 type Friendship implements Node {
   id: ID!
   user: User!
   friend: User
   accepted: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -60,15 +64,17 @@ enum FriendshipOrderByInput {
   id_DESC
   accepted_ASC
   accepted_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type FriendshipPreviousValues {
   id: ID!
   accepted: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input FriendshipScalarWhereInput {
@@ -124,6 +130,50 @@ input FriendshipScalarWhereInput {
 
   """All values that are not equal to given value."""
   accepted_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type FriendshipSubscriptionPayload {
@@ -266,6 +316,50 @@ input FriendshipWhereInput {
 
   """All values that are not equal to given value."""
   accepted_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   user: UserWhereInput
   friend: UserWhereInput
 }
@@ -318,6 +412,9 @@ type Notification implements Node {
   user: User!
   type: NotificationType!
   friendship(where: FriendshipWhereInput, orderBy: FriendshipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Friendship!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  viewed: Boolean!
 }
 
 """A connection to a list of items."""
@@ -332,6 +429,7 @@ type NotificationConnection {
 
 input NotificationCreateInput {
   type: NotificationType!
+  viewed: Boolean
   user: UserCreateOneInput!
   friendship: FriendshipCreateManyInput
 }
@@ -350,15 +448,20 @@ enum NotificationOrderByInput {
   id_DESC
   type_ASC
   type_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  viewed_ASC
+  viewed_DESC
 }
 
 type NotificationPreviousValues {
   id: ID!
   type: NotificationType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  viewed: Boolean!
 }
 
 type NotificationSubscriptionPayload {
@@ -406,12 +509,14 @@ enum NotificationType {
 
 input NotificationUpdateInput {
   type: NotificationType
+  viewed: Boolean
   user: UserUpdateOneRequiredInput
   friendship: FriendshipUpdateManyInput
 }
 
 input NotificationUpdateManyMutationInput {
   type: NotificationType
+  viewed: Boolean
 }
 
 input NotificationWhereInput {
@@ -473,6 +578,54 @@ input NotificationWhereInput {
 
   """All values that are not contained in given list."""
   type_not_in: [NotificationType!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  viewed: Boolean
+
+  """All values that are not equal to given value."""
+  viewed_not: Boolean
   user: UserWhereInput
   friendship_every: FriendshipWhereInput
   friendship_some: FriendshipWhereInput
@@ -536,6 +689,8 @@ type User implements Node {
   resetTokenExpiry: Float
   permissions: [Permission!]!
   jwt: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -591,10 +746,10 @@ enum UserOrderByInput {
   resetTokenExpiry_DESC
   jwt_ASC
   jwt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
@@ -606,6 +761,8 @@ type UserPreviousValues {
   resetTokenExpiry: Float
   permissions: [Permission!]!
   jwt: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -973,6 +1130,50 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   jwt_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 input UserWhereUniqueInput {
