@@ -10,6 +10,7 @@ import Settings from '../components/Settings/Settings';
 import { NavigationScreenProp } from 'react-navigation';
 import Friends from '../components/Friends/Friends';
 import Notifications from '../components/Notifications/Notifications';
+import { View } from 'react-native';
 
 interface Props {
   name: string;
@@ -42,9 +43,11 @@ export default class PageSpine extends Component<Props, {}> {
             <MainView>
               <ColorizedTop height={`${topSize}%`} />
               <CenteredTop />
-              {data.friendsOpen && <Friends />}
-              {data.notificationsOpen && <Notifications />}
-              {data.settingsOpen && <Settings />}
+              <View style={{ position: 'relative', backgroundColor: 'red' }}>
+                {data.friendsOpen && <Friends />}
+                {data.notificationsOpen && <Notifications />}
+                {data.settingsOpen && <Settings />}
+              </View>
               <PaddingView
                 style={{ backgroundColor: 'gray' }}
                 height={`${100 - topSize}%`}
