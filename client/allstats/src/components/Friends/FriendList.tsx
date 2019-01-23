@@ -44,7 +44,7 @@ export default class FriendList extends Component {
         {({ data }) => {
           return (
             <FullView>
-              {data.friendships && data.friendships.length > 0 ? (
+              {data && data.friendships && data.friendships.length > 0 ? (
                 <React.Fragment>
                   <Text>Your Friends - {data.friendships.length}</Text>
                   {this.renderFriendListItems(data.friendships)}

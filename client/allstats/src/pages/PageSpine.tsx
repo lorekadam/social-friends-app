@@ -35,7 +35,7 @@ const MainView = styled.View`
 
 export default class PageSpine extends Component<Props, {}> {
   render() {
-    const topSize = 15;
+    const topSize = 12;
     return (
       <Query query={LOCAL_TOGGLE_QUERY}>
         {({ data }) => {
@@ -43,13 +43,11 @@ export default class PageSpine extends Component<Props, {}> {
             <MainView>
               <ColorizedTop height={`${topSize}%`} />
               <CenteredTop />
-              <View style={{ position: 'relative', backgroundColor: 'red' }}>
-                {data.friendsOpen && <Friends />}
-                {data.notificationsOpen && <Notifications />}
-                {data.settingsOpen && <Settings />}
-              </View>
+              {data.friendsOpen && <Friends />}
+              {data.notificationsOpen && <Notifications />}
+              {data.settingsOpen && <Settings />}
               <PaddingView
-                style={{ backgroundColor: 'gray' }}
+                style={{ zIndex: 1, backgroundColor: 'gray' }}
                 height={`${100 - topSize}%`}
               >
                 {this.props.children}

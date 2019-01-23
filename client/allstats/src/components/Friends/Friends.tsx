@@ -9,11 +9,15 @@ export default class Friends extends Component {
     return (
       <SlideDown
         style={{
-          // position: 'absolute',
-          zIndex: 1,
+          display: 'flex',
+          width: '100%',
+          position: 'absolute',
+          zIndex: 2,
           left: 0,
           right: 0,
-          overflow: 'hidden'
+          overflow: 'hidden',
+          backgroundColor: 'blue',
+          top: '12%'
         }}
       >
         <PaddingView>
