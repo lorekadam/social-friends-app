@@ -54,7 +54,7 @@ export default class NotificationsList extends Component {
         {({ data }) => {
           return (
             <FullView>
-              {data.notifications && data.notifications.length > 0 ? (
+              {data && data.notifications && data.notifications.length > 0 ? (
                 <React.Fragment>
                   <Text>
                     You have {data.notifications.length} notifications

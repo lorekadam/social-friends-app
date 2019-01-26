@@ -10,7 +10,7 @@ import { Button, TextButton } from '../styled/Buttons';
 import { Text } from '../styled/Text';
 import FacebookLogin from '../components/FacebookLogin';
 import { emailValidation } from '../utils/validations';
-import { Row, Col } from '../styled/Grid';
+import { Row, Col, RowColumn, ColColumn } from '../styled/Grid';
 import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
 import Logo from '../components/Logo';
@@ -76,72 +76,90 @@ export default class LoginPage extends Component<Props, State> {
               style={{ width: '100%', height: '100%' }}
             >
               <PaddingView>
-                <Logo />
-                {loading ? (
-                  <Loader />
-                ) : (
-                  <React.Fragment>
-                    <Input
-                      value={email}
-                      onChangeText={(val: string) =>
-                        this.setValue('email', val)
-                      }
-                      placeholder="Email"
-                    />
-                    <Input
-                      value={password}
-                      onChangeText={(val: string) =>
-                        this.setValue('password', val)
-                      }
-                      placeholder="Password"
-                      secureTextEntry={true}
-                    />
-                    <Row>
-                      <Col>
-                        <TextButton
-                          onPress={() =>
-                            this.props.navigation.navigate('Register')
-                          }
-                        >
-                          <Text color={colors.white} align="left">
-                            Create account
-                          </Text>
-                        </TextButton>
-                      </Col>
-                      <Col>
-                        <TextButton
-                          onPress={() =>
-                            this.props.navigation.navigate('ForgotPassword')
-                          }
-                        >
-                          <Text color={colors.white} align="left">
-                            Forgot password?
-                          </Text>
-                        </TextButton>
-                      </Col>
-                    </Row>
-                    <Button
-                      title="Login"
-                      full
-                      disabled={
-                        !(
-                          password.length > 0 &&
-                          email.length > 0 &&
-                          emailValidation(email)
-                        )
-                      }
-                      onPress={() => this.signin(signin)}
-                    >
-                      <Text color={colors.white}>Login</Text>
-                    </Button>
-                    <FacebookLogin logIn={this.logIn} />
-                    <QLNotifications
-                      error={error}
-                      success={success}
-                      message={error ? error.message : 'Logged in!'}
-                    />
-                  </React.Fragment>
-                )}
+                <RowColumn noGutters>
+                  <ColColumn flex={4} justify="center" align="center">
+                    <Logo />
+                  </ColColumn>
+                  {loading ? (
+                    <ColColumn justify="center" align="center">
+                      <Loader />
+                    </ColColumn>
+                  ) : (
+                    <ColColumn flex={4}>
+                      <RowColumn>
+                        <ColColumn>
+                          <Input
+                            value={email}
+                            onChangeText={(val: string) =>
+                              this.setValue('email', val)
+                            }
+                            placeholder="Email"
+                          />
+                        </ColColumn>
+                        <ColColumn>
+                          <Input
+                            value={password}
+                            onChangeText={(val: string) =>
+                              this.setValue('password', val)
+                            }
+                            placeholder="Password"
+                            secureTextEntry={true}
+                          />
+                        </ColColumn>
+                        <ColColumn>
+                          <Row noGutters>
+                            <Col>
+                              <TextButton
+                                onPress={() =>
+                                  this.props.navigation.navigate('Register')
+                                }
+                              >
+                                <Text color={colors.white} align="left">
+                                  Create account
+                                </Text>
+                              </TextButton>
+                            </Col>
+                            <Col>
+                              <TextButton
+                                onPress={() =>
+                                  this.props.navigation.navigate(
+                                    'ForgotPassword'
+                                  )
+                                }
+                              >
+                                <Text color={colors.white} align="left">
+                                  Forgot password?
+                                </Text>
+                              </TextButton>
+                            </Col>
+                          </Row>
+                        </ColColumn>
+                        <ColColumn>
+                          <Button
+                            title="Login"
+                            full
+                            disabled={
+                              !(
+                                password.length > 0 &&
+                                email.length > 0 &&
+                                emailValidation(email)
+                              )
+                            }
+                            onPress={() => this.signin(signin)}
+                          >
+                            <Text color={colors.white}>Login</Text>
+                          </Button>
+                        </ColColumn>
+                        <ColColumn>
+                          <FacebookLogin logIn={this.logIn} />
+                        </ColColumn>
+                        <ColColumn>
+                          <QLNotifications error={error} success={success} />
+                        </ColColumn>
+                      </RowColumn>
+                    </ColColumn>
+                  )}
+                </RowColumn>
               </PaddingView>
             </ImageBackground>
           );

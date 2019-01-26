@@ -5,10 +5,6 @@ import styled from 'styled-components';
 import colors from '../styled/colors';
 import { ArrayTwoOrMore } from '../types/globals';
 
-interface Props {
-  height: number | string;
-}
-
 const Line = styled.View`
   height: 4px;
   position: relative;
@@ -19,7 +15,7 @@ const Line = styled.View`
   align-items: center;
 `;
 
-export default class ColorizedTop extends Component<Props, {}> {
+export default class ColorizedTop extends Component {
   render() {
     const r: number = Math.floor(Math.random() * 255) + 1;
     const g: number = Math.floor(Math.random() * 255) + 1;
@@ -34,7 +30,9 @@ export default class ColorizedTop extends Component<Props, {}> {
     return (
       <View
         style={{
-          height: this.props.height
+          height: '100%',
+          position: 'absolute',
+          width: '100%'
         }}
       >
         <LinearGradient

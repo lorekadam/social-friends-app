@@ -1,29 +1,40 @@
 import React, { Component } from 'react';
 import { Animated } from 'react-native';
 
-export default class SlideDown extends Component {
+interface Props {
+  top: number;
+  duration?: number;
+  toHeight?: number;
+}
+
+export default class SlideDown extends Component<Props, {}> {
   state = {
-    fadeAnim: new Animated.Value(0) // Initial value for opacity: 0
+    fadeAnim: new Animated.Value(0)
   };
 
   componentDidMount() {
-    Animated.timing(
-      // Animate over time
-      this.state.fadeAnim, // The animated value to drive
-      {
-        toValue: 150, // Animate to opacity: 1 (opaque)
-        duration: 500 // Make it take a while
-      }
-    ).start(); // Starts the animation
+    const { duration, toHeight } = this.props;
+    Animated.timing(this.state.fadeAnim, {
+      toValue: toHeight ? toHeight : 240,
+      duration: duration ? duration : 300
+    }).start();
   }
   render() {
     let { fadeAnim } = this.state;
 
     return (
-      <Animated.View // Special animatable View
+      <Animated.View
         style={{
-          ...this.props.style,
-          height: fadeAnim // Bind opacity to animated value
+          display: 'flex',
+          width: '100%',
+          position: 'absolute',
+          zIndex: 2,
+          left: 0,
+          right: 0,
+          overflow: 'hidden',
+          backgroundColor: 'blue',
+          top: this.props.top,
+          height: fadeAnim
         }}
       >
         {this.props.children}

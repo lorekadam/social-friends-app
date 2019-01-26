@@ -4,6 +4,7 @@ import { createRootNavigator } from './src/navigation';
 import { ApolloProvider } from 'react-apollo';
 import createClient from './src/withData';
 import Loader from './src/components/Loader';
+import { createAppContainer } from 'react-navigation';
 
 interface Props {}
 
@@ -36,12 +37,13 @@ export default class App extends React.Component<Props, State> {
   render() {
     const { token, signedIn, checkedSignIn } = this.state;
     const RootNavigation = createRootNavigator(signedIn);
+    const App = createAppContainer(RootNavigation);
     if (!checkedSignIn) {
       return <Loader />;
     } else {
       return (
         <ApolloProvider client={createClient(token)}>
-          <RootNavigation />
+          <App />
         </ApolloProvider>
       );
     }

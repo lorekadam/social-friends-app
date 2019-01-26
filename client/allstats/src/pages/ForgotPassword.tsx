@@ -15,6 +15,7 @@ import QLNotifications from '../components/QLNotifications';
 import Loader from '../components/Loader';
 import Logo from '../components/Logo';
 import { LOGIN_PAGE } from '../navigation/pageTypes';
+import { RowColumn, ColColumn } from '../styled/Grid';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -22,7 +23,7 @@ interface Props {
 
 interface State {
   email: string;
-  success: boolean;
+  success: string;
 }
 
 const REQUEST_RESET_MUTATION = gql`
@@ -38,7 +39,7 @@ export default class ForgotPassword extends Component<Props, State> {
     super(props);
     this.state = {
       email: '',
-      success: false
+      success: ''
     };
   }
 
@@ -50,13 +51,14 @@ export default class ForgotPassword extends Component<Props, State> {
 
   requestReset = async (requestReset: Function) => {
     this.setState({
-      success: false
+      success: ''
     });
     const res = await requestReset();
     if (res) {
+      console.log(res);
       this.setState({
         email: '',
-        success: true
+        success: res.data.requestReset.message
       });
     }
   };
@@ -71,35 +73,48 @@ export default class ForgotPassword extends Component<Props, State> {
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
             >
-              <PaddingView>
-                {loading ? (
-                  <Loader />
-                ) : (
-                  <React.Fragment>
-                    <BackButton path={LOGIN_PAGE} />
-                    <Logo />
-                    <Input
-                      value={email}
-                      onChangeText={(val: string) =>
-                        this.setValue('email', val)
-                      }
-                      placeholder="E-mail"
-                    />
-                    <Button
-                      full
-                      disabled={!(email.length > 0 && emailValidation(email))}
-                      onPress={() => this.requestReset(requestReset)}
-                    >
-                      <Text color={colors.white}>Send</Text>
-                    </Button>
-
-                    <QLNotifications
-                      error={error}
-                      success={success}
-                      message={error ? error.message : 'Check your mailbox'}
-                    />
-                  </React.Fragment>
-                )}
+              <PaddingView statusBar>
+                <React.Fragment>
+                  <BackButton path={LOGIN_PAGE} />
+                  <RowColumn noGutters>
+                    <ColColumn flex={4} justify="center" align="center">
+                      <Logo />
+                    </ColColumn>
+                    {loading ? (
+                      <ColColumn justify="center" align="center">
+                        <Loader />
+                      </ColColumn>
+                    ) : (
+                      <ColColumn flex={4}>
+                        <RowColumn>
+                          <ColColumn>
+                            <Input
+                              value={email}
+                              onChangeText={(val: string) =>
+                                this.setValue('email', val)
+                              }
+                              placeholder="E-mail"
+                            />
+                          </ColColumn>
+                          <ColColumn>
+                            <Button
+                              full
+                              disabled={
+                                !(email.length > 0 && emailValidation(email))
+                              }
+                              onPress={() => this.requestReset(requestReset)}
+                            >
+                              <Text color={colors.white}>Send</Text>
+                            </Button>
+                          </ColColumn>
+                          <ColColumn>
+                            <QLNotifications error={error} success={success} />
+                          </ColColumn>
+                        </RowColumn>
+                      </ColColumn>
+                    )}
+                  </RowColumn>
+                </React.Fragment>
               </PaddingView>
             </ImageBackground>
           );

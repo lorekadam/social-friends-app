@@ -2,18 +2,21 @@ import styled from 'styled-components';
 import { Constants } from 'expo';
 
 interface Props {
+  statusBar?: boolean;
+  padding?: number;
   height: string;
 }
 
 export const PaddingView = styled.View`
-  margin-top: ${Constants.statusBarHeight};
+  margin-top: ${(props: Props) =>
+    props.statusBar ? Constants.statusBarHeight : 0};
   flex: 1;
   width: 100%;
   height: ${(props: Props) => (props.height ? props.height : '100%')};
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 20px;
+  padding: ${(props: Props) => (props.padding ? `${props.padding}px` : '20px')};
 `;
 
 export const FullView = styled.View`

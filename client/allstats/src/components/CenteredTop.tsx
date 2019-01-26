@@ -3,12 +3,11 @@ import Avatar from '../components/Avatar';
 import SocialButtons from './SocialButtons';
 import { Row, Col } from '../styled/Grid';
 import StartGameButton from './ControlButtons/StartGameButton';
-import { avatarDimension } from '../styled/globals';
 
 export default class CenteredTop extends Component {
   render() {
     return (
-      <Row align="center" style={{ marginTop: (avatarDimension / 2) * -1 }}>
+      <Row height={100} noGutters align="center">
         <Col>
           <StartGameButton />
         </Col>

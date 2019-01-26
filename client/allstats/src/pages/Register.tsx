@@ -14,6 +14,7 @@ import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
 import Logo from '../components/Logo';
 import { LOGIN_PAGE } from '../navigation/pageTypes';
+import { RowColumn, ColColumn } from '../styled/Grid';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -66,63 +67,85 @@ export default class RegisterPage extends Component<Props, State> {
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
             >
-              <PaddingView>
-                {loading ? (
-                  <Loader />
-                ) : (
-                  <React.Fragment>
-                    <BackButton path={LOGIN_PAGE} />
-                    <Logo style={{ marginBottom: 13 }} />
-                    <Input
-                      value={name}
-                      onChangeText={(val: string) => this.setValue('name', val)}
-                      placeholder="Name"
-                    />
-                    <Input
-                      value={email}
-                      onChangeText={(val: string) =>
-                        this.setValue('email', val)
-                      }
-                      placeholder="Email"
-                    />
-                    <Input
-                      value={password}
-                      onChangeText={(val: string) =>
-                        this.setValue('password', val)
-                      }
-                      placeholder="Password"
-                      secureTextEntry={true}
-                    />
-                    <Button
-                      full
-                      disabled={
-                        !(
-                          name.length > 0 &&
-                          nameValidation(name) &&
-                          email.length > 0 &&
-                          emailValidation(email) &&
-                          password.length > 0
-                        )
-                      }
-                      onPress={async () => {
-                        const res = await signup();
-                        if (res) {
-                          await AsyncStorage.setItem(
-                            'token',
-                            res.data.signup.jwt
-                          );
-                          this.setState({
-                            success: res.data.signup.message
-                          });
-                          this.props.navigation.navigate('Profile');
-                        }
-                      }}
-                    >
-                      <Text color={colors.white}>Register</Text>
-                    </Button>
-                    <QLNotifications error={error} success={success} />
-                  </React.Fragment>
-                )}
+              <PaddingView statusBar>
+                <React.Fragment>
+                  <BackButton path={LOGIN_PAGE} />
+                  <RowColumn>
+                    <ColColumn flex={4} justify="center" align="center">
+                      <Logo />
+                    </ColColumn>
+                    {loading ? (
+                      <ColColumn justify="center" align="center">
+                        <Loader />
+                      </ColColumn>
+                    ) : (
+                      <ColColumn flex={4}>
+                        <RowColumn>
+                          <ColColumn>
+                            <Input
+                              value={name}
+                              onChangeText={(val: string) =>
+                                this.setValue('name', val)
+                              }
+                              placeholder="Name"
+                            />
+                          </ColColumn>
+                          <ColColumn>
+                            <Input
+                              value={email}
+                              onChangeText={(val: string) =>
+                                this.setValue('email', val)
+                              }
+                              placeholder="Email"
+                            />
+                          </ColColumn>
+                          <ColColumn>
+                            <Input
+                              value={password}
+                              onChangeText={(val: string) =>
+                                this.setValue('password', val)
+                              }
+                              placeholder="Password"
+                              secureTextEntry={true}
+                            />
+                          </ColColumn>
+                          <ColColumn>
+                            <Button
+                              full
+                              disabled={
+                                !(
+                                  name.length > 0 &&
+                                  nameValidation(name) &&
+                                  email.length > 0 &&
+                                  emailValidation(email) &&
+                                  password.length > 0
+                                )
+                              }
+                              onPress={async () => {
+                                const res = await signup();
+                                if (res) {
+                                  await AsyncStorage.setItem(
+                                    'token',
+                                    res.data.signup.jwt
+                                  );
+                                  this.setState({
+                                    success: res.data.signup.message
+                                  });
+                                  this.props.navigation.navigate('Profile');
+                                }
+                              }}
+                            >
+                              <Text color={colors.white}>Register</Text>
+                            </Button>
+                          </ColColumn>
+                          <ColColumn>
+                            <QLNotifications error={error} success={success} />
+                          </ColColumn>
+                        </RowColumn>
+                      </ColColumn>
+                    )}
+                  </RowColumn>
+                </React.Fragment>
               </PaddingView>
             </ImageBackground>
           );
