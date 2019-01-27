@@ -36,7 +36,8 @@ const Query = {
       {
         where: {
           user: { id: userId }
-        }
+        },
+        orderBy: 'createdAt_DESC'
       },
       info
     );

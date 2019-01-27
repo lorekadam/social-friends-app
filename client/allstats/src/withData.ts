@@ -3,6 +3,7 @@ import { endpoint } from './endpoint';
 import { LOCAL_TOGGLE_QUERY } from './pages/PageSpine';
 
 export default function createClient(token: string) {
+  console.log(`with ${token}`);
   return new ApolloClient({
     uri: endpoint,
     request: (operation) => {

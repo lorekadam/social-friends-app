@@ -10,6 +10,8 @@ import Loader from '../../Loader';
 
 interface Props {
   id: string;
+  viewed: boolean;
+  accepted: boolean;
   friend: {
     id: string;
     name: string;
@@ -36,7 +38,7 @@ export default class FriendInvite extends Component<Props, State> {
     };
   }
   render() {
-    const { id } = this.props;
+    const { id, friend, accepted, viewed } = this.props;
     const { success } = this.state;
     return (
       <Mutation mutation={ACCEPT_FRIEND_INVITE_MUTATION} variables={{ id }}>
@@ -49,23 +51,26 @@ export default class FriendInvite extends Component<Props, State> {
                 <React.Fragment>
                   <Row>
                     <Col>
-                      <Text>
-                        Friend invitation from {this.props.friend.name}{' '}
-                      </Text>
+                      <Text>Friend invitation from {friend.name}</Text>
                     </Col>
+                    {!accepted && (
+                      <Col>
+                        <PillTextIconButton
+                          text="Accept"
+                          icon="plus"
+                          action={async () => {
+                            const res = await acceptFriendInvite();
+                            if (res) {
+                              this.setState({
+                                success: res.data.acceptFriendInvite.message
+                              });
+                            }
+                          }}
+                        />
+                      </Col>
+                    )}
                     <Col>
-                      <PillTextIconButton
-                        text="Accept"
-                        icon="plus"
-                        action={async () => {
-                          const res = await acceptFriendInvite();
-                          if (res) {
-                            this.setState({
-                              success: res.data.acceptFriendInvite.message
-                            });
-                          }
-                        }}
-                      />
+                      <Text>{viewed.toString()}</Text>
                     </Col>
                   </Row>
                   <QLNotifications error={error} success={success} />

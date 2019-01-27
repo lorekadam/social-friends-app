@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Text } from '../styled/Text';
 import PageSpine from './PageSpine';
+import Loader from '../components/Loader';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -23,13 +24,17 @@ export default class ProfilePage extends Component<Props, {}> {
   render() {
     return (
       <Query query={ME_QUERY}>
-        {({ data }) => {
+        {({ loading, data }) => {
           return (
             <PageSpine
               navigation={this.props.navigation}
               name={data && data.me && data.me.name}
             >
-              <Text>Content</Text>
+              {loading ? (
+                <Loader />
+              ) : (
+                <Text>Content {data && data.me && data.me.name}</Text>
+              )}
             </PageSpine>
           );
         }}

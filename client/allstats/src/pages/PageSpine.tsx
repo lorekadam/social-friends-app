@@ -13,6 +13,7 @@ import Notifications from '../components/Notifications/Notifications';
 import { View } from 'react-native';
 import { RowColumn, ColColumn } from '../styled/Grid';
 import SlideDown from '../components/Animations/SlideDown';
+import Loader from '../components/Loader';
 
 interface Props {
   name: string;
@@ -47,35 +48,43 @@ export default class PageSpine extends Component<Props, State> {
   render() {
     return (
       <Query query={LOCAL_TOGGLE_QUERY}>
-        {({ data }) => {
+        {({ loading, data }) => {
           return (
             <MainView>
-              <RowColumn noGutters>
-                <ColColumn noGutters>
-                  <View
-                    onLayout={(e) =>
-                      this.setState({ top: e.nativeEvent.layout.height })
-                    }
-                    style={{ width: '100%', height: '100%' }}
-                  >
-                    <ColorizedTop />
-                    <CenteredTop />
-                  </View>
-                </ColColumn>
-                <ColColumn noGutters flex={5}>
-                  <PaddingView style={{ zIndex: 1, backgroundColor: 'gray' }}>
-                    {this.props.children}
-                  </PaddingView>
-                </ColColumn>
-              </RowColumn>
-              {(data.friendsOpen ||
-                data.notificationsOpen ||
-                data.settingsOpen) && (
-                <SlideDown top={this.state.top}>
-                  {data.friendsOpen && <Friends />}
-                  {data.notificationsOpen && <Notifications />}
-                  {data.settingsOpen && <Settings />}
-                </SlideDown>
+              {loading ? (
+                <Loader />
+              ) : (
+                <React.Fragment>
+                  <RowColumn noGutters>
+                    <ColColumn noGutters>
+                      <View
+                        onLayout={(e) =>
+                          this.setState({ top: e.nativeEvent.layout.height })
+                        }
+                        style={{ width: '100%', height: '100%' }}
+                      >
+                        <ColorizedTop />
+                        <CenteredTop />
+                      </View>
+                    </ColColumn>
+                    <ColColumn noGutters flex={5}>
+                      <PaddingView
+                        style={{ zIndex: 1, backgroundColor: 'gray' }}
+                      >
+                        {this.props.children}
+                      </PaddingView>
+                    </ColColumn>
+                  </RowColumn>
+                  {(data.friendsOpen ||
+                    data.notificationsOpen ||
+                    data.settingsOpen) && (
+                    <SlideDown top={this.state.top}>
+                      {data.friendsOpen && <Friends />}
+                      {data.notificationsOpen && <Notifications />}
+                      {data.settingsOpen && <Settings />}
+                    </SlideDown>
+                  )}
+                </React.Fragment>
               )}
             </MainView>
           );

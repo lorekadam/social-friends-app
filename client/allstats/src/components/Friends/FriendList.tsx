@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { Query, RefetchQueriesProviderFn } from 'react-apollo';
 import FriendListItem from './FriendListItem';
 import { FullView } from '../../styled/View';
+import Loader from '../Loader';
 
 interface Friendship {
   accepted: boolean;
@@ -23,7 +24,7 @@ const MY_FRIENDS_QUERY = gql`
 `;
 
 export default class FriendList extends Component {
-  renderFriendListItems = (friendships: [Friendship]) => {
+  renderFriendListItems = (friendships: [Friendship], refetch) => {
     let elements: [JSX.Element?] = [];
     friendships.map((friendship) => {
       const { id, name } = friendship.friend;
@@ -33,6 +34,7 @@ export default class FriendList extends Component {
           name={name}
           accepted={friendship.accepted}
           id={id}
+          refetch={refetch}
         />
       );
     });
@@ -41,13 +43,15 @@ export default class FriendList extends Component {
   render() {
     return (
       <Query query={MY_FRIENDS_QUERY}>
-        {({ data }) => {
+        {({ loading, data, refetch }) => {
           return (
             <FullView>
-              {data && data.friendships && data.friendships.length > 0 ? (
+              {loading ? (
+                <Loader />
+              ) : data && data.friendships && data.friendships.length > 0 ? (
                 <React.Fragment>
                   <Text>Your Friends - {data.friendships.length}</Text>
-                  {this.renderFriendListItems(data.friendships)}
+                  {this.renderFriendListItems(data.friendships, refetch)}
                 </React.Fragment>
               ) : (
                 <Text>You haven't got any friends</Text>

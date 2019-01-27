@@ -160,14 +160,58 @@ const Mutation = {
       return { message: 'There is no user with this name :(' };
     }
   },
+  async removeFriend(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    // 1. Find friends
+    const friendships = await ctx.db.query.friendships({
+      where: {
+        OR: [
+          {
+            user: {
+              id: userId
+            },
+            friend: {
+              id: args.friendId
+            }
+          },
+          {
+            user: {
+              id: args.friendId
+            },
+            friend: {
+              id: userId
+            }
+          }
+        ]
+      }
+    });
+    // TO DO REMOVE OLD NOTIFICATION !!!!!!
+    const deleted = await ctx.db.mutation.deleteManyFriendships({
+      where: {
+        OR: friendships
+      }
+    });
+    if (deleted.count === 2) {
+      return { message: 'Success!' };
+    } else {
+      return { message: 'Something went wrong :(' };
+    }
+  },
   async acceptFriendInvite(parent, args, ctx, info) {
     const userId = ctx.request.userId;
     if (!userId) {
       return null;
     }
     // 1. Get notification
-    const notification = await ctx.db.query.notification(
+    const notification = await ctx.db.mutation.updateNotification(
       {
+        data: {
+          viewed: true,
+          accepted: true
+        },
         where: {
           id: args.id
         }
@@ -176,10 +220,12 @@ const Mutation = {
         id,
         type,
         friendship{
-         id
+          id
         }
-      }`
+      }
+      `
     );
+
     // 2. Check type
     if (notification.type === 'FRIEND_INVITE') {
       const acceptInvitation = await ctx.db.mutation.updateManyFriendships({

@@ -38,11 +38,12 @@ export default class App extends React.Component<Props, State> {
     const { token, signedIn, checkedSignIn } = this.state;
     const RootNavigation = createRootNavigator(signedIn);
     const App = createAppContainer(RootNavigation);
-    if (!checkedSignIn) {
+    if (!checkedSignIn && token.length === 0) {
       return <Loader />;
     } else {
       return (
         <ApolloProvider client={createClient(token)}>
+          {console.log(token)}
           <App />
         </ApolloProvider>
       );

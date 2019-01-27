@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Tue Jan 22 2019 19:37:08 GMT+0100 (Środkowoeuropejski czas stand.)
+# timestamp: Sun Jan 27 2019 18:19:28 GMT+0100 (Środkowoeuropejski czas stand.)
 
 type AggregateFriendship {
   count: Int!
@@ -415,6 +415,7 @@ type Notification implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   viewed: Boolean!
+  accepted: Boolean!
 }
 
 """A connection to a list of items."""
@@ -430,6 +431,7 @@ type NotificationConnection {
 input NotificationCreateInput {
   type: NotificationType!
   viewed: Boolean
+  accepted: Boolean
   user: UserCreateOneInput!
   friendship: FriendshipCreateManyInput
 }
@@ -454,6 +456,8 @@ enum NotificationOrderByInput {
   updatedAt_DESC
   viewed_ASC
   viewed_DESC
+  accepted_ASC
+  accepted_DESC
 }
 
 type NotificationPreviousValues {
@@ -462,6 +466,7 @@ type NotificationPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   viewed: Boolean!
+  accepted: Boolean!
 }
 
 type NotificationSubscriptionPayload {
@@ -510,6 +515,7 @@ enum NotificationType {
 input NotificationUpdateInput {
   type: NotificationType
   viewed: Boolean
+  accepted: Boolean
   user: UserUpdateOneRequiredInput
   friendship: FriendshipUpdateManyInput
 }
@@ -517,6 +523,7 @@ input NotificationUpdateInput {
 input NotificationUpdateManyMutationInput {
   type: NotificationType
   viewed: Boolean
+  accepted: Boolean
 }
 
 input NotificationWhereInput {
@@ -626,6 +633,10 @@ input NotificationWhereInput {
 
   """All values that are not equal to given value."""
   viewed_not: Boolean
+  accepted: Boolean
+
+  """All values that are not equal to given value."""
+  accepted_not: Boolean
   user: UserWhereInput
   friendship_every: FriendshipWhereInput
   friendship_some: FriendshipWhereInput

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Text } from 'react-native';
+import { PaddingView } from '../../styled/View';
+import colors from '../../styled/colors';
 
 interface Props {
   top: number;
@@ -23,22 +25,20 @@ export default class SlideDown extends Component<Props, {}> {
     let { fadeAnim } = this.state;
 
     return (
-      <Animated.View
+      <Animated.ScrollView
         style={{
           display: 'flex',
-          width: '100%',
           position: 'absolute',
           zIndex: 2,
           left: 0,
           right: 0,
-          overflow: 'hidden',
-          backgroundColor: 'blue',
+          backgroundColor: colors.secondary,
           top: this.props.top,
           height: fadeAnim
         }}
       >
-        {this.props.children}
-      </Animated.View>
+        <PaddingView padding={5}>{this.props.children}</PaddingView>
+      </Animated.ScrollView>
     );
   }
 }

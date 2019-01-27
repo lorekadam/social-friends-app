@@ -34,7 +34,9 @@ type Notification {
   user: User!
   type: NotificationType!
   friendship: [Friendship!]
+    @relation(name: "FriendshipsConnection", onDelete: CASCADE)
   createdAt: DateTime!
   updatedAt: DateTime!
   viewed: Boolean! @default(value: "false")
+  accepted: Boolean! @default(value: "false")
 }
