@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import { Input } from '../../styled/Input';
 import colors from '../../styled/colors';
 import { FullView } from '../../styled/View';
@@ -10,7 +11,11 @@ import { Row, Col } from '../../styled/Grid';
 import { nameValidation } from '../../utils/validations';
 import QLNotifications from '../QLNotifications';
 import Loader from '../Loader';
+import { QRCODESCANNER_PAGE } from '../../navigation/pageTypes';
 
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
 interface State {
   name: string;
   success: string;
@@ -24,8 +29,8 @@ const INVITE_FRIEND_MUTATION = gql`
   }
 `;
 
-export default class FriendInvitation extends Component<{}, State> {
-  constructor(props: {}) {
+class FriendInvitation extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -53,7 +58,7 @@ export default class FriendInvitation extends Component<{}, State> {
               ) : (
                 <React.Fragment>
                   <Row>
-                    <Col flex={2}>
+                    <Col>
                       <Input
                         onChangeText={(val: string) => this.handleChange(val)}
                         value={name}
@@ -62,7 +67,7 @@ export default class FriendInvitation extends Component<{}, State> {
                         borderColor={colors.pink}
                       />
                     </Col>
-                    <Col flex={1}>
+                    <Col>
                       <Button
                         disabled={!nameValidation(name)}
                         onPress={async () => {
@@ -77,6 +82,15 @@ export default class FriendInvitation extends Component<{}, State> {
                         <Text>Send!</Text>
                       </Button>
                     </Col>
+                    <Col>
+                      <Button
+                        onPress={() =>
+                          this.props.navigation.navigate(QRCODESCANNER_PAGE)
+                        }
+                      >
+                        <Text>Scan QR</Text>
+                      </Button>
+                    </Col>
                   </Row>
                   <QLNotifications error={error} success={success} />
                 </React.Fragment>
@@ -88,3 +102,5 @@ export default class FriendInvitation extends Component<{}, State> {
     );
   }
 }
+
+export default withNavigation(FriendInvitation);

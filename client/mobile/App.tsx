@@ -25,14 +25,14 @@ export default class App extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount = async () => {
+  async componentDidMount() {
     const jwt = await AsyncStorage.getItem('token');
     if (jwt) {
       this.setState({ token: jwt, signedIn: true, checkedSignIn: true });
     } else {
       this.setState({ checkedSignIn: true });
     }
-  };
+  }
 
   render() {
     const { token, signedIn, checkedSignIn } = this.state;

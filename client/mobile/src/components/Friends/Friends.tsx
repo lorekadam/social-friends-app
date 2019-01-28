@@ -6,7 +6,7 @@ import FriendList from './FriendList';
 export default class Friends extends Component {
   render() {
     return (
-      <PaddingView>
+      <PaddingView padding={5}>
         <FriendInvitation />
         <FriendList />
       </PaddingView>

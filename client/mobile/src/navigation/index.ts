@@ -3,6 +3,7 @@ import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
 import ForgotPasswordPage from '../pages/ForgotPassword';
 import ProfilePage from '../pages/Profile';
+import QRCodeScanner from '../pages/QRCodeScanner';
 import * as pages from './pageTypes';
 
 export const SignedOut = createSwitchNavigator(
@@ -30,6 +31,10 @@ export const SignedIn = createSwitchNavigator(
     Profile: {
       screen: ProfilePage,
       title: pages.PROFILE_PAGE
+    },
+    QRCodeScannerPage: {
+      screen: QRCodeScanner,
+      title: pages.QRCODESCANNER_PAGE
     }
   },
   {
