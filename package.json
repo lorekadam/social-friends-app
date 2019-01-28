@@ -1,51 +1,40 @@
 {
-  "name": "server",
+  "name": "allstats",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "nodemon app.js --ignore client/"
+    "serve-dev": "nodemon -e js, graphql -x node --inspect src/index.js",
+    "playground": "graphql playground --dotenv variables.env",
+    "serve": "npm-run-all --parallel serve-dev playground",
+    "deploy": "prisma deploy -e variables.env",
+    "deploy-force": "prisma deploy -e variables.env --force",
+    "schema": "graphql get-schema -p prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://adamlorek@bitbucket.org/adamlorek/fstats.git"
   },
   "author": "Adam Lorek",
   "license": "ISC",
+  "homepage": "https://bitbucket.org/adamlorek/fstats#readme",
   "dependencies": {
-    "apollo-server": "^2.0.0-rc.5",
-    "apollo-server-express": "^2.0.0-rc.6",
+    "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.2",
-    "dotenv": "^5.0.0",
-    "errorhandler": "^1.5.0",
-    "express": "^4.16.2",
-    "express-graphql": "^0.6.12",
-    "graphql": "^0.13.2",
-    "jsonwebtoken": "^8.1.1",
-    "mongoose": "^5.0.7",
-    "nodemailer": "^4.6.0",
-    "pug": "^2.0.0-rc.4",
-    "rand-token": "^0.4.0"
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^6.1.0",
+    "graphql": "^14.0.2",
+    "graphql-cli": "^3.0.3",
+    "graphql-yoga": "^1.16.7",
+    "jsonwebtoken": "^8.3.0",
+    "nodemailer": "^4.6.8",
+    "prisma": "^1.22.2",
+    "prisma-binding": "^2.1.6",
+    "stripe": "^6.12.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "eslint": "^4.18.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "nodemon": "^1.15.1"
-  },
-  "eslintConfig": {
-    "extends": "airbnb-base/legacy",
-    "rules": {
-      "no-console": 0,
-      "linebreak-style": 0,
-      "consistent-return": 0,
-      "no-underscore-dangle": 0,
-      "func-names": 0,
-      "no-useless-escape": 0
-    },
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
-    }
+    "nodemon": "^1.18.4",
+    "npm-run-all": "^4.1.3"
   }
 }

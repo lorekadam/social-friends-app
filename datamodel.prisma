@@ -1,0 +1,42 @@
+enum Permission {
+  ADMIN
+  USER
+}
+
+enum NotificationType {
+  FRIEND_INVITE
+}
+
+type User {
+  id: ID! @unique
+  name: String! @unique
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission]
+  jwt: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Friendship {
+  id: ID! @unique
+  user: User! @relation(name: "User")
+  friend: User @relation(name: "Friend")
+  accepted: Boolean! @default(value: "false")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Notification {
+  id: ID! @unique
+  user: User!
+  type: NotificationType!
+  friendship: [Friendship!]
+    @relation(name: "FriendshipsConnection", onDelete: CASCADE)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  viewed: Boolean! @default(value: "false")
+  accepted: Boolean! @default(value: "false")
+}

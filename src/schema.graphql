@@ -1,0 +1,48 @@
+# import * from './generated/prisma.graphql'
+
+type SuccessMessage {
+  message: String
+}
+
+type Mutation {
+  signup(email: String!, password: String!, name: String!): User!
+  signin(email: String!, password: String!): User!
+  requestReset(email: String!): SuccessMessage
+  resetPassword(
+    resetToken: String!
+    password: String!
+    confirmPassword: String!
+  ): User!
+  inviteFriend(name: String!): SuccessMessage!
+  acceptFriendInvite(id: String!): SuccessMessage!
+  removeFriend(friendId: String!): SuccessMessage!
+}
+
+type Query {
+  me: User!
+  friendships: [Friendship!]!
+  notifications: [Notification!]!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  jwt: String
+}
+
+type Friendship {
+  id: ID!
+  user: User!
+  friend: User
+  accepted: Boolean!
+}
+
+type Notification {
+  id: ID!
+  user: User!
+  type: NotificationType!
+  friendship: [Friendship!]
+  viewed: Boolean!
+  accepted: Boolean!
+}

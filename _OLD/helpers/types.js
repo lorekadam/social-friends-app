@@ -1,0 +1,5 @@
+// NOTIFICATIONS TYPES
+
+module.exports.FRIEND_REQUEST = 'FRIEND_REQUEST';
+module.exports.DUEL_REQUEST = 'DUEL_REQUEST';
+module.exports.NEW_GAME = 'NEW_GAME';
