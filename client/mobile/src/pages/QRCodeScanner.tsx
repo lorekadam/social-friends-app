@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
+import { Text, View, TouchableOpacity } from 'react-native';
+import { Camera, Permissions } from 'expo';
 import BackButton from '../components/BackButton';
 import { PROFILE_PAGE } from '../navigation/pageTypes';
 import { MainView } from './PageSpine';
+import { BarCodeScanner } from 'expo';
 
-export default class QRCodeScanner extends React.Component {
+export default class CameraExample extends React.Component {
   state = {
-    hasCameraPermission: null
+    hasCameraPermission: null,
+    type: Camera.Constants.Type.back
   };
 
   async componentDidMount() {
@@ -15,28 +17,57 @@ export default class QRCodeScanner extends React.Component {
     this.setState({ hasCameraPermission: status === 'granted' });
   }
 
-  handleBarCodeScanned = ({ type, data }) => {
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
-
   render() {
     const { hasCameraPermission } = this.state;
-    console.log(hasCameraPermission);
-
     if (hasCameraPermission === null) {
-      return <Text>Requesting for camera permission</Text>;
-    }
-    if (hasCameraPermission === false) {
+      return <View />;
+    } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
+    } else {
+      return (
+        <MainView>
+          <Camera
+            style={{ flex: 1 }}
+            type={this.state.type}
+            onBarCodeScanned={(e) => console.log(e)}
+            barCodeScannerSettings={{
+              barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr]
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'transparent',
+                flexDirection: 'row'
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  flex: 0.1,
+                  alignSelf: 'flex-end',
+                  alignItems: 'center'
+                }}
+                onPress={() => {
+                  this.setState({
+                    type:
+                      this.state.type === Camera.Constants.Type.back
+                        ? Camera.Constants.Type.front
+                        : Camera.Constants.Type.back
+                  });
+                }}
+              >
+                <Text
+                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}
+                >
+                  {' '}
+                  Flip{' '}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Camera>
+          <BackButton path={PROFILE_PAGE} />
+        </MainView>
+      );
     }
-    return (
-      <MainView>
-        <BarCodeScanner
-          onBarCodeScanned={this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFill}
-        />
-        <BackButton path={PROFILE_PAGE} />
-      </MainView>
-    );
   }
 }

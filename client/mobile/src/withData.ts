@@ -16,7 +16,7 @@ export default function createClient(token: string) {
       });
     },
     headers: {
-      authorization: token ? `Bearer ${token}` : ''
+      authorization: token
     },
     clientState: {
       resolvers: {

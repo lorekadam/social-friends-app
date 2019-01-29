@@ -84,7 +84,7 @@ export default class LoginPage extends Component<Props, State> {
                       <Loader />
                     </ColColumn>
                   ) : (
-                    <ColColumn flex={4}>
+                    <ColColumn flex={5}>
                       <RowColumn>
                         <ColColumn>
                           <Input

@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Notification } from '../styled/Notification';
 import { Text } from '../styled/Text';
 import colors from '../styled/colors';
-import { ApolloError } from 'apollo-boost';
 
 interface Props {
-  error?: ApolloError;
+  error?: any;
   success?: string;
 }
 export default class QLNotifications extends Component<Props, {}> {

@@ -15,6 +15,7 @@ import { QRCODESCANNER_PAGE } from '../../navigation/pageTypes';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
+  refetch: any;
 }
 interface State {
   name: string;
@@ -77,6 +78,7 @@ class FriendInvitation extends Component<Props, State> {
                               success: res.data.inviteFriend.message
                             });
                           }
+                          this.props.refetch();
                         }}
                       >
                         <Text>Send!</Text>

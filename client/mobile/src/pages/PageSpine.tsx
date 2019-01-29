@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 import Settings from '../components/Settings/Settings';
 import Friends from '../components/Friends/Friends';
 import Notifications from '../components/Notifications/Notifications';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import { RowColumn, ColColumn } from '../styled/Grid';
 import SlideDown from '../components/Animations/SlideDown';
 import Loader from '../components/Loader';

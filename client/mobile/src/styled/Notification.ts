@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const Notification = styled.View`
-  padding: 10px;
+  padding: 5px 15px;
   margin: 10px;
   background-color: ${(props: Props) =>
     props.error ? colors.error : colors.success};
@@ -14,5 +14,5 @@ export const Notification = styled.View`
   align-items: center;
   display: flex;
   border-radius: 30px;
-  width: 100%;
+  width: auto;
 `;

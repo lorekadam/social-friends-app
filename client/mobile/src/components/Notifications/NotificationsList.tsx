@@ -51,7 +51,8 @@ export default class NotificationsList extends Component {
       if (
         type === NotificationTypes.FRIEND_INVITE &&
         friendship !== undefined &&
-        friendship.length === 2
+        friendship.length === 2 &&
+        !accepted
       ) {
         elements.push(
           <FriendInvite
@@ -78,9 +79,7 @@ export default class NotificationsList extends Component {
             <FullView>
               {loading ? (
                 <Loader />
-              ) : data &&
-                data.notifications &&
-                data.notifications.length > 0 ? (
+              ) : data.notifications.length > 0 ? (
                 <React.Fragment>
                   <Text>
                     You have {data.notifications.length} notifications

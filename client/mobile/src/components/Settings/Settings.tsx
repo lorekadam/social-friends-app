@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import QRCode from 'react-native-qrcode';
 import { NavigationScreenProp, withNavigation } from 'react-navigation';
 
@@ -30,7 +30,9 @@ class Settings extends Component<Props, {}> {
           <Text>Your QR code!</Text>
         </ColColumn>
         <ColColumn justify="center">
-          <QRCode value={this.props.id} />
+          <View style={{ overflow: 'hidden' }}>
+            <QRCode value={this.props.id} />
+          </View>
         </ColColumn>
       </RowColumn>
     );

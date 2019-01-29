@@ -27,10 +27,10 @@ export default class App extends React.Component<Props, State> {
 
   async componentDidMount() {
     const jwt = await AsyncStorage.getItem('token');
-    if (jwt) {
+    if (jwt.length > 0) {
       this.setState({ token: jwt, signedIn: true, checkedSignIn: true });
     } else {
-      this.setState({ checkedSignIn: true });
+      this.setState({ checkedSignIn: false });
     }
   }
 
@@ -43,7 +43,6 @@ export default class App extends React.Component<Props, State> {
     } else {
       return (
         <ApolloProvider client={createClient(token)}>
-          {console.log(token)}
           <App />
         </ApolloProvider>
       );
