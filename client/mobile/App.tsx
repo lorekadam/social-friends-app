@@ -27,10 +27,11 @@ export default class App extends React.Component<Props, State> {
 
   async componentDidMount() {
     const jwt = await AsyncStorage.getItem('token');
-    if (jwt.length > 0) {
+    console.log(jwt);
+    if (jwt && jwt.length > 0) {
       this.setState({ token: jwt, signedIn: true, checkedSignIn: true });
     } else {
-      this.setState({ checkedSignIn: false });
+      this.setState({ checkedSignIn: true });
     }
   }
 
@@ -38,7 +39,7 @@ export default class App extends React.Component<Props, State> {
     const { token, signedIn, checkedSignIn } = this.state;
     const RootNavigation = createRootNavigator(signedIn);
     const App = createAppContainer(RootNavigation);
-    if (!checkedSignIn && token.length === 0) {
+    if (!checkedSignIn) {
       return <Loader />;
     } else {
       return (

@@ -20,8 +20,14 @@ type Mutation {
 
 type Query {
   me: User!
+  user(id: String!): FindUser!
   friendships: [Friendship!]!
   notifications: [Notification!]!
+}
+
+type FindUser {
+  id: String!
+  name: String!
 }
 
 type User {

@@ -22,9 +22,9 @@ interface State {
   success: string;
 }
 
-const INVITE_FRIEND_MUTATION = gql`
-  mutation INVITE_FRIEND_MUTATION($name: String!) {
-    inviteFriend(name: $name) {
+export const INVITE_FRIEND_MUTATION = gql`
+  mutation INVITE_FRIEND_MUTATION($name: String, $id: String) {
+    inviteFriend(name: $name, id: $id) {
       message
     }
   }

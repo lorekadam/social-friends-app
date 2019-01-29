@@ -13,6 +13,18 @@ const Query = {
       info
     );
   },
+  async user(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    return await ctx.db.query.user(
+      {
+        where: { id: args.id }
+      },
+      info
+    );
+  },
   async friendships(parent, args, ctx, info) {
     const userId = ctx.request.userId;
     if (!userId) {
