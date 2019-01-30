@@ -5,23 +5,9 @@ import BackButton from '../components/BackButton';
 import { PROFILE_PAGE } from '../navigation/pageTypes';
 import { MainView } from './PageSpine';
 import { BarCodeScanner } from 'expo';
-import gql from 'graphql-tag';
-import { Query, Mutation } from 'react-apollo';
-import Loader from '../components/Loader';
-import { Button } from '../styled/Buttons';
-import { INVITE_FRIEND_MUTATION } from '../components/Friends/FriendInvitation';
-import { withNavigation } from 'react-navigation';
+import FriendInviteFromQR from '../components/Friends/FriendInviteFromQR';
 
-const USER_QUERY = gql`
-  query USER_QUERY($id: String!) {
-    user(id: $id) {
-      id
-      name
-    }
-  }
-`;
-
-class QRCodeScanner extends React.Component {
+export default class QRCodeScanner extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
@@ -58,45 +44,7 @@ class QRCodeScanner extends React.Component {
               }}
             >
               {userId.length > 0 && (
-                <Query query={USER_QUERY} variables={{ id: this.state.userId }}>
-                  {({ data, loading }) => {
-                    if (loading) {
-                      return <Loader />;
-                    }
-                    return (
-                      <View
-                        style={{
-                          position: 'absolute',
-                          top: '30%',
-                          left: '30%',
-                          padding: 20
-                        }}
-                      >
-                        <Mutation mutation={INVITE_FRIEND_MUTATION}>
-                          {(inviteFriend, { error, loading }) => (
-                            <Button
-                              onPress={async () => {
-                                const res = await inviteFriend();
-                                if (res) {
-                                  this.props.navigation.navigate(PROFILE_PAGE);
-                                }
-                              }}
-                            >
-                              {loading ? (
-                                <Loader />
-                              ) : (
-                                <Text>Send invitation to {data.user.name}</Text>
-                              )}
-                            </Button>
-                          )}
-                        </Mutation>
-                        <Button onPress={() => this.setState({ userId: '' })}>
-                          <Text>Close</Text>
-                        </Button>
-                      </View>
-                    );
-                  }}
-                </Query>
+                <FriendInviteFromQR id={this.state.userId} />
               )}
               <TouchableOpacity
                 style={{
@@ -127,5 +75,3 @@ class QRCodeScanner extends React.Component {
     }
   }
 }
-
-export default withNavigation(QRCodeScanner);

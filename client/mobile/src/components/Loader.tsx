@@ -99,7 +99,7 @@ export default class Loader extends Component<Props, State> {
       //   <Dot dotSize={dotSize} />
       //   </Animated.View>
       // </StyledLoader>
-      <ActivityIndicator size="large" color={colors.pink} />
+      <ActivityIndicator size="large" color={colors.facebook} />
     );
   }
 }

@@ -84,6 +84,7 @@ const Mutation = {
     if (!userId) {
       return null;
     }
+    console.log(args);
     // 1. Get Friend to invite
     const friendToAdd = await ctx.db.query.user({
       where: {
