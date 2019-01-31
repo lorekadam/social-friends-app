@@ -10,5 +10,9 @@ export default {
   success: '#12c06a',
   dark: '#000000',
   defaultText: '#0f033c',
-  facebook: '#4267b2'
+  facebook: '#4267b2',
+  seaMist: '#d8eee1',
+  prestigeGreen: '#164249',
+  indigoWhite: '#e9f7f9',
+  darkBrown: '#341a04'
 };

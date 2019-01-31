@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Constants } from 'expo';
 import { adopt } from 'react-adopt';
-import { PaddingView } from '../styled/View';
+import { PaddingView, FlexView } from '../styled/View';
 import ColorizedTop from '../components/ColorizedTop';
 import CenteredTop from '../components/CenteredTop';
 import { Query } from 'react-apollo';
@@ -10,7 +10,6 @@ import gql from 'graphql-tag';
 import Settings from '../components/Settings/Settings';
 import Friends from '../components/Friends/Friends';
 import Notifications from '../components/Notifications/Notifications';
-import { View, AsyncStorage } from 'react-native';
 import { RowColumn, ColColumn } from '../styled/Grid';
 import SlideDown from '../components/Animations/SlideDown';
 import Loader from '../components/Loader';
@@ -72,17 +71,17 @@ export default class PageSpine extends Component<{}, State> {
                 <React.Fragment>
                   <RowColumn noGutters>
                     <ColColumn noGutters>
-                      <View
+                      <FlexView
                         onLayout={(e) =>
                           this.setState({ top: e.nativeEvent.layout.height })
                         }
-                        style={{ width: '100%', height: '100%' }}
                       >
-                        <ColorizedTop />
-                        <CenteredTop />
-                      </View>
+                        <ColorizedTop>
+                          <CenteredTop />
+                        </ColorizedTop>
+                      </FlexView>
                     </ColColumn>
-                    <ColColumn noGutters flex={5}>
+                    <ColColumn noGutters flex={2}>
                       <PaddingView
                         style={{ zIndex: 1, backgroundColor: 'gray' }}
                       >

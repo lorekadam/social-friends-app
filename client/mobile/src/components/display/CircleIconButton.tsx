@@ -5,6 +5,7 @@ import colors from '../../styled/colors';
 
 interface Props {
   icon: string;
+  iconSize?: number;
   size?: number;
   buttonColor?: string;
   color?: string;
@@ -13,7 +14,7 @@ interface Props {
 
 export default class CircleIconButton extends Component<Props, {}> {
   render() {
-    const { icon, size, buttonColor, color, action } = this.props;
+    const { icon, iconSize, size, buttonColor, color, action } = this.props;
     return (
       <CircleButton
         size={size ? size : 38}
@@ -23,7 +24,7 @@ export default class CircleIconButton extends Component<Props, {}> {
         <Feather
           color={color ? color : colors.white}
           name={icon}
-          size={size ? size / 2 : 19}
+          size={iconSize ? iconSize : 19}
         />
       </CircleButton>
     );

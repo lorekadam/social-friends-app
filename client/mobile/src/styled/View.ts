@@ -7,6 +7,11 @@ interface Props {
   height: string;
 }
 
+export const FlexView = styled.View`
+  display: flex;
+  flex: 1;
+`;
+
 export const PaddingView = styled.View`
   margin-top: ${(props: Props) =>
     props.statusBar ? Constants.statusBarHeight : 0};
