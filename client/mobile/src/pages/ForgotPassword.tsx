@@ -35,13 +35,10 @@ const REQUEST_RESET_MUTATION = gql`
 `;
 
 export default class ForgotPassword extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      email: '',
-      success: ''
-    };
-  }
+  state = {
+    email: '',
+    success: ''
+  };
 
   setValue = (name: string, val: string) => {
     this.setState({

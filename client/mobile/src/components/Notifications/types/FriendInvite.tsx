@@ -31,12 +31,10 @@ const ACCEPT_FRIEND_INVITE_MUTATION = gql`
 `;
 
 export default class FriendInvite extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      success: ''
-    };
-  }
+  state = {
+    success: ''
+  };
+
   render() {
     const { id, friend, accepted, viewed } = this.props;
     const { success } = this.state;

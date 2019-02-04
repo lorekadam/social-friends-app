@@ -7,8 +7,8 @@ const server = createServer();
 
 server.express.use((req, res, next) => {
   const token = req.headers.authorization;
-  console.log(token);
-  if (token) {
+  if (token.length > 0) {
+    console.log('check');
     const { userId } = jwt.verify(
       token.replace('Bearer ', ''),
       process.env.APP_SECRET

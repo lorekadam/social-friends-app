@@ -21,6 +21,7 @@ export default class SlideDown extends Component<Props, {}> {
       duration: duration ? duration : 300
     }).start();
   }
+
   render() {
     let { fadeAnim } = this.state;
 

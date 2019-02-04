@@ -37,14 +37,11 @@ const SIGNIN_MUTATION = gql`
 `;
 
 export default class LoginPage extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      email: 'lorekkadam@gmail.com',
-      password: '102587',
-      success: ''
-    };
-  }
+  state = {
+    email: 'lorekkadam@gmail.com',
+    password: '102587',
+    success: ''
+  };
 
   setValue = (name: keyof State, val: string) => {
     this.setState({

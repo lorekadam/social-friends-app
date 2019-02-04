@@ -2,25 +2,39 @@ import ApolloClient from 'apollo-boost';
 import { endpoint } from './endpoint';
 import { LOCAL_TOGGLE_QUERY } from './pages/PageSpine';
 
-export default function createClient(token: string) {
+import { AsyncStorage } from 'react-native';
+
+export default function createClient() {
   return new ApolloClient({
     uri: endpoint,
-    request: (operation) => {
-      return new Promise((resolve) => {
-        operation.setContext({
-          fetchOptions: {
-            credentials: 'include'
-          }
-        });
-        resolve();
+    request: async (operation) => {
+      const token = await AsyncStorage.getItem('token');
+      operation.setContext({
+        fetchOptions: {
+          credentials: 'include'
+        },
+        headers: {
+          authorization: token || ''
+        }
       });
-    },
-    headers: {
-      authorization: token
     },
     clientState: {
       resolvers: {
         Mutation: {
+          toggleSidebar(_, variables, { cache }) {
+            //read state
+            const { sidebarOpen } = cache.readQuery({
+              query: LOCAL_TOGGLE_QUERY
+            });
+            // write state
+            const data = {
+              data: {
+                sidebarOpen: !sidebarOpen
+              }
+            };
+            cache.writeData(data);
+            return data;
+          },
           toggleSettings(_, variables, { cache }) {
             //read state
             const { settingsOpen } = cache.readQuery({
@@ -72,6 +86,7 @@ export default function createClient(token: string) {
         }
       },
       defaults: {
+        sidebarOpen: false,
         notificationsOpen: false,
         settingsOpen: false,
         friendsOpen: false

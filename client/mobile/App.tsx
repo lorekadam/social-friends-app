@@ -15,19 +15,14 @@ interface State {
 }
 
 export default class App extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      token: '',
-      signedIn: false,
-      checkedSignIn: false
-    };
-  }
+  state = {
+    token: '',
+    signedIn: false,
+    checkedSignIn: false
+  };
 
   async componentDidMount() {
     const jwt = await AsyncStorage.getItem('token');
-    console.log(jwt);
     if (jwt && jwt.length > 0) {
       this.setState({ token: jwt, signedIn: true, checkedSignIn: true });
     } else {
@@ -36,14 +31,14 @@ export default class App extends React.Component<Props, State> {
   }
 
   render() {
-    const { token, signedIn, checkedSignIn } = this.state;
+    const { signedIn, checkedSignIn } = this.state;
     const RootNavigation = createRootNavigator(signedIn);
     const App = createAppContainer(RootNavigation);
     if (!checkedSignIn) {
       return <Loader />;
     } else {
       return (
-        <ApolloProvider client={createClient(token)}>
+        <ApolloProvider client={createClient()}>
           <App />
         </ApolloProvider>
       );

@@ -43,15 +43,13 @@ const SIGNUP_MUTATION = gql`
 `;
 
 export default class RegisterPage extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      name: '',
-      email: '',
-      password: '',
-      success: ''
-    };
-  }
+  state = {
+    name: '',
+    email: '',
+    password: '',
+    success: ''
+  };
+
   setValue = (name: keyof State, val: string) => {
     this.setState({
       [name]: val

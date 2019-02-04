@@ -13,6 +13,7 @@ import Notifications from '../components/Notifications/Notifications';
 import { RowColumn, ColColumn } from '../styled/Grid';
 import SlideDown from '../components/Animations/SlideDown';
 import Loader from '../components/Loader';
+import Sidebar from '../components/Sidebar';
 
 interface State {
   top: number;
@@ -20,6 +21,7 @@ interface State {
 
 export const LOCAL_TOGGLE_QUERY = gql`
   query {
+    sidebarOpen @client
     friendsOpen @client
     notificationsOpen @client
     settingsOpen @client
@@ -59,6 +61,7 @@ export default class PageSpine extends Component<{}, State> {
       <Composed>
         {({ user, localState }) => {
           const {
+            sidebarOpen,
             friendsOpen,
             notificationsOpen,
             settingsOpen
@@ -89,13 +92,19 @@ export default class PageSpine extends Component<{}, State> {
                       </PaddingView>
                     </ColColumn>
                   </RowColumn>
-                  {(friendsOpen || notificationsOpen || settingsOpen) && (
-                    <SlideDown top={this.state.top}>
-                      {friendsOpen && <Friends />}
-                      {notificationsOpen && <Notifications />}
-                      {settingsOpen && <Settings id={user.data.me.id} />}
-                    </SlideDown>
-                  )}
+                  <Sidebar open={sidebarOpen}>
+                    <RowColumn>
+                      <ColColumn>
+                        <Friends />
+                      </ColColumn>
+                      <ColColumn>
+                        <Notifications />
+                      </ColColumn>
+                      <ColColumn>
+                        <Settings id={user.data.me.id} />
+                      </ColColumn>
+                    </RowColumn>
+                  </Sidebar>
                 </React.Fragment>
               )}
             </MainView>

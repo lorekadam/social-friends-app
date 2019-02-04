@@ -31,14 +31,10 @@ export const INVITE_FRIEND_MUTATION = gql`
 `;
 
 class FriendInvitation extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      name: '',
-      success: ''
-    };
-  }
+  state = {
+    name: '',
+    success: ''
+  };
 
   handleChange = (name: string) => {
     this.setState({
