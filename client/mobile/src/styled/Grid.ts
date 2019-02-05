@@ -34,8 +34,11 @@ export const Col = styled.View`
 export const RowColumn = styled(Row)`
   height: 100%;
   flex-direction: column;
+  padding: 0;
+  margin: 0;
 `;
 
 export const ColColumn = styled(Col)`
   width: 100%;
+  padding: 0;
 `;

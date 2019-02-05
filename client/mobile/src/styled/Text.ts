@@ -8,6 +8,7 @@ interface Props {
 }
 
 export const Text = styled.Text`
+  font-family: 'roboto-light';
   color: ${(props: Props) => (props.color ? props.color : colors.defaultText)};
   font-size: ${(props: Props) =>
     props.size ? props.size : globals.defaultSize};

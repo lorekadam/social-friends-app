@@ -5,6 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 import createClient from './src/withData';
 import Loader from './src/components/Loader';
 import { createAppContainer } from 'react-navigation';
+import { Font } from 'expo';
 
 interface Props {}
 
@@ -22,6 +23,11 @@ export default class App extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
+    Font.loadAsync({
+      'roboto-light': require('./assets/fonts/Roboto-Light.ttf'),
+      'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
+      roboto: require('./assets/fonts/Roboto-Regular.ttf')
+    });
     const jwt = await AsyncStorage.getItem('token');
     if (jwt && jwt.length > 0) {
       this.setState({ token: jwt, signedIn: true, checkedSignIn: true });

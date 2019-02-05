@@ -17,8 +17,8 @@ export default class FriendsButton extends Component {
         {(toggleFriends) => (
           <CircleIconButton
             iconSize={26}
-            buttonColor={colors.seaMist}
-            color={colors.prestigeGreen}
+            buttonColor={colors.light1}
+            color={colors.dark1}
             action={() => toggleFriends()}
             icon="user"
           />

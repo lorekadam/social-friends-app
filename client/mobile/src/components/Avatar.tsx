@@ -9,7 +9,7 @@ interface State {
 
 const AvatarWrapper = styled.View`
   height: 60%;
-  background-color: ${colors.indigoWhite};
+  background-color: ${colors.light2};
   border-radius: 200;
   display: flex;
   align-items: center;

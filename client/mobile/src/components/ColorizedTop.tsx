@@ -33,7 +33,7 @@ export default class ColorizedTop extends Component {
         style={{
           height: '100%',
           width: '100%',
-          backgroundColor: `${colors.prestigeGreen}`
+          backgroundColor: `${colors.dark1}`
         }}
       >
         {this.props.children}

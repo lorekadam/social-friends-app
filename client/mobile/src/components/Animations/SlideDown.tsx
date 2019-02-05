@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, Text } from 'react-native';
+import { Animated } from 'react-native';
 import { PaddingView } from '../../styled/View';
 import colors from '../../styled/colors';
 

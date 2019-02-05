@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Animated } from 'react-native';
-import { width } from '../styled/globals';
-import colors from '../styled/colors';
+import { width, height } from '../../styled/globals';
+import colors from '../../styled/colors';
 
 interface Props {
   open: boolean;
@@ -21,18 +21,20 @@ export default class Sidebar extends Component<Props, {}> {
 
   render() {
     return (
-      <Animated.View
+      <Animated.ScrollView
         style={{
           position: 'absolute',
           top: 0,
-          bottom: 0,
           left: this.state.slideInLeft,
-          backgroundColor: colors.seaMist,
-          width: width * 0.8
+          backgroundColor: colors.dark2,
+          width: width * 0.8,
+          display: 'flex',
+          height,
+          flex: 1
         }}
       >
         {this.props.children}
-      </Animated.View>
+      </Animated.ScrollView>
     );
   }
 }

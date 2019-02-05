@@ -7,17 +7,9 @@ import ColorizedTop from '../components/ColorizedTop';
 import CenteredTop from '../components/CenteredTop';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import Settings from '../components/Settings/Settings';
-import Friends from '../components/Friends/Friends';
-import Notifications from '../components/Notifications/Notifications';
 import { RowColumn, ColColumn } from '../styled/Grid';
-import SlideDown from '../components/Animations/SlideDown';
 import Loader from '../components/Loader';
-import Sidebar from '../components/Sidebar';
-
-interface State {
-  top: number;
-}
+import SettingsSidebar from '../components/Sidebar/SettingsSidebar';
 
 export const LOCAL_TOGGLE_QUERY = gql`
   query {
@@ -53,9 +45,6 @@ const Composed = adopt({
 });
 
 export default class PageSpine extends Component<{}, State> {
-  state = {
-    top: 0
-  };
   render() {
     return (
       <Composed>
@@ -74,11 +63,7 @@ export default class PageSpine extends Component<{}, State> {
                 <React.Fragment>
                   <RowColumn noGutters>
                     <ColColumn noGutters>
-                      <FlexView
-                        onLayout={(e) =>
-                          this.setState({ top: e.nativeEvent.layout.height })
-                        }
-                      >
+                      <FlexView>
                         <ColorizedTop>
                           <CenteredTop />
                         </ColorizedTop>
@@ -92,19 +77,13 @@ export default class PageSpine extends Component<{}, State> {
                       </PaddingView>
                     </ColColumn>
                   </RowColumn>
-                  <Sidebar open={sidebarOpen}>
-                    <RowColumn>
-                      <ColColumn>
-                        <Friends />
-                      </ColColumn>
-                      <ColColumn>
-                        <Notifications />
-                      </ColColumn>
-                      <ColColumn>
-                        <Settings id={user.data.me.id} />
-                      </ColColumn>
-                    </RowColumn>
-                  </Sidebar>
+                  <SettingsSidebar
+                    open={sidebarOpen}
+                    userId={user.data.me.id}
+                    friendsOpen={friendsOpen}
+                    notificationsOpen={notificationsOpen}
+                    settingsOpen={settingsOpen}
+                  />
                 </React.Fragment>
               )}
             </MainView>

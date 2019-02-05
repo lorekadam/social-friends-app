@@ -19,7 +19,7 @@ export default class SideMenuToggle extends Component {
           <Absolute top={10} right={10}>
             <CircleIconButton
               buttonColor={'transparent'}
-              color={colors.indigoWhite}
+              color={colors.light2}
               action={() => toggleSidebar()}
               icon="settings"
             />

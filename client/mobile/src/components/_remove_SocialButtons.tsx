@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col } from '../styled/Grid';
-import FriendsButton from './ControlButtons/FriendsButton';
-import NotificationsButton from './ControlButtons/NotificationsButton';
-import SettingsButton from './ControlButtons/SettingsButton';
+import FriendsButton from './ControlButtons/_remove_FriendsButton';
+import NotificationsButton from './ControlButtons/_remove_NotificationsButton';
+import SettingsButton from './ControlButtons/_remove_SettingsButton';
 
 export default class SocialButtons extends Component {
   render() {

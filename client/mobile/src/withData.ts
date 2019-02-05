@@ -43,9 +43,7 @@ export default function createClient() {
             // write state
             const data = {
               data: {
-                settingsOpen: !settingsOpen,
-                friendsOpen: false,
-                notificationsOpen: false
+                settingsOpen: !settingsOpen
               }
             };
             cache.writeData(data);
@@ -59,9 +57,7 @@ export default function createClient() {
             // write state
             const data = {
               data: {
-                friendsOpen: !friendsOpen,
-                settingsOpen: false,
-                notificationsOpen: false
+                friendsOpen: !friendsOpen
               }
             };
             cache.writeData(data);
@@ -75,9 +71,7 @@ export default function createClient() {
             // write state
             const data = {
               data: {
-                notificationsOpen: !notificationsOpen,
-                friendsOpen: false,
-                settingsOpen: false
+                notificationsOpen: !notificationsOpen
               }
             };
             cache.writeData(data);

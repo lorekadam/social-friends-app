@@ -11,8 +11,10 @@ export default {
   dark: '#000000',
   defaultText: '#0f033c',
   facebook: '#4267b2',
-  seaMist: '#d8eee1',
-  prestigeGreen: '#164249',
-  indigoWhite: '#e9f7f9',
-  darkBrown: '#341a04'
+  light1: '#e0f0f2',
+  dark1: '#181e34',
+  dark2: '#263055',
+  light2: '#d8eee1',
+  color1: '#35a0b1',
+  color2: '#0ABEDC'
 };
