@@ -23,7 +23,7 @@ export default class App extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    Font.loadAsync({
+    await Font.loadAsync({
       'roboto-light': require('./assets/fonts/Roboto-Light.ttf'),
       'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
       roboto: require('./assets/fonts/Roboto-Regular.ttf')

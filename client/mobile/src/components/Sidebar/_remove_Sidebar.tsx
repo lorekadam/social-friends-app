@@ -9,14 +9,22 @@ interface Props {
 
 export default class Sidebar extends Component<Props, {}> {
   state = {
-    slideInLeft: new Animated.Value(0)
+    slideInLeft: new Animated.Value(width * -0.8)
+  };
+
+  performSlide = () => {
+    Animated.timing(this.state.slideInLeft, {
+      toValue: this.props.open ? 0 : width * -0.8,
+      duration: 300
+    }).start();
+  };
+
+  componentDidMount = () => {
+    this.performSlide();
   };
 
   componentDidUpdate = () => {
-    Animated.timing(this.state.slideInLeft, {
-      toValue: this.props.open ? width * -0.8 : 0,
-      duration: 300
-    }).start();
+    this.performSlide();
   };
 
   render() {

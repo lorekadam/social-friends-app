@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import Sidebar from './Sidebar';
-import { RowColumn, ColColumn } from '../../styled/Grid';
+import { RowColumn } from '../../styled/Grid';
 import Friends from '../Friends/Friends';
 import Notifications from '../Notifications/Notifications';
 import Settings from '../Settings/Settings';
 import { TitleDropdown } from '../../styled/TitleDropdown';
 import { Text } from '../../styled/Text';
 import colors from '../../styled/colors';
-import Accordion from '../Animations/Accordion';
-import { FullView } from '../../styled/View';
+import QRCode from 'react-native-qrcode';
+import { FullView, SimpleView } from '../../styled/View';
+import LogOutButton from '../ControlButtons/LogOutButton';
 
 interface Props {
-  open: boolean;
   userId: string;
   friendsOpen: boolean;
   notificationsOpen: boolean;
@@ -39,82 +38,61 @@ export const TOGGLE_SETTINGS_MUTATION = gql`
 `;
 
 export default class SettingsSidebar extends Component<Props, {}> {
-  state = {
-    notificationsHeight: 0
-  };
   render() {
-    const {
-      open,
-      userId,
-      friendsOpen,
-      notificationsOpen,
-      settingsOpen
-    } = this.props;
+    const { userId, friendsOpen, notificationsOpen, settingsOpen } = this.props;
     return (
-      <Sidebar open={open}>
-        <RowColumn>
-          <ColColumn direction="column">
-            <Mutation mutation={TOGGLE_NOTIFICATIONS_MUTATION}>
-              {(toggleNotification) => (
-                <TitleDropdown
-                  active={notificationsOpen}
-                  onPress={() => toggleNotification()}
-                >
-                  <Text size={16} color={colors.light1}>
-                    Notifications
-                  </Text>
-                </TitleDropdown>
-              )}
-            </Mutation>
-            {/* <Accordion
-              open={notificationsOpen}
-              toHeight={this.state.notificationsHeight}
-            >
-            </Accordion> */}
-            <Notifications
-              setHeight={(h) => {
-                this.setState({
-                  notificationsHeight: h
-                });
-              }}
-            />
-          </ColColumn>
-          <ColColumn direction="column">
-            <Mutation mutation={TOGGLE_FRIENDS_MUTATION}>
-              {(toggleFriends) => (
-                <TitleDropdown
-                  active={friendsOpen}
-                  onPress={() => toggleFriends()}
-                >
-                  <Text size={16} color={colors.light1}>
-                    Friends
-                  </Text>
-                </TitleDropdown>
-              )}
-            </Mutation>
-            <Accordion open={friendsOpen} toHeight={200}>
-              <Friends />
-            </Accordion>
-          </ColColumn>
-          <ColColumn>
-            <Mutation mutation={TOGGLE_SETTINGS_MUTATION}>
-              {(toggleSettings) => (
-                <TitleDropdown
-                  active={settingsOpen}
-                  onPress={() => toggleSettings()}
-                >
-                  <Text size={16} color={colors.light1}>
-                    Settings
-                  </Text>
-                </TitleDropdown>
-              )}
-            </Mutation>
-            <Accordion open={settingsOpen} toHeight={200}>
-              <Settings id={userId} />
-            </Accordion>
-          </ColColumn>
-        </RowColumn>
-      </Sidebar>
+      <RowColumn noGutters>
+        <SimpleView>
+          <QRCode
+            bgColor={colors.dark2}
+            fgColor={colors.light2}
+            value={userId}
+          />
+        </SimpleView>
+        <FullView>
+          <Mutation mutation={TOGGLE_NOTIFICATIONS_MUTATION}>
+            {(toggleNotification) => (
+              <TitleDropdown
+                active={notificationsOpen}
+                onPress={() => toggleNotification()}
+              >
+                <Text size={16} color={colors.light1}>
+                  Notifications
+                </Text>
+              </TitleDropdown>
+            )}
+          </Mutation>
+          <Notifications open={notificationsOpen} />
+          <Mutation mutation={TOGGLE_FRIENDS_MUTATION}>
+            {(toggleFriends) => (
+              <TitleDropdown
+                active={friendsOpen}
+                onPress={() => toggleFriends()}
+              >
+                <Text size={16} color={colors.light1}>
+                  Friends
+                </Text>
+              </TitleDropdown>
+            )}
+          </Mutation>
+          <Friends open={friendsOpen} />
+
+          <Mutation mutation={TOGGLE_SETTINGS_MUTATION}>
+            {(toggleSettings) => (
+              <TitleDropdown
+                active={settingsOpen}
+                onPress={() => toggleSettings()}
+              >
+                <Text size={16} color={colors.light1}>
+                  Settings
+                </Text>
+              </TitleDropdown>
+            )}
+          </Mutation>
+          <Settings open={settingsOpen} />
+        </FullView>
+        <LogOutButton />
+      </RowColumn>
     );
   }
 }

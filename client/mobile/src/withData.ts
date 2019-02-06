@@ -4,6 +4,13 @@ import { LOCAL_TOGGLE_QUERY } from './pages/PageSpine';
 
 import { AsyncStorage } from 'react-native';
 
+const initialState = {
+  sidebarOpen: false,
+  notificationsOpen: false,
+  settingsOpen: false,
+  friendsOpen: false
+};
+
 export default function createClient() {
   return new ApolloClient({
     uri: endpoint,
@@ -21,12 +28,15 @@ export default function createClient() {
     clientState: {
       resolvers: {
         Mutation: {
+          clearLocalState(_, variables, { cache }) {
+            const data = { data: initialState };
+            cache.writeData(data);
+            return data;
+          },
           toggleSidebar(_, variables, { cache }) {
-            //read state
             const { sidebarOpen } = cache.readQuery({
               query: LOCAL_TOGGLE_QUERY
             });
-            // write state
             const data = {
               data: {
                 sidebarOpen: !sidebarOpen
@@ -36,11 +46,9 @@ export default function createClient() {
             return data;
           },
           toggleSettings(_, variables, { cache }) {
-            //read state
             const { settingsOpen } = cache.readQuery({
               query: LOCAL_TOGGLE_QUERY
             });
-            // write state
             const data = {
               data: {
                 settingsOpen: !settingsOpen
@@ -50,11 +58,9 @@ export default function createClient() {
             return data;
           },
           toggleFriends(_, variables, { cache }) {
-            //read state
             const { friendsOpen } = cache.readQuery({
               query: LOCAL_TOGGLE_QUERY
             });
-            // write state
             const data = {
               data: {
                 friendsOpen: !friendsOpen
@@ -64,11 +70,9 @@ export default function createClient() {
             return data;
           },
           toggleNotifications(_, variables, { cache }) {
-            //read state
             const { notificationsOpen } = cache.readQuery({
               query: LOCAL_TOGGLE_QUERY
             });
-            // write state
             const data = {
               data: {
                 notificationsOpen: !notificationsOpen
@@ -79,12 +83,7 @@ export default function createClient() {
           }
         }
       },
-      defaults: {
-        sidebarOpen: false,
-        notificationsOpen: false,
-        settingsOpen: false,
-        friendsOpen: false
-      }
+      defaults: initialState
     }
   });
 }

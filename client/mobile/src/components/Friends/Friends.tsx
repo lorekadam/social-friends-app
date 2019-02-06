@@ -5,6 +5,11 @@ import FriendList from './FriendList';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import Loader from '../Loader';
+import Accordion from '../Animations/Accordion';
+
+interface Props {
+  open: boolean;
+}
 
 const MY_FRIENDS_QUERY = gql`
   query MY_FRIENDS_QUERY {
@@ -18,20 +23,25 @@ const MY_FRIENDS_QUERY = gql`
   }
 `;
 
-export default class Friends extends Component {
+export default class Friends extends Component<Props, {}> {
   render() {
     return (
       <Query query={MY_FRIENDS_QUERY}>
         {({ loading, data, refetch }) => {
           return (
-            <PaddingView padding={5}>
-              <FriendInvitation refetch={refetch} />
-              {loading ? (
-                <Loader />
-              ) : (
-                <FriendList friendships={data.friendships} refetch={refetch} />
-              )}
-            </PaddingView>
+            <Accordion open={this.props.open}>
+              <PaddingView padding={5}>
+                <FriendInvitation refetch={refetch} />
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <FriendList
+                    friendships={data.friendships}
+                    refetch={refetch}
+                  />
+                )}
+              </PaddingView>
+            </Accordion>
           );
         }}
       </Query>

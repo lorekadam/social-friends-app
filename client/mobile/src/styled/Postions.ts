@@ -7,10 +7,18 @@ interface Props {
   left?: number | string;
 }
 
-export const Absolute = styled.View`
-  position: absolute;
+const Positions = styled.View`
   ${(props: Props) => props.top && `top: ${props.top}`};
   ${(props: Props) => props.right && `right: ${props.right}`};
   ${(props: Props) => props.bottom && `bottom: ${props.bottom}`};
   ${(props: Props) => props.left && `left: ${props.left}`};
+`;
+
+export const Absolute = styled(Positions)`
+  position: absolute;
+`;
+
+export const AbsoluteFlex = styled(Positions)`
+  position: absolute;
+  display: flex;
 `;

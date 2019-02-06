@@ -30,6 +30,7 @@
     "@types/expo__vector-icons": "^6.2.3",
     "@types/react": "^16.7.18",
     "@types/react-native": "^0.57.23",
+    "@types/react-native-qrcode": "^0.2.2",
     "@types/react-navigation": "^3.0.1",
     "@types/styled-components": "^4.1.4",
     "expo-cli": "^2.7.0",

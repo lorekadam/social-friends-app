@@ -1,27 +1,33 @@
 import React, { Component } from 'react';
-import { Animated } from 'react-native';
+import { Animated, LayoutChangeEvent } from 'react-native';
+import { AbsoluteFlex } from '../../styled/Postions';
 
 interface Props {
-  duration?: number;
-  toHeight: number;
   open: boolean;
 }
 
 export default class Accordion extends Component<Props, {}> {
   state = {
-    dropAnim: new Animated.Value(0)
+    toHeight: 0,
+    dropAnim: new Animated.Value(0),
+    opacity: new Animated.Value(0)
   };
 
   componentDidUpdate() {
-    const { duration, toHeight, open } = this.props;
-    Animated.timing(this.state.dropAnim, {
-      toValue: open ? (toHeight === 0 ? 1000 : toHeight) : 0,
-      duration: duration ? duration : 300
-    }).start();
+    const { open } = this.props;
+    Animated.parallel([
+      Animated.spring(this.state.dropAnim, {
+        toValue: open ? this.state.toHeight : 0
+      }),
+      Animated.timing(this.state.opacity, {
+        toValue: open ? 1 : 0,
+        duration: 300
+      })
+    ]).start();
   }
 
   render() {
-    const { dropAnim } = this.state;
+    const { dropAnim, opacity } = this.state;
 
     return (
       <Animated.View
@@ -30,10 +36,21 @@ export default class Accordion extends Component<Props, {}> {
           left: 0,
           right: 0,
           height: dropAnim,
+          opacity,
           width: '100%'
         }}
       >
-        {this.props.open && this.props.children}
+        {this.props.open && (
+          <AbsoluteFlex
+            right={0}
+            left={0}
+            onLayout={(e: LayoutChangeEvent) => {
+              this.setState({ toHeight: e.nativeEvent.layout.height });
+            }}
+          >
+            {this.props.children}
+          </AbsoluteFlex>
+        )}
       </Animated.View>
     );
   }

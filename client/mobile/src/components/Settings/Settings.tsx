@@ -1,45 +1,25 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View } from 'react-native';
-import QRCode from 'react-native-qrcode';
-import { NavigationScreenProp, withNavigation } from 'react-navigation';
-
-import { LOGIN_PAGE } from '../../navigation/pageTypes';
 import { RowColumn, ColColumn } from '../../styled/Grid';
-import CircleIconButton from '../display/CircleIconButton';
+import Accordion from '../Animations/Accordion';
+import { PaddingView } from '../../styled/View';
 import { Text } from '../../styled/Text';
-import { FullView } from '../../styled/View';
 
 interface Props {
-  id: string;
-  navigation: NavigationScreenProp<any, any>;
+  open: boolean;
 }
 
-class Settings extends Component<Props, {}> {
+export default class Settings extends Component<Props, {}> {
   render() {
     return (
-      <FullView>
-        <RowColumn>
-          <ColColumn justify="flex-end">
-            <CircleIconButton
-              action={async () => {
-                await AsyncStorage.removeItem('token');
-                this.props.navigation.navigate(LOGIN_PAGE);
-              }}
-              icon="log-out"
-            />
-          </ColColumn>
-          <ColColumn justify="center">
-            <Text>Your QR code!</Text>
-          </ColColumn>
-          <ColColumn justify="center">
-            <View style={{ overflow: 'hidden' }}>
-              <QRCode value={this.props.id} />
-            </View>
-          </ColColumn>
-        </RowColumn>
-      </FullView>
+      <Accordion open={this.props.open}>
+        <PaddingView padding={5}>
+          <RowColumn>
+            <ColColumn justify="flex-end">
+              <Text>Settings</Text>
+            </ColColumn>
+          </RowColumn>
+        </PaddingView>
+      </Accordion>
     );
   }
 }
-
-export default withNavigation(Settings);
