@@ -116,7 +116,7 @@ export default class RegisterPage extends Component<Props, State> {
                                   nameValidation(name) &&
                                   email.length > 0 &&
                                   emailValidation(email) &&
-                                  password.length > 0
+                                  password.length >= 6
                                 )
                               }
                               onPress={async () => {

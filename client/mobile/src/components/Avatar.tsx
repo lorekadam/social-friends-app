@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import colors from '../styled/colors';
 import { Image } from 'react-native';
 
+interface Props {
+  userId: string;
+}
+
 interface State {
   width: number;
 }
@@ -17,7 +21,7 @@ const AvatarWrapper = styled.View`
   overflow: hidden;
 `;
 
-export default class Avatar extends Component<{}, State> {
+export default class Avatar extends Component<Props, State> {
   state = {
     width: 0
   };
@@ -28,7 +32,7 @@ export default class Avatar extends Component<{}, State> {
       >
         <Image
           source={{
-            uri: `https://api.adorable.io/avatars/face/eyes3/nose7/mouth9/d8eee1`
+            uri: `https://api.adorable.io/avatars/${this.props.userId}`
           }}
           style={{ width: this.state.width, display: 'flex', flex: 1 }}
         />

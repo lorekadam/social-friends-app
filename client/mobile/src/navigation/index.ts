@@ -5,18 +5,19 @@ import ForgotPasswordPage from '../pages/ForgotPassword';
 import ProfilePage from '../pages/Profile';
 import QRCodeScanner from '../pages/QRCodeScanner';
 import * as pages from './pageTypes';
+import FriendInvitePage from '../pages/FriendInvite';
 
 export const SignedOut = createSwitchNavigator(
   {
-    Login: {
+    [pages.LOGIN_PAGE]: {
       screen: LoginPage,
       title: pages.LOGIN_PAGE
     },
-    Register: {
+    [pages.REGISTER_PAGE]: {
       screen: RegisterPage,
       title: pages.REGISTER_PAGE
     },
-    ForgotPassword: {
+    [pages.FORGOT_PASSWORD_PAGE]: {
       screen: ForgotPasswordPage,
       title: pages.FORGOT_PASSWORD_PAGE
     }
@@ -28,11 +29,15 @@ export const SignedOut = createSwitchNavigator(
 
 export const SignedIn = createSwitchNavigator(
   {
-    Profile: {
+    [pages.PROFILE_PAGE]: {
       screen: ProfilePage,
       title: pages.PROFILE_PAGE
     },
-    QRCodeScannerPage: {
+    [pages.FRIEND_INVITE_PAGE]: {
+      screen: FriendInvitePage,
+      title: pages.FRIEND_INVITE_PAGE
+    },
+    [pages.QRCODESCANNER_PAGE]: {
       screen: QRCodeScanner,
       title: pages.QRCODESCANNER_PAGE
     }

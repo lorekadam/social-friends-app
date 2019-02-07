@@ -21,6 +21,12 @@ type Mutation {
 type Query {
   me: User!
   user(id: String!): FindUser!
+  users(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    first: Int
+  ): [FindUser]!
   friendships: [Friendship!]!
   notifications: [Notification!]!
 }

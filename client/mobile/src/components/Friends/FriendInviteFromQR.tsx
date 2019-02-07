@@ -5,7 +5,7 @@ import { withNavigation, NavigationScreenProp } from 'react-navigation';
 
 import Loader from '../Loader';
 import { Button } from '../../styled/Buttons';
-import { INVITE_FRIEND_MUTATION } from '../Friends/FriendInvitation';
+import { INVITE_FRIEND_MUTATION } from './FriendSearching';
 import { USER_QUERY } from '../../QL/Queries';
 import { PROFILE_PAGE } from '../../navigation/pageTypes';
 import QLNotifications from '../QLNotifications';

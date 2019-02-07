@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { FullView } from '../../styled/View';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Text } from 'react-native';
 import { NotificationTypes, ArrayTwoOrMore } from '../../types/globals';
 import FriendInvite from './types/FriendInvite';
 import Loader from '../Loader';
+import { Text } from '../../styled/Text';
 
 interface Notification {
   id: string;

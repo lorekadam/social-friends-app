@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
 import FriendListItem from './FriendListItem';
 import { FullView } from '../../styled/View';
+import { Text } from '../../styled/Text';
 
 interface Friendship {
   accepted: boolean;

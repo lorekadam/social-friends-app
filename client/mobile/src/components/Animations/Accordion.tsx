@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, LayoutChangeEvent } from 'react-native';
 import { AbsoluteFlex } from '../../styled/Postions';
+import { PaddingView } from '../../styled/View';
 
 interface Props {
   open: boolean;
@@ -48,7 +49,7 @@ export default class Accordion extends Component<Props, {}> {
               this.setState({ toHeight: e.nativeEvent.layout.height });
             }}
           >
-            {this.props.children}
+            <PaddingView>{this.props.children}</PaddingView>
           </AbsoluteFlex>
         )}
       </Animated.View>

@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import { PaddingView } from '../../styled/View';
-import FriendInvitation from './FriendInvitation';
 import FriendList from './FriendList';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import Loader from '../Loader';
 import Accordion from '../Animations/Accordion';
+import { Button } from '../../styled/Buttons';
+import { FRIEND_INVITE_PAGE } from '../../navigation/pageTypes';
+import { Text } from '../../styled/Text';
 
 interface Props {
   open: boolean;
+  closeDrawer: Function;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 const MY_FRIENDS_QUERY = gql`
@@ -23,24 +27,28 @@ const MY_FRIENDS_QUERY = gql`
   }
 `;
 
-export default class Friends extends Component<Props, {}> {
+class Friends extends Component<Props, {}> {
   render() {
+    const { open, navigation, closeDrawer } = this.props;
     return (
       <Query query={MY_FRIENDS_QUERY}>
         {({ loading, data, refetch }) => {
           return (
-            <Accordion open={this.props.open}>
-              <PaddingView padding={5}>
-                <FriendInvitation refetch={refetch} />
-                {loading ? (
-                  <Loader />
-                ) : (
-                  <FriendList
-                    friendships={data.friendships}
-                    refetch={refetch}
-                  />
-                )}
-              </PaddingView>
+            <Accordion open={open}>
+              <Button
+                onPress={() =>
+                  navigation.state.key === FRIEND_INVITE_PAGE
+                    ? closeDrawer()
+                    : navigation.navigate(FRIEND_INVITE_PAGE)
+                }
+              >
+                <Text>Invite friends!</Text>
+              </Button>
+              {loading ? (
+                <Loader />
+              ) : (
+                <FriendList friendships={data.friendships} refetch={refetch} />
+              )}
             </Accordion>
           );
         }}
@@ -48,3 +56,5 @@ export default class Friends extends Component<Props, {}> {
     );
   }
 }
+
+export default withNavigation(Friends);

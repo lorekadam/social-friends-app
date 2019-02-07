@@ -74,6 +74,7 @@ export default class PageSpine extends Component {
                     friendsOpen={friendsOpen}
                     notificationsOpen={notificationsOpen}
                     settingsOpen={settingsOpen}
+                    closeDrawer={() => this.drawerRef.closeDrawer()}
                   />
                 )}
               >
@@ -83,7 +84,7 @@ export default class PageSpine extends Component {
                       <ColColumn noGutters>
                         <FlexView>
                           <ColorizedTop>
-                            <CenteredTop />
+                            <CenteredTop userId={user.data.me.id} />
                             <SideMenuToggle
                               openDrawer={() => this.drawerRef.openDrawer()}
                             />

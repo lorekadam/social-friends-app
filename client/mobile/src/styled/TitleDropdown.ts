@@ -14,5 +14,7 @@ export const TitleDropdown = styled.TouchableOpacity`
   background-color: ${(props: Props) =>
     props.active ? `rgba(255,255,255,0.05)` : 'transparent'};
   display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 100%;
 `;
