@@ -22,7 +22,7 @@ export default class PillTextIconButton extends Component<Props, {}> {
       <Button
         full={full ? full : false}
         size={size ? size : 'auto'}
-        bgc={buttonColor}
+        bgColor={buttonColor}
         onPress={() => action()}
       >
         <Text color={color ? color : colors.white}>{text}</Text>

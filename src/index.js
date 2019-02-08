@@ -1,7 +1,6 @@
 require('dotenv').config({ path: 'variables.env' });
 const createServer = require('./createServer');
 const jwt = require('jsonwebtoken');
-const db = require('./db');
 
 const server = createServer();
 

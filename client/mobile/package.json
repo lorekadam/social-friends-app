@@ -29,6 +29,7 @@
     "@babel/preset-typescript": "^7.1.0",
     "@types/expo": "^31.0.5",
     "@types/expo__vector-icons": "^6.2.3",
+    "@types/lodash.debounce": "^4.0.4",
     "@types/react": "^16.7.18",
     "@types/react-native": "^0.57.23",
     "@types/react-native-qrcode": "^0.2.2",

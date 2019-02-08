@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { Text } from '../styled/Text';
 import PageSpine from './PageSpine';
 import FriendSearching from '../components/Friends/FriendSearching';
 

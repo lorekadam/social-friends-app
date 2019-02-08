@@ -14,5 +14,5 @@ export const Notification = styled.View`
   align-items: center;
   display: flex;
   border-radius: 30px;
-  width: auto;
+  width: 100%;
 `;

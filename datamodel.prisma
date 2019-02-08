@@ -9,13 +9,13 @@ enum NotificationType {
 
 type User {
   id: ID! @unique
-  name: String! @unique
+  facebookId: String @unique
+  name: String @unique
   email: String! @unique
-  password: String!
+  password: String
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission]
-  jwt: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }

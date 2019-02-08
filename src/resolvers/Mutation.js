@@ -21,35 +21,112 @@ const Mutation = {
     user.jwt = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     return user;
   },
+  async signinFacebook(parent, args, ctx, info) {
+    args.email = args.email.toLowerCase();
+    // Check if there is a user with same email
+    let isUser = await ctx.db.query.user({
+      where: {
+        email: args.email
+      }
+    });
+
+    // if not create new one
+    if (isUser === null) {
+      const user = await ctx.db.mutation.createUser(
+        {
+          data: {
+            ...args,
+            permissions: { set: ['USER'] }
+          }
+        },
+        info
+      );
+      // send JWT
+      user.jwt = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+      return user;
+    } else {
+      // if is add facebookId
+      if (isUser.facebookId === null) {
+        isUser = await ctx.db.mutation.updateUser({
+          where: { email: args.email },
+          data: {
+            facebookId: args.facebookId
+          }
+        });
+      }
+      // send JWT
+      isUser.jwt = jwt.sign({ userId: isUser.id }, process.env.APP_SECRET);
+      return isUser;
+    }
+  },
+  async updateUserName(parent, { name }, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+
+    const user = await ctx.db.query.user({
+      where: {
+        name
+      }
+    });
+
+    if (user === null) {
+      const updateUser = await ctx.db.mutation.updateUser({
+        where: {
+          id: userId
+        },
+        data: {
+          name
+        }
+      });
+      if (updateUser.name === name) {
+        return { message: 'Success!' };
+      } else {
+        return { message: 'Something went wrong' };
+      }
+    } else {
+      return { message: 'Given username is already taken' };
+    }
+  },
   async signin(parent, { email, password }, ctx, info) {
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
       throw new Error(`No such user found for email ${email}`);
     }
 
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-      throw new Error(`Invalid password!`);
+    if (user.password === null && user.facebookId !== null) {
+      return user;
+    } else {
+      const valid = await bcrypt.compare(password, user.password);
+      if (!valid) {
+        throw new Error(`Invalid password!`);
+      }
+      user.jwt = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+      return user;
     }
-    user.jwt = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-    return user;
   },
   async requestReset(parent, args, ctx, info) {
-    const user = ctx.db.query.user({ where: { email: args.email } });
+    const user = await ctx.db.query.user({ where: { email: args.email } });
     if (!user) {
       throw new Error(`No such user found for email ${args.email}`);
-    }
-    const randomBytesPromisified = promisify(randomBytes);
-    const resetToken = (await randomBytesPromisified(20)).toString('hex');
-    const resetTokenExpiry = Date.now() + 3600000; // 1 hour
-    const res = await ctx.db.mutation.updateUser({
-      where: { email: args.email },
-      data: {
-        resetToken,
-        resetTokenExpiry
+    } else {
+      if (user.password === null) {
+        throw new Error(`Reset password can't be done`);
+      } else {
+        const randomBytesPromisified = promisify(randomBytes);
+        const resetToken = (await randomBytesPromisified(20)).toString('hex');
+        const resetTokenExpiry = Date.now() + 3600000; // 1 hour
+        await ctx.db.mutation.updateUser({
+          where: { email: args.email },
+          data: {
+            resetToken,
+            resetTokenExpiry
+          }
+        });
+        return { message: 'Check your mailbox' };
       }
-    });
-    return { message: 'Check your mailbox' };
+    }
   },
   async resetPassword(parent, args, ctx, info) {
     if (args.password !== args.confirmPassword) {
@@ -84,7 +161,6 @@ const Mutation = {
     if (!userId) {
       return null;
     }
-    console.log(args);
     // 1. Get Friend to invite
     const friendToAdd = await ctx.db.query.user({
       where: {

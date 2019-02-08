@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, ApolloConsumer } from 'react-apollo';
 import { NavigationScreenProp } from 'react-navigation';
 import gql from 'graphql-tag';
 import { ImageBackground, AsyncStorage } from 'react-native';
@@ -8,7 +8,7 @@ import colors from '../styled/colors';
 import { Input } from '../styled/Input';
 import { Button, TextButton } from '../styled/Buttons';
 import { Text } from '../styled/Text';
-import FacebookLogin from '../components/FacebookLogin';
+import FacebookLogin, { logInWithFacebook } from '../components/FacebookLogin';
 import { emailValidation } from '../utils/validations';
 import { Row, Col, RowColumn, ColColumn } from '../styled/Grid';
 import Loader from '../components/Loader';
@@ -54,10 +54,14 @@ export default class LoginPage extends Component<Props, State> {
     this.props.navigation.navigate('Profile');
   };
 
-  signin = async (signin: Function) => {
+  signin = async (signin: Function, client: any) => {
     const res = await signin();
     if (res) {
-      await this.logIn(res.data.signin.jwt);
+      if (res.data.signin.jwt === null) {
+        logInWithFacebook(client, this.logIn);
+      } else {
+        await this.logIn(res.data.signin.jwt);
+      }
     }
   };
 
@@ -131,20 +135,24 @@ export default class LoginPage extends Component<Props, State> {
                           </Row>
                         </ColColumn>
                         <ColColumn>
-                          <Button
-                            title="Login"
-                            full
-                            disabled={
-                              !(
-                                password.length > 0 &&
-                                email.length > 0 &&
-                                emailValidation(email)
-                              )
-                            }
-                            onPress={() => this.signin(signin)}
-                          >
-                            <Text color={colors.white}>Login</Text>
-                          </Button>
+                          <ApolloConsumer>
+                            {(client) => (
+                              <Button
+                                title="Login"
+                                full
+                                disabled={
+                                  !(
+                                    password.length > 0 &&
+                                    email.length > 0 &&
+                                    emailValidation(email)
+                                  )
+                                }
+                                onPress={() => this.signin(signin, client)}
+                              >
+                                <Text color={colors.white}>Login</Text>
+                              </Button>
+                            )}
+                          </ApolloConsumer>
                         </ColColumn>
                         <ColColumn>
                           <FacebookLogin logIn={this.logIn} />

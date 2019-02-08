@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Sun Jan 27 2019 18:19:28 GMT+0100 (Środkowoeuropejski czas stand.)
+# timestamp: Fri Feb 08 2019 11:55:40 GMT+0100 (GMT+01:00)
 
 type AggregateFriendship {
   count: Int!
@@ -693,13 +693,13 @@ type Subscription {
 
 type User implements Node {
   id: ID!
-  name: String!
+  facebookId: String
+  name: String
   email: String!
-  password: String!
+  password: String
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission!]!
-  jwt: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -715,12 +715,12 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  name: String!
+  facebookId: String
+  name: String
   email: String!
-  password: String!
+  password: String
   resetToken: String
   resetTokenExpiry: Float
-  jwt: String
   permissions: UserCreatepermissionsInput
 }
 
@@ -745,6 +745,8 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  facebookId_ASC
+  facebookId_DESC
   name_ASC
   name_DESC
   email_ASC
@@ -755,8 +757,6 @@ enum UserOrderByInput {
   resetToken_DESC
   resetTokenExpiry_ASC
   resetTokenExpiry_DESC
-  jwt_ASC
-  jwt_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -765,13 +765,13 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  name: String!
+  facebookId: String
+  name: String
   email: String!
-  password: String!
+  password: String
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission!]!
-  jwt: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -816,32 +816,32 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateDataInput {
+  facebookId: String
   name: String
   email: String
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  jwt: String
   permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateInput {
+  facebookId: String
   name: String
   email: String
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  jwt: String
   permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateManyMutationInput {
+  facebookId: String
   name: String
   email: String
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  jwt: String
   permissions: UserUpdatepermissionsInput
 }
 
@@ -919,6 +919,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  facebookId: String
+
+  """All values that are not equal to given value."""
+  facebookId_not: String
+
+  """All values that are contained in given list."""
+  facebookId_in: [String!]
+
+  """All values that are not contained in given list."""
+  facebookId_not_in: [String!]
+
+  """All values less than the given value."""
+  facebookId_lt: String
+
+  """All values less than or equal the given value."""
+  facebookId_lte: String
+
+  """All values greater than the given value."""
+  facebookId_gt: String
+
+  """All values greater than or equal the given value."""
+  facebookId_gte: String
+
+  """All values containing the given string."""
+  facebookId_contains: String
+
+  """All values not containing the given string."""
+  facebookId_not_contains: String
+
+  """All values starting with the given string."""
+  facebookId_starts_with: String
+
+  """All values not starting with the given string."""
+  facebookId_not_starts_with: String
+
+  """All values ending with the given string."""
+  facebookId_ends_with: String
+
+  """All values not ending with the given string."""
+  facebookId_not_ends_with: String
   name: String
 
   """All values that are not equal to given value."""
@@ -1101,46 +1141,6 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   resetTokenExpiry_gte: Float
-  jwt: String
-
-  """All values that are not equal to given value."""
-  jwt_not: String
-
-  """All values that are contained in given list."""
-  jwt_in: [String!]
-
-  """All values that are not contained in given list."""
-  jwt_not_in: [String!]
-
-  """All values less than the given value."""
-  jwt_lt: String
-
-  """All values less than or equal the given value."""
-  jwt_lte: String
-
-  """All values greater than the given value."""
-  jwt_gt: String
-
-  """All values greater than or equal the given value."""
-  jwt_gte: String
-
-  """All values containing the given string."""
-  jwt_contains: String
-
-  """All values not containing the given string."""
-  jwt_not_contains: String
-
-  """All values starting with the given string."""
-  jwt_starts_with: String
-
-  """All values not starting with the given string."""
-  jwt_not_starts_with: String
-
-  """All values ending with the given string."""
-  jwt_ends_with: String
-
-  """All values not ending with the given string."""
-  jwt_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -1189,6 +1189,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  facebookId: String
   name: String
   email: String
 }

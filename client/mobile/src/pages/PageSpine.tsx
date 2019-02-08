@@ -13,6 +13,7 @@ import SettingsSidebar from '../components/Sidebar/SettingsSidebar';
 import { width } from '../styled/globals';
 import colors from '../styled/colors';
 import SideMenuToggle from '../components/ControlButtons/SideMenuToggle';
+import FillUserName from '../components/FillUserName';
 
 export const LOCAL_TOGGLE_QUERY = gql`
   query {
@@ -60,49 +61,53 @@ export default class PageSpine extends Component {
           if (user.loading || localState.loading) {
             return <Loader />;
           } else {
-            return (
-              <DrawerLayout
-                ref={(drawer) => {
-                  this.drawerRef = drawer;
-                }}
-                drawerWidth={width * 0.8}
-                drawerType="front"
-                drawerBackgroundColor={colors.dark2}
-                renderNavigationView={() => (
-                  <SettingsSidebar
-                    userId={user.data.me.id}
-                    friendsOpen={friendsOpen}
-                    notificationsOpen={notificationsOpen}
-                    settingsOpen={settingsOpen}
-                    closeDrawer={() => this.drawerRef.closeDrawer()}
-                  />
-                )}
-              >
-                <MainView>
-                  <React.Fragment>
-                    <RowColumn noGutters>
-                      <ColColumn noGutters>
-                        <FlexView>
-                          <ColorizedTop>
-                            <CenteredTop userId={user.data.me.id} />
-                            <SideMenuToggle
-                              openDrawer={() => this.drawerRef.openDrawer()}
-                            />
-                          </ColorizedTop>
-                        </FlexView>
-                      </ColColumn>
-                      <ColColumn noGutters flex={2}>
-                        <PaddingView
-                          style={{ zIndex: 1, backgroundColor: 'gray' }}
-                        >
-                          {this.props.children}
-                        </PaddingView>
-                      </ColColumn>
-                    </RowColumn>
-                  </React.Fragment>
-                </MainView>
-              </DrawerLayout>
-            );
+            if (user.data.me.name === null || user.data.me.name.length === 0) {
+              return <FillUserName refetch={user.refetch} />;
+            } else {
+              return (
+                <DrawerLayout
+                  ref={(drawer) => {
+                    this.drawerRef = drawer;
+                  }}
+                  drawerWidth={width * 0.8}
+                  drawerType="front"
+                  drawerBackgroundColor={colors.dark2}
+                  renderNavigationView={() => (
+                    <SettingsSidebar
+                      userId={user.data.me.id}
+                      friendsOpen={friendsOpen}
+                      notificationsOpen={notificationsOpen}
+                      settingsOpen={settingsOpen}
+                      closeDrawer={() => this.drawerRef.closeDrawer()}
+                    />
+                  )}
+                >
+                  <MainView>
+                    <React.Fragment>
+                      <RowColumn noGutters>
+                        <ColColumn noGutters>
+                          <FlexView>
+                            <ColorizedTop>
+                              <CenteredTop userId={user.data.me.id} />
+                              <SideMenuToggle
+                                openDrawer={() => this.drawerRef.openDrawer()}
+                              />
+                            </ColorizedTop>
+                          </FlexView>
+                        </ColColumn>
+                        <ColColumn noGutters flex={2}>
+                          <PaddingView
+                            style={{ zIndex: 1, backgroundColor: 'gray' }}
+                          >
+                            {this.props.children}
+                          </PaddingView>
+                        </ColColumn>
+                      </RowColumn>
+                    </React.Fragment>
+                  </MainView>
+                </DrawerLayout>
+              );
+            }
           }
         }}
       </Composed>

@@ -18,7 +18,7 @@ export default class CircleIconButton extends Component<Props, {}> {
     return (
       <CircleButton
         size={size ? size : 38}
-        bgc={buttonColor}
+        bgColor={buttonColor}
         onPress={() => action()}
       >
         <Feather

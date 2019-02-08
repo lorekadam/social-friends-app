@@ -9,6 +9,11 @@ interface Props {
   paddingLeft?: number;
   paddingBottom?: number;
   height?: string;
+  justify?: string;
+  align?: string;
+  direction?: string;
+  flex?: string;
+  bgColor?: string;
 }
 
 export const FlexView = styled.View`
@@ -40,9 +45,13 @@ export const PaddingView = styled(OnlyPadding)`
 
 export const SimpleView = styled(OnlyPadding)`
   width: 100%;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  flex-direction: ${(props: Props) =>
+    props.direction ? props.direction : 'column'};
+  justify-content: ${(props: Props) =>
+    props.justify ? props.justify : 'flex-start'};
+  align-items: ${(props: Props) => (props.align ? props.align : 'center')};
+  ${(props: Props) => props.flex && `flex:${props.flex}`}
+  ${(props: Props) => props.bgColor && `background-color:${props.bgColor}`}
 `;
 
 export const FullView = styled.View`

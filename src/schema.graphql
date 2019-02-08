@@ -7,6 +7,8 @@ type SuccessMessage {
 type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
+  signinFacebook(email: String!, facebookId: String!): User!
+  updateUserName(name: String!): SuccessMessage!
   requestReset(email: String!): SuccessMessage
   resetPassword(
     resetToken: String!
@@ -20,7 +22,7 @@ type Mutation {
 
 type Query {
   me: User!
-  user(id: String!): FindUser!
+  user(id: String!): FindUser
   users(
     where: UserWhereInput
     orderBy: UserOrderByInput
@@ -38,7 +40,7 @@ type FindUser {
 
 type User {
   id: ID!
-  name: String!
+  name: String
   email: String!
   jwt: String
 }

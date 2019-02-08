@@ -6,7 +6,7 @@ export default {
   extra1: '#028090',
   extra2: '#E4FDE1',
   pink: '#F45B69',
-  error: '#F45B69',
+  error: '#ff3547',
   success: '#12c06a',
   dark: '#000000',
   defaultText: '#0f033c',
