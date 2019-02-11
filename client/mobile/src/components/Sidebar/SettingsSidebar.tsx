@@ -13,6 +13,8 @@ import AccordionHeadline from './AccordionHeadline';
 import { ScrollView } from 'react-native';
 import { Button } from '../../styled/Buttons';
 import { Text } from '../../styled/Text';
+import { withNavigation, NavigationScreenProp } from 'react-navigation';
+import { HOME_PAGE } from '../../navigation/pageTypes';
 
 interface Props {
   userId: string;
@@ -20,6 +22,7 @@ interface Props {
   notificationsOpen: boolean;
   settingsOpen: boolean;
   closeDrawer: Function;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 const TOGGLE_FRIENDS_MUTATION = gql`
@@ -40,14 +43,15 @@ export const TOGGLE_SETTINGS_MUTATION = gql`
   }
 `;
 
-export default class SettingsSidebar extends Component<Props, {}> {
+class SettingsSidebar extends Component<Props, {}> {
   render() {
     const {
       userId,
       friendsOpen,
       notificationsOpen,
       settingsOpen,
-      closeDrawer
+      closeDrawer,
+      navigation
     } = this.props;
     return (
       <ScrollView>
@@ -60,6 +64,16 @@ export default class SettingsSidebar extends Component<Props, {}> {
             />
           </SimpleView>
           <FullView>
+            <AccordionHeadline
+              active={navigation.state.key === HOME_PAGE}
+              action={() =>
+                navigation.state.key === HOME_PAGE
+                  ? closeDrawer()
+                  : navigation.navigate(HOME_PAGE)
+              }
+              title="Home"
+              icon="home"
+            />
             <Mutation mutation={TOGGLE_NOTIFICATIONS_MUTATION}>
               {(toggleNotification) => (
                 <AccordionHeadline
@@ -100,3 +114,5 @@ export default class SettingsSidebar extends Component<Props, {}> {
     );
   }
 }
+
+export default withNavigation(SettingsSidebar);

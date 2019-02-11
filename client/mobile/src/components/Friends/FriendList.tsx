@@ -18,7 +18,7 @@ export default class FriendList extends Component<Props> {
     friendships: Props['friendships'],
     refetch: Props['refetch']
   ) => {
-    let elements: [JSX.Element?] = [];
+    const elements: [JSX.Element?] = [];
     friendships.map((friendship) => {
       const { id, name } = friendship.friend;
       elements.push(
@@ -36,10 +36,7 @@ export default class FriendList extends Component<Props> {
   render() {
     const { friendships, refetch } = this.props;
     return (
-      <FullView>
-        <Text>Your Friends - {friendships.length}</Text>
-        {this.renderFriendListItems(friendships, refetch)}
-      </FullView>
+      <FullView>{this.renderFriendListItems(friendships, refetch)}</FullView>
     );
   }
 }

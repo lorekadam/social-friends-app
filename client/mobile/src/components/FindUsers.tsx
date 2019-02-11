@@ -6,7 +6,7 @@ import colors from '../styled/colors';
 import { nameValidation } from '../utils/validations';
 import Loader from './Loader';
 import { Query } from '../QL/types';
-import { UserSearch } from '../types/globals';
+import { UserSearch } from '../QL/globals';
 
 interface Props {
   placeholder: string;
@@ -42,7 +42,7 @@ export default class FindUsers extends Component<Props, State> {
       this.setState({
         invalid: true
       });
-      setResults({ data: [] });
+      setResults({ data: {} });
     }
   }, 350);
   render() {

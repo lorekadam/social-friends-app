@@ -7,7 +7,7 @@ import Loader from '../Loader';
 import { Button } from '../../styled/Buttons';
 import { INVITE_FRIEND_MUTATION } from './FriendSearching';
 import { USER_QUERY } from '../../QL/Queries';
-import { PROFILE_PAGE } from '../../navigation/pageTypes';
+import { HOME_PAGE } from '../../navigation/pageTypes';
 import QLNotifications from '../QLNotifications';
 
 interface Props {
@@ -43,7 +43,7 @@ class FriendInviteFromQR extends Component<Props, {}> {
                       onPress={async () => {
                         const res = await inviteFriend();
                         if (res) {
-                          this.props.navigation.navigate(PROFILE_PAGE);
+                          this.props.navigation.navigate(HOME_PAGE);
                         }
                       }}
                     >

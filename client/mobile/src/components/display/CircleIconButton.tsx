@@ -7,18 +7,18 @@ interface Props {
   icon: string;
   iconSize?: number;
   size?: number;
-  buttonColor?: string;
+  bgColor?: string;
   color?: string;
   action(): void;
 }
 
 export default class CircleIconButton extends Component<Props, {}> {
   render() {
-    const { icon, iconSize, size, buttonColor, color, action } = this.props;
+    const { icon, iconSize, size, bgColor, color, action } = this.props;
     return (
       <CircleButton
         size={size ? size : 38}
-        bgColor={buttonColor}
+        bgColor={bgColor}
         onPress={() => action()}
       >
         <Feather

@@ -12,9 +12,9 @@ export default class SideMenuToggle extends Component<Props, {}> {
     return (
       <Absolute top={10} right={10}>
         <CircleIconButton
-          buttonColor={'transparent'}
+          bgColor={'transparent'}
           color={colors.light2}
-          action={this.props.openDrawer}
+          action={() => this.props.openDrawer()}
           icon="settings"
         />
       </Absolute>

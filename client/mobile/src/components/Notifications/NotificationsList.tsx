@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FullView } from '../../styled/View';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { NotificationTypes, ArrayTwoOrMore } from '../../types/globals';
+import { NotificationTypes, ArrayTwoOrMore } from '../../QL/globals';
 import FriendInvite from './types/FriendInvite';
 import Loader from '../Loader';
 import { Text } from '../../styled/Text';
@@ -45,7 +45,8 @@ const MY_NOTIFICATIONS_QUERY = gql`
 
 export default class NotificationsList extends Component {
   renderNotificationListItems = (notifications: [Notification]) => {
-    return notifications.map((notification) => {
+    const elements: [JSX.Element?] = [];
+    notifications.map((notification) => {
       const { id, type, friendship, accepted, viewed, user } = notification;
       if (
         type === NotificationTypes.FRIEND_INVITE &&
@@ -53,19 +54,22 @@ export default class NotificationsList extends Component {
         friendship.length === 2 &&
         !accepted
       ) {
-        <FriendInvite
-          key={id}
-          id={id}
-          viewed={viewed}
-          accepted={accepted}
-          friend={
-            friendship[0].friend.id === user.id
-              ? friendship[1].friend
-              : friendship[0].friend
-          }
-        />;
+        elements.push(
+          <FriendInvite
+            key={id}
+            id={id}
+            viewed={viewed}
+            accepted={accepted}
+            friend={
+              friendship[0].friend.id === user.id
+                ? friendship[1].friend
+                : friendship[0].friend
+            }
+          />
+        );
       }
     });
+    return elements;
   };
   render() {
     return (

@@ -14,10 +14,11 @@ import { Text } from '../../styled/Text';
 import { Item, ResultsWrapper } from '../../styled/Autocomplete';
 import CircleIconButton from '../display/CircleIconButton';
 import { ScrollView, Image } from 'react-native';
-import { UserSearch } from '../../types/globals';
+import { UserSearch, UserToInvite } from '../../QL/globals';
 import { avatarUrl } from '../../config';
 import { FindUser } from '../../QL/types';
 import FindUsers from '../FindUsers';
+import { Feather } from '@expo/vector-icons';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -25,8 +26,8 @@ interface Props {
 
 interface State {
   success: string;
-  searchResults: [FindUser];
-  loading: boolean;
+  searchResults: FindUser[];
+  searched: boolean;
 }
 
 export const INVITE_FRIEND_MUTATION = gql`
@@ -55,7 +56,17 @@ class FriendSearching extends Component<Props, State> {
 
   setResults = (res: UserSearch) => {
     const { data } = res;
-    this.setState({ searchResults: data.friendsToInvite });
+    this.setState({
+      searchResults: data.friendsToInvite ? data.friendsToInvite : []
+    });
+  };
+
+  setFriendAsInvited = (i: number) => {
+    const { searchResults } = this.state;
+    searchResults[i].invited = true;
+    this.setState({
+      searchResults
+    });
   };
 
   render() {
@@ -70,7 +81,7 @@ class FriendSearching extends Component<Props, State> {
           />
           {searchResults.length > 0 && (
             <ResultsWrapper>
-              {searchResults.map((user, i) => (
+              {searchResults.map((user: UserToInvite, i) => (
                 <Mutation
                   key={user.id}
                   mutation={INVITE_FRIEND_MUTATION}
@@ -94,14 +105,25 @@ class FriendSearching extends Component<Props, State> {
                               }}
                             />
                             <Text>{user.name}</Text>
-                            <CircleIconButton
-                              size={22}
-                              buttonColor={colors.color2}
-                              color={colors.light2}
-                              icon="plus"
-                              iconSize={16}
-                              action={() => inviteFriend()}
-                            />
+                            {user.invited ? (
+                              <Feather name="check-circle" />
+                            ) : (
+                              <CircleIconButton
+                                size={22}
+                                buttonColor={colors.color2}
+                                color={colors.light2}
+                                icon="plus"
+                                iconSize={16}
+                                action={async () => {
+                                  const res = await inviteFriend();
+                                  if (res) {
+                                    this.setFriendAsInvited(i);
+                                    this.props.refetch();
+                                  }
+                                }}
+                              />
+                            )}
+                            <QLNotifications error={error} />
                           </React.Fragment>
                         )}
                       </Item>
@@ -118,28 +140,3 @@ class FriendSearching extends Component<Props, State> {
 }
 
 export default withNavigation(FriendSearching);
-
-{
-  /* <Button
-disabled={!nameValidation(name)}
-onPress={async () => {
-  const res = await inviteFriend();
-  if (res) {
-    this.setState({
-      success: res.data.inviteFriend.message
-    });
-  }
-  this.props.refetch();
-}}
->
-<Text>Send!</Text>
-</Button>
-
-<Button
-onPress={() =>
-  this.props.navigation.navigate(QRCODESCANNER_PAGE)
-}
->
-<Text>Scan QR</Text>
-</Button> */
-}

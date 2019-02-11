@@ -7,11 +7,11 @@ interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
 
-export default class ProfilePage extends Component<Props, {}> {
+export default class HomePage extends Component<Props, {}> {
   render() {
     return (
       <PageSpine>
-        <Text>Content</Text>
+        <Text>Home Page</Text>
       </PageSpine>
     );
   }

@@ -19,7 +19,7 @@ class LogOutButton extends Component<Props, {}> {
         {(clearLocalState) => (
           <Absolute top={10} left={10}>
             <CircleIconButton
-              buttonColor={'transparent'}
+              bgColor={'transparent'}
               color={colors.light2}
               action={async () => {
                 clearLocalState();

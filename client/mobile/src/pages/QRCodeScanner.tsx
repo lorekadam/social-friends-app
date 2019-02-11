@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import BackButton from '../components/BackButton';
-import { PROFILE_PAGE } from '../navigation/pageTypes';
+import { HOME_PAGE } from '../navigation/pageTypes';
 import { MainView } from './PageSpine';
 import { BarCodeScanner } from 'expo';
 import FriendInviteFromQR from '../components/Friends/FriendInviteFromQR';
@@ -69,7 +69,7 @@ export default class QRCodeScanner extends React.Component {
               </TouchableOpacity>
             </View>
           </Camera>
-          <BackButton path={PROFILE_PAGE} />
+          <BackButton path={HOME_PAGE} />
         </MainView>
       );
     }

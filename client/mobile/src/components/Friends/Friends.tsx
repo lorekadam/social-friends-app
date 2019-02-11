@@ -6,8 +6,14 @@ import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import Loader from '../Loader';
 import Accordion from '../Animations/Accordion';
 import { Button } from '../../styled/Buttons';
-import { FRIEND_INVITE_PAGE } from '../../navigation/pageTypes';
+import {
+  FRIEND_INVITE_PAGE,
+  QRCODESCANNER_PAGE
+} from '../../navigation/pageTypes';
 import { Text } from '../../styled/Text';
+import { Row } from '../../styled/Grid';
+import CircleIconButton from '../display/CircleIconButton';
+import colors from '../../styled/colors';
 
 interface Props {
   open: boolean;
@@ -35,15 +41,38 @@ class Friends extends Component<Props, {}> {
         {({ loading, data, refetch }) => {
           return (
             <Accordion open={open}>
-              <Button
-                onPress={() =>
-                  navigation.state.key === FRIEND_INVITE_PAGE
-                    ? closeDrawer()
-                    : navigation.navigate(FRIEND_INVITE_PAGE)
-                }
+              <Row
+                justify="space-between"
+                align="center"
+                style={{
+                  marginBottom: 15,
+                  paddingBottom: 10,
+                  borderBottomWidth: 1,
+                  borderBottomColor: `${colors.light1}`
+                }}
               >
-                <Text>Invite friends!</Text>
-              </Button>
+                <CircleIconButton
+                  bgColor={colors.color1}
+                  icon="user-plus"
+                  action={() =>
+                    navigation.state.key === FRIEND_INVITE_PAGE
+                      ? closeDrawer()
+                      : navigation.navigate(FRIEND_INVITE_PAGE)
+                  }
+                >
+                  <Text>Invite friends!</Text>
+                </CircleIconButton>
+                <Text>{`Friends: ${data.friendships.length}`}</Text>
+                <CircleIconButton
+                  bgColor={colors.color2}
+                  icon="maximize"
+                  action={() =>
+                    this.props.navigation.navigate(QRCODESCANNER_PAGE)
+                  }
+                >
+                  <Text>Scan QR</Text>
+                </CircleIconButton>
+              </Row>
               {loading ? (
                 <Loader />
               ) : (

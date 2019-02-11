@@ -2,7 +2,7 @@ import { createSwitchNavigator } from 'react-navigation';
 import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
 import ForgotPasswordPage from '../pages/ForgotPassword';
-import ProfilePage from '../pages/Profile';
+import HomePage from '../pages/Home';
 import QRCodeScanner from '../pages/QRCodeScanner';
 import * as pages from './pageTypes';
 import FriendInvitePage from '../pages/FriendInvite';
@@ -29,9 +29,9 @@ export const SignedOut = createSwitchNavigator(
 
 export const SignedIn = createSwitchNavigator(
   {
-    [pages.PROFILE_PAGE]: {
-      screen: ProfilePage,
-      title: pages.PROFILE_PAGE
+    [pages.HOME_PAGE]: {
+      screen: HomePage,
+      title: pages.HOME_PAGE
     },
     [pages.FRIEND_INVITE_PAGE]: {
       screen: FriendInvitePage,
