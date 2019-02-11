@@ -14,9 +14,10 @@ import { Text } from '../../styled/Text';
 import { Item, ResultsWrapper } from '../../styled/Autocomplete';
 import CircleIconButton from '../display/CircleIconButton';
 import { ScrollView, Image } from 'react-native';
-import FindUsers from '../FindUsers';
 import { UserSearch } from '../../types/globals';
 import { avatarUrl } from '../../config';
+import { FindUser } from '../../QL/types';
+import FindUsers from '../FindUsers';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -24,7 +25,7 @@ interface Props {
 
 interface State {
   success: string;
-  searchResults: any[];
+  searchResults: [FindUser];
   loading: boolean;
 }
 
@@ -52,7 +53,7 @@ class FriendSearching extends Component<Props, State> {
     searched: false
   };
 
-  setResults = (res: {}) => {
+  setResults = (res: UserSearch) => {
     const { data } = res;
     this.setState({ searchResults: data.friendsToInvite });
   };

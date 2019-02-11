@@ -10,7 +10,7 @@ export type ArrayTwoOrMore<T> = {
 } & Array<T>;
 
 export interface UserSearch {
-  data: { friendsToInvite: FindUser };
+  data: { friendsToInvite: [FindUser] };
   name?: string;
   searched?: boolean;
 }
