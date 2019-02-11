@@ -1,7 +1,19 @@
 const { forwardTo } = require('prisma-binding');
 
 const Query = {
-  users: forwardTo('db'),
+  async users(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    return await ctx.db.query.users({
+      where: {
+        ...args.where,
+        id_not: userId
+      },
+      info
+    });
+  },
   async me(parent, args, ctx, info) {
     const userId = ctx.request.userId;
     if (!userId) {
