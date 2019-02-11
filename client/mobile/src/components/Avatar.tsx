@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import colors from '../styled/colors';
 import { Image } from 'react-native';
+import { avatarUrl } from '../config';
 
 interface Props {
   userId: string;
@@ -32,7 +33,7 @@ export default class Avatar extends Component<Props, State> {
       >
         <Image
           source={{
-            uri: `https://api.adorable.io/avatars/${this.props.userId}`
+            uri: `${avatarUrl}${this.props.userId}`
           }}
           style={{ width: this.state.width, display: 'flex', flex: 1 }}
         />

@@ -43,7 +43,7 @@ export const SignedIn = createSwitchNavigator(
     }
   },
   {
-    initialRouteName: pages.PROFILE_PAGE
+    initialRouteName: pages.FRIEND_INVITE_PAGE
   }
 );
 

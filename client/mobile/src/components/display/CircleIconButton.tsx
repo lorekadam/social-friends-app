@@ -9,7 +9,7 @@ interface Props {
   size?: number;
   buttonColor?: string;
   color?: string;
-  action: Function;
+  action(): void;
 }
 
 export default class CircleIconButton extends Component<Props, {}> {

@@ -29,6 +29,12 @@ type Query {
     skip: Int
     first: Int
   ): [FindUser]!
+  friendsToInvite(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    first: Int
+  ): [FindUser]!
   friendships: [Friendship!]!
   notifications: [Notification!]!
 }

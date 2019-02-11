@@ -1,3 +1,5 @@
+import { FindUser } from '../QL/types';
+
 export enum NotificationTypes {
   FRIEND_INVITE = 'FRIEND_INVITE'
 }
@@ -8,7 +10,7 @@ export type ArrayTwoOrMore<T> = {
 } & Array<T>;
 
 export interface UserSearch {
+  data: { friendsToInvite: FindUser };
   name?: string;
-  searched: boolean;
-  searchResults: any[];
+  searched?: boolean;
 }

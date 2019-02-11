@@ -266,7 +266,14 @@ const Mutation = {
         ]
       }
     });
-    // TO DO REMOVE OLD NOTIFICATION !!!!!!
+    // Remove notification for this friendship
+    await ctx.db.mutation.deleteManyNotifications({
+      where: {
+        friendship_every: {
+          OR: [{ id: friendships[0].id }, { id: friendships[1].id }]
+        }
+      }
+    });
     const deleted = await ctx.db.mutation.deleteManyFriendships({
       where: {
         OR: friendships

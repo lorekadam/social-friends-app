@@ -10,15 +10,15 @@
     "serve": "npm-run-all --parallel serve-dev playground",
     "deploy": "prisma deploy -e variables.env",
     "deploy-force": "prisma deploy -e variables.env --force",
-    "schema": "graphql get-schema -p prisma"
+    "schema": "graphql get-schema -p prisma",
+    "generate": "gql-gen"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://adamlorek@bitbucket.org/adamlorek/fstats.git"
+    "url": "https://github.com/lorekadam/my-app.git"
   },
   "author": "Adam Lorek",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/adamlorek/fstats#readme",
   "dependencies": {
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
@@ -34,6 +34,9 @@
     "stripe": "^6.12.1"
   },
   "devDependencies": {
+    "graphql-code-generator": "^0.16.1",
+    "graphql-codegen-typescript-common": "^0.16.1",
+    "graphql-codegen-typescript-server": "^0.16.1",
     "nodemon": "^1.18.4",
     "npm-run-all": "^4.1.3"
   }

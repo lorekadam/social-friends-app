@@ -1,19 +1,6 @@
 const { forwardTo } = require('prisma-binding');
 
 const Query = {
-  async users(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
-    if (!userId) {
-      return null;
-    }
-    return await ctx.db.query.users({
-      where: {
-        ...args.where,
-        id_not: userId
-      },
-      info
-    });
-  },
   async me(parent, args, ctx, info) {
     const userId = ctx.request.userId;
     if (!userId) {
@@ -37,6 +24,50 @@ const Query = {
       },
       info
     );
+  },
+  async users(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    return await ctx.db.query.users({
+      where: {
+        ...args.where,
+        id_not: userId
+      },
+      info
+    });
+  },
+  async friendsToInvite(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    const userFriends = await ctx.db.query.friendships(
+      {
+        where: {
+          user: { id: userId }
+        }
+      },
+      `{ 
+        friend{
+          id
+        } 
+      }`
+    );
+    const id = [];
+    userFriends.forEach((item) => {
+      id.push({ id: item.friend.id });
+    });
+    const users = await ctx.db.query.users({
+      where: {
+        ...args.where,
+        NOT: [{ id: userId }, ...id]
+      },
+      info
+    });
+    console.log(users);
+    return users;
   },
   async friendships(parent, args, ctx, info) {
     const userId = ctx.request.userId;
