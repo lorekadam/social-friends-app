@@ -14,7 +14,9 @@ class BackButton extends Component<Props, {}> {
     return (
       <CircleButton
         style={{ position: 'absolute', top: 10, left: 10 }}
-        onPress={() => (path ? navigation.navigate(path) : navigation.goBack())}
+        onPress={() =>
+          path ? navigation.navigate(path) : navigation.goBack(null)
+        }
       >
         <Ionicons name="md-arrow-back" size={28} color="white" />
       </CircleButton>

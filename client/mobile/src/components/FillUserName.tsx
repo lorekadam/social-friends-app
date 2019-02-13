@@ -8,6 +8,8 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import LogOutButton from './ControlButtons/LogOutButton';
 import Loader from './Loader';
+import { ME_QUERY } from '../pages/PageSpine';
+import QLNotifications from './QLNotifications';
 
 const UPDATE_USER_NAME = gql`
   mutation UPDATE_USER_NAME($name: String!) {
@@ -16,10 +18,6 @@ const UPDATE_USER_NAME = gql`
     }
   }
 `;
-
-interface Props {
-  refetch(): void;
-}
 
 interface State {
   name: string;
@@ -60,17 +58,23 @@ export default class FillUserName extends Component<Props, State> {
                 loading ? (
                   <Loader />
                 ) : (
-                  <Button
-                    bgColor={colors.color1}
-                    onPress={async () => {
-                      const res = await updateUserName();
-                      if (res) {
-                        this.props.refetch();
-                      }
-                    }}
-                  >
-                    <Text>Save name!</Text>
-                  </Button>
+                  <React.Fragment>
+                    <Button
+                      bgColor={colors.color1}
+                      onPress={async () => {
+                        await updateUserName({
+                          refetchQueries: [
+                            {
+                              query: ME_QUERY
+                            }
+                          ]
+                        });
+                      }}
+                    >
+                      <Text>Save name!</Text>
+                    </Button>
+                    {error && <QLNotifications error={error} />}
+                  </React.Fragment>
                 )
               }
             </Mutation>

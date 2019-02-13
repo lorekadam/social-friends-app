@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FriendListItem from './FriendListItem';
 import { FullView } from '../../styled/View';
-import { Text } from '../../styled/Text';
 
 interface Friendship {
   accepted: boolean;
@@ -10,14 +9,10 @@ interface Friendship {
 
 interface Props {
   friendships: [Friendship];
-  refetch: any;
 }
 
 export default class FriendList extends Component<Props> {
-  renderFriendListItems = (
-    friendships: Props['friendships'],
-    refetch: Props['refetch']
-  ) => {
+  renderFriendListItems = (friendships: Props['friendships']) => {
     const elements: [JSX.Element?] = [];
     friendships.map((friendship) => {
       const { id, name } = friendship.friend;
@@ -27,16 +22,13 @@ export default class FriendList extends Component<Props> {
           name={name}
           accepted={friendship.accepted}
           id={id}
-          refetch={refetch}
         />
       );
     });
     return elements;
   };
   render() {
-    const { friendships, refetch } = this.props;
-    return (
-      <FullView>{this.renderFriendListItems(friendships, refetch)}</FullView>
-    );
+    const { friendships } = this.props;
+    return <FullView>{this.renderFriendListItems(friendships)}</FullView>;
   }
 }

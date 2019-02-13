@@ -1,11 +1,10 @@
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import { endpoint } from './endpoint';
 import { LOCAL_TOGGLE_QUERY } from './pages/PageSpine';
 
 import { AsyncStorage } from 'react-native';
 
 const initialState = {
-  sidebarOpen: false,
   notificationsOpen: false,
   settingsOpen: false,
   friendsOpen: false
@@ -25,23 +24,12 @@ export default function createClient() {
         }
       });
     },
+    cache: new InMemoryCache(),
     clientState: {
       resolvers: {
         Mutation: {
           clearLocalState(_, variables, { cache }) {
             const data = { data: initialState };
-            cache.writeData(data);
-            return data;
-          },
-          toggleSidebar(_, variables, { cache }) {
-            const { sidebarOpen } = cache.readQuery({
-              query: LOCAL_TOGGLE_QUERY
-            });
-            const data = {
-              data: {
-                sidebarOpen: !sidebarOpen
-              }
-            };
             cache.writeData(data);
             return data;
           },

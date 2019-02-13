@@ -69,7 +69,7 @@ export default class QRCodeScanner extends React.Component {
               </TouchableOpacity>
             </View>
           </Camera>
-          <BackButton path={HOME_PAGE} />
+          <BackButton />
         </MainView>
       );
     }

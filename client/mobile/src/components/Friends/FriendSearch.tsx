@@ -19,6 +19,7 @@ import { avatarUrl } from '../../config';
 import { FindUser } from '../../QL/types';
 import FindUsers from '../FindUsers';
 import { Feather } from '@expo/vector-icons';
+import { MY_FRIENDS_QUERY } from './Friends';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -47,7 +48,7 @@ export const SEARCH_FRIENDS_QUERY = gql`
   }
 `;
 
-class FriendSearching extends Component<Props, State> {
+class FriendSearch extends Component<Props, State> {
   state = {
     success: '',
     searchResults: [],
@@ -115,10 +116,15 @@ class FriendSearching extends Component<Props, State> {
                                 icon="plus"
                                 iconSize={16}
                                 action={async () => {
-                                  const res = await inviteFriend();
+                                  const res = await inviteFriend({
+                                    refetchQueries: [
+                                      {
+                                        query: MY_FRIENDS_QUERY
+                                      }
+                                    ]
+                                  });
                                   if (res) {
                                     this.setFriendAsInvited(i);
-                                    this.props.refetch();
                                   }
                                 }}
                               />
@@ -139,4 +145,4 @@ class FriendSearching extends Component<Props, State> {
   }
 }
 
-export default withNavigation(FriendSearching);
+export default withNavigation(FriendSearch);

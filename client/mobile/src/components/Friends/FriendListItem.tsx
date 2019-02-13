@@ -5,12 +5,13 @@ import { Row, Col } from '../../styled/Grid';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Loader from '../Loader';
+import { MY_FRIENDS_QUERY } from './Friends';
+import QLNotifications from '../QLNotifications';
 
 interface Props {
   name: string;
   accepted: boolean;
   id: string;
-  refetch: any;
 }
 
 const REMOVE_FRIEND_MUTATION = gql`
@@ -23,7 +24,7 @@ const REMOVE_FRIEND_MUTATION = gql`
 
 export default class FriendListItem extends Component<Props, {}> {
   render() {
-    const { name, accepted, id, refetch } = this.props;
+    const { name, accepted, id } = this.props;
     return (
       <Mutation mutation={REMOVE_FRIEND_MUTATION} variables={{ friendId: id }}>
         {(removeFriend, { error, loading }) => (
@@ -41,13 +42,17 @@ export default class FriendListItem extends Component<Props, {}> {
                   <CircleIconButton
                     icon="minus"
                     action={async () => {
-                      const res = await removeFriend();
-                      if (res) {
-                        refetch();
-                      }
+                      await removeFriend({
+                        refetchQueries: [
+                          {
+                            query: MY_FRIENDS_QUERY
+                          }
+                        ]
+                      });
                     }}
                   />
                 </Col>
+                {error && <QLNotifications error={error} />}
               </React.Fragment>
             )}
           </Row>

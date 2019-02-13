@@ -66,7 +66,6 @@ const Query = {
       },
       info
     });
-    console.log(users);
     return users;
   },
   async friendships(parent, args, ctx, info) {
