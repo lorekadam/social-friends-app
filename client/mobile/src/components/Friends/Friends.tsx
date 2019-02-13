@@ -13,6 +13,7 @@ import { Text } from '../../styled/Text';
 import { Row } from '../../styled/Grid';
 import CircleIconButton from '../display/CircleIconButton';
 import colors from '../../styled/colors';
+import { getRouteName } from '../../utils/getRouteName';
 
 interface Props {
   open: boolean;
@@ -57,10 +58,11 @@ class Friends extends Component<Props, {}> {
                       bgColor={colors.color1}
                       icon="user-plus"
                       action={() => {
-                        console.log(navigation.dangerouslyGetParent());
-                        navigation.state.routeName === FRIEND_INVITE_PAGE
+                        getRouteName(navigation.state) === FRIEND_INVITE_PAGE
                           ? navigation.closeDrawer()
                           : navigation.navigate(FRIEND_INVITE_PAGE);
+                        console.log(this.props.navigation);
+                        console.log(navigation.state);
                       }}
                     >
                       <Text>Invite friends!</Text>

@@ -14,6 +14,7 @@ import { ScrollView, SafeAreaView } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { HOME_PAGE } from '../../navigation/pageTypes';
 import Loader from '../Loader';
+import { getRouteName } from '../../utils/getRouteName';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -51,6 +52,7 @@ export default class SettingsSidebar extends Component<Props, {}> {
     return (
       <Query query={LOCAL_TOGGLE_QUERY}>
         {({ data, loading }) => {
+          const routeName = getRouteName(navigation.state);
           const { userId, friendsOpen, notificationsOpen, settingsOpen } = data;
           return (
             <ScrollView>
@@ -71,12 +73,12 @@ export default class SettingsSidebar extends Component<Props, {}> {
                     </SimpleView>
                     <FullView>
                       <AccordionHeadline
-                        active={navigation.state.routeName === HOME_PAGE}
-                        action={() =>
-                          navigation.state.routeName === HOME_PAGE
+                        active={routeName === HOME_PAGE}
+                        action={() => {
+                          routeName === HOME_PAGE
                             ? navigation.closeDrawer()
-                            : navigation.navigate(HOME_PAGE)
-                        }
+                            : navigation.navigate(HOME_PAGE);
+                        }}
                         title="Home"
                         icon="home"
                       />
