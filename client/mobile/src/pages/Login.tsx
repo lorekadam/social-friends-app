@@ -14,6 +14,7 @@ import { Row, Col, RowColumn, ColColumn } from '../styled/Grid';
 import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
 import Logo from '../components/Logo';
+import { HOME_PAGE } from '../navigation/pageTypes';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -51,7 +52,7 @@ export default class LoginPage extends Component<Props, State> {
 
   logIn = async (token: string) => {
     await AsyncStorage.setItem('token', token);
-    this.props.navigation.navigate('Profile');
+    this.props.navigation.navigate(HOME_PAGE);
   };
 
   signin = async (signin: Function, client: any) => {

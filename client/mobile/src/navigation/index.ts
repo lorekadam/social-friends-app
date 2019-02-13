@@ -34,26 +34,35 @@ export const SignedOut = createSwitchNavigator(
   }
 );
 
-export const SignedIn = createDrawerNavigator(
+export const SignedIn = createStackNavigator(
   {
-    [pages.HOME_PAGE]: {
-      screen: HomePage,
-      title: pages.HOME_PAGE
-    },
-    [pages.FRIEND_INVITE_PAGE]: {
-      screen: FriendInvitePage,
-      title: pages.FRIEND_INVITE_PAGE
-    },
-    [pages.QRCODESCANNER_PAGE]: {
-      screen: QRCodeScanner,
-      title: pages.QRCODESCANNER_PAGE
+    Main: {
+      screen: createDrawerNavigator(
+        {
+          [pages.HOME_PAGE]: {
+            screen: HomePage,
+            title: pages.HOME_PAGE
+          },
+          [pages.FRIEND_INVITE_PAGE]: {
+            screen: FriendInvitePage,
+            title: pages.FRIEND_INVITE_PAGE
+          },
+          [pages.QRCODESCANNER_PAGE]: {
+            screen: QRCodeScanner,
+            title: pages.QRCODESCANNER_PAGE
+          }
+        },
+        {
+          initialRouteName: pages.HOME_PAGE,
+          drawerWidth: width * 0.8,
+          drawerBackgroundColor: colors.dark2,
+          contentComponent: SettingsSidebar
+        }
+      )
     }
   },
   {
-    initialRouteName: pages.HOME_PAGE,
-    drawerWidth: width * 0.8,
-    drawerBackgroundColor: colors.dark2,
-    contentComponent: SettingsSidebar
+    headerMode: 'none'
   }
 );
 

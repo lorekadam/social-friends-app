@@ -5,7 +5,7 @@ import { Absolute } from '../../styled/Postions';
 import CircleIconButton from '../display/CircleIconButton';
 import colors from '../../styled/colors';
 import { LOGIN_PAGE } from '../../navigation/pageTypes';
-import { Mutation } from 'react-apollo';
+import { Mutation, withApollo } from 'react-apollo';
 import { CLEAR_LOCAL_STATE_MUTATION } from '../../QL/Mutations';
 
 interface Props {
@@ -25,6 +25,7 @@ class LogOutButton extends Component<Props, {}> {
                 clearLocalState();
                 await AsyncStorage.removeItem('token');
                 this.props.navigation.navigate(LOGIN_PAGE);
+                await this.props.client.resetStore();
               }}
               icon="log-out"
             />
@@ -35,4 +36,4 @@ class LogOutButton extends Component<Props, {}> {
   }
 }
 
-export default withNavigation(LogOutButton);
+export default withApollo(withNavigation(LogOutButton));

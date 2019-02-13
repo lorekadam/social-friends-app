@@ -61,8 +61,6 @@ class Friends extends Component<Props, {}> {
                         getRouteName(navigation.state) === FRIEND_INVITE_PAGE
                           ? navigation.closeDrawer()
                           : navigation.navigate(FRIEND_INVITE_PAGE);
-                        console.log(this.props.navigation);
-                        console.log(navigation.state);
                       }}
                     >
                       <Text>Invite friends!</Text>

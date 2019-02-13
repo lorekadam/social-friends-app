@@ -7,6 +7,7 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import QLNotifications from '../../QLNotifications';
 import Loader from '../../Loader';
+import { MY_FRIENDS_QUERY } from '../../Friends/Friends';
 
 interface Props {
   id: string;
@@ -57,7 +58,13 @@ export default class FriendInvite extends Component<Props, State> {
                           text="Accept"
                           icon="plus"
                           action={async () => {
-                            const res = await acceptFriendInvite();
+                            const res = await acceptFriendInvite({
+                              refetchQueries: [
+                                {
+                                  query: MY_FRIENDS_QUERY
+                                }
+                              ]
+                            });
                             if (res) {
                               this.setState({
                                 success: res.data.acceptFriendInvite.message
