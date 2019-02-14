@@ -295,7 +295,7 @@ const Mutation = {
       {
         data: {
           viewed: true,
-          accepted: true
+          done: true
         },
         where: {
           id: args.id
