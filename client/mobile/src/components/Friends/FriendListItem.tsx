@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
 import CircleIconButton from '../display/CircleIconButton';
-import { Row, Col } from '../../styled/Grid';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Row } from '../../styled/Grid';
 import Loader from '../Loader';
-import { MY_FRIENDS_QUERY } from './Friends';
 import QLNotifications from '../QLNotifications';
+import { Text } from '../../styled/Text';
+import colors from '../../styled/colors';
+import { PaddingView } from '../../styled/View';
+import { Image } from 'react-native';
+import { avatarUrl } from '../../config';
+import { MY_FRIENDS_QUERY } from '../../QL/Queries';
 
 interface Props {
   name: string;
@@ -26,37 +30,46 @@ export default class FriendListItem extends Component<Props, {}> {
   render() {
     const { name, accepted, id } = this.props;
     return (
-      <Mutation mutation={REMOVE_FRIEND_MUTATION} variables={{ friendId: id }}>
-        {(removeFriend, { error, loading }) => (
-          <Row>
-            {loading ? (
-              <Loader />
-            ) : (
-              <React.Fragment>
-                <Col flex={3}>
-                  <Text>
-                    {name} / {accepted.toString()}
-                  </Text>
-                </Col>
-                <Col flex={1}>
-                  <CircleIconButton
-                    icon="minus"
-                    action={async () => {
-                      await removeFriend({
-                        refetchQueries: [
-                          {
-                            query: MY_FRIENDS_QUERY
-                          }
-                        ]
-                      });
-                    }}
-                  />
-                </Col>
-                {error && <QLNotifications error={error} />}
-              </React.Fragment>
-            )}
-          </Row>
-        )}
+      <Mutation
+        refetchQueries={[
+          {
+            query: MY_FRIENDS_QUERY,
+            variables: { last: 5 }
+          }
+        ]}
+        mutation={REMOVE_FRIEND_MUTATION}
+        variables={{ friendId: id }}
+      >
+        {(removeFriend, { error, loading }) => {
+          if (error) return <QLNotifications error={error} />;
+          if (loading) return <Loader />;
+          return (
+            <PaddingView padding={4}>
+              <Row justify="space-between" align="center">
+                <Image
+                  source={{
+                    uri: `${avatarUrl}${id}`
+                  }}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 30
+                  }}
+                />
+                <Text>{name}</Text>
+                <CircleIconButton
+                  bgColor={colors.dark1}
+                  size={24}
+                  iconSize={14}
+                  icon="minus"
+                  action={async () => {
+                    await removeFriend();
+                  }}
+                />
+              </Row>
+            </PaddingView>
+          );
+        }}
       </Mutation>
     );
   }

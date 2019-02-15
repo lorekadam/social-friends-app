@@ -4,22 +4,18 @@ import gql from 'graphql-tag';
 import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import colors from '../../styled/colors';
 import { FullView } from '../../styled/View';
-import { Button } from '../../styled/Buttons';
-import { Row, Col } from '../../styled/Grid';
-import { nameValidation } from '../../utils/validations';
 import QLNotifications from '../QLNotifications';
 import Loader from '../Loader';
-import { QRCODESCANNER_PAGE } from '../../navigation/pageTypes';
 import { Text } from '../../styled/Text';
 import { Item, ResultsWrapper } from '../../styled/Autocomplete';
 import CircleIconButton from '../display/CircleIconButton';
-import { ScrollView, Image } from 'react-native';
+import { Image } from 'react-native';
 import { UserSearch, UserToInvite } from '../../QL/globals';
 import { avatarUrl } from '../../config';
 import { FindUser } from '../../QL/types';
 import FindUsers from '../FindUsers';
 import { Feather } from '@expo/vector-icons';
-import { MY_FRIENDS_QUERY } from './Friends';
+import { MY_FRIENDS_QUERY } from '../../QL/Queries';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -86,51 +82,46 @@ class FriendSearch extends Component<Props, State> {
                 <Mutation
                   key={user.id}
                   mutation={INVITE_FRIEND_MUTATION}
+                  refetchQueries={[
+                    {
+                      query: MY_FRIENDS_QUERY,
+                      variables: { last: 5 }
+                    }
+                  ]}
                   variables={{ id: user.id }}
                 >
                   {(inviteFriend, { error, loading }) => {
+                    if (error) return <QLNotifications error={error} />;
+                    if (loading) return <Loader />;
                     return (
                       <Item topBorder={i === 0}>
-                        {loading ? (
-                          <Loader />
+                        <Image
+                          source={{
+                            uri: `${avatarUrl}${user.id}`
+                          }}
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 40
+                          }}
+                        />
+                        <Text>{user.name}</Text>
+                        {user.invited ? (
+                          <Feather name="check-circle" />
                         ) : (
-                          <React.Fragment>
-                            <Image
-                              source={{
-                                uri: `${avatarUrl}${user.id}`
-                              }}
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 40
-                              }}
-                            />
-                            <Text>{user.name}</Text>
-                            {user.invited ? (
-                              <Feather name="check-circle" />
-                            ) : (
-                              <CircleIconButton
-                                size={22}
-                                buttonColor={colors.color2}
-                                color={colors.light2}
-                                icon="plus"
-                                iconSize={16}
-                                action={async () => {
-                                  const res = await inviteFriend({
-                                    refetchQueries: [
-                                      {
-                                        query: MY_FRIENDS_QUERY
-                                      }
-                                    ]
-                                  });
-                                  if (res) {
-                                    this.setFriendAsInvited(i);
-                                  }
-                                }}
-                              />
-                            )}
-                            <QLNotifications error={error} />
-                          </React.Fragment>
+                          <CircleIconButton
+                            size={22}
+                            bgColor={colors.color2}
+                            color={colors.light2}
+                            icon="plus"
+                            iconSize={16}
+                            action={async () => {
+                              const res = await inviteFriend();
+                              if (res) {
+                                this.setFriendAsInvited(i);
+                              }
+                            }}
+                          />
                         )}
                       </Item>
                     );

@@ -7,20 +7,14 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import QLNotifications from '../../QLNotifications';
 import Loader from '../../Loader';
-import { MY_FRIENDS_QUERY } from '../../Friends/Friends';
+import { MY_NOTIFICATIONS_QUERY } from '../NotificationsList';
+import { FindUser } from '../../../QL/types';
+import { MY_FRIENDS_QUERY } from '../../../QL/Queries';
 
 interface Props {
   id: string;
   viewed: boolean;
-  accepted: boolean;
-  friend: {
-    id: string;
-    name: string;
-  };
-}
-
-interface State {
-  success: string;
+  friend: FindUser;
 }
 
 const ACCEPT_FRIEND_INVITE_MUTATION = gql`
@@ -31,56 +25,46 @@ const ACCEPT_FRIEND_INVITE_MUTATION = gql`
   }
 `;
 
-export default class FriendInvite extends Component<Props, State> {
-  state = {
-    success: ''
-  };
-
+export default class FriendInvite extends Component<Props> {
   render() {
-    const { id, friend, accepted, viewed } = this.props;
-    const { success } = this.state;
+    const { id, friend, viewed } = this.props;
     return (
-      <Mutation mutation={ACCEPT_FRIEND_INVITE_MUTATION} variables={{ id }}>
+      <Mutation
+        refetchQueries={[
+          {
+            query: MY_FRIENDS_QUERY,
+            variables: { last: 5 }
+          },
+          {
+            query: MY_NOTIFICATIONS_QUERY
+          }
+        ]}
+        mutation={ACCEPT_FRIEND_INVITE_MUTATION}
+        variables={{ id }}
+      >
         {(acceptFriendInvite, { error, loading }) => {
+          if (error) return <QLNotifications error={error} />;
+          if (loading) return <Loader />;
           return (
             <FullView>
-              {loading ? (
-                <Loader />
-              ) : (
-                <React.Fragment>
-                  <Row>
-                    <Col>
-                      <Text>Friend invitation from {friend.name}</Text>
-                    </Col>
-                    {!accepted && (
-                      <Col>
-                        <PillTextIconButton
-                          text="Accept"
-                          icon="plus"
-                          action={async () => {
-                            const res = await acceptFriendInvite({
-                              refetchQueries: [
-                                {
-                                  query: MY_FRIENDS_QUERY
-                                }
-                              ]
-                            });
-                            if (res) {
-                              this.setState({
-                                success: res.data.acceptFriendInvite.message
-                              });
-                            }
-                          }}
-                        />
-                      </Col>
-                    )}
-                    <Col>
-                      <Text>{viewed.toString()}</Text>
-                    </Col>
-                  </Row>
-                  <QLNotifications error={error} success={success} />
-                </React.Fragment>
-              )}
+              <Row>
+                <Col>
+                  <Text>Friend invitation from {friend.name}</Text>
+                </Col>
+
+                <Col>
+                  <PillTextIconButton
+                    text="Accept"
+                    icon="plus"
+                    action={async () => {
+                      await acceptFriendInvite();
+                    }}
+                  />
+                </Col>
+                <Col>
+                  <Text>{viewed.toString()}</Text>
+                </Col>
+              </Row>
             </FullView>
           );
         }}

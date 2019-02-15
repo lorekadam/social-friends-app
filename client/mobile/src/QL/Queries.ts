@@ -8,3 +8,25 @@ export const USER_QUERY = gql`
     }
   }
 `;
+
+export const MY_FRIENDS_QUERY = gql`
+  query MY_FRIENDS_QUERY($skip: Int, $first: Int, $last: Int) {
+    friendships(skip: $skip, first: $first, last: $last) {
+      accepted
+      friend {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const MY_FRIENDS_CONNECTION_QUERY = gql`
+  query MY_FRIENDS_CONNECTION_QUERY {
+    friendshipsConnection {
+      aggregate {
+        count
+      }
+    }
+  }
+`;

@@ -13,6 +13,7 @@ import FriendInvitePage from '../pages/FriendInvite';
 import { width } from '../styled/globals';
 import colors from '../styled/colors';
 import SettingsSidebar from '../components/Sidebar/SettingsSidebar';
+import FriendsPage from '../pages/Friends';
 
 export const SignedOut = createSwitchNavigator(
   {
@@ -46,6 +47,10 @@ export const SignedIn = createStackNavigator(
           [pages.FRIEND_INVITE_PAGE]: {
             screen: FriendInvitePage,
             title: pages.FRIEND_INVITE_PAGE
+          },
+          [pages.FRIENDS_PAGE]: {
+            screen: FriendsPage,
+            title: pages.FRIENDS_PAGE
           },
           [pages.QRCODESCANNER_PAGE]: {
             screen: QRCodeScanner,

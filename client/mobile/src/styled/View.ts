@@ -6,8 +6,8 @@ interface Props {
   padding?: number;
   paddingTop?: number;
   paddingRight?: number;
-  paddingLeft?: number;
   paddingBottom?: number;
+  paddingLeft?: number;
   height?: string;
   justify?: string;
   align?: string;
@@ -27,9 +27,9 @@ const OnlyPadding = styled.View`
   ${(props: Props) =>
     props.paddingRight && `padding-right:${props.paddingRight}px`}
   ${(props: Props) =>
-    props.paddingLeft && `padding-left:${props.paddingLeft}px`}
-  ${(props: Props) =>
     props.paddingBottom && `padding-bottom:${props.paddingBottom}px`}
+  ${(props: Props) =>
+    props.paddingLeft && `padding-left:${props.paddingLeft}px`}
 `;
 
 export const PaddingView = styled(OnlyPadding)`

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import FriendListItem from './FriendListItem';
 import { FullView } from '../../styled/View';
+import { FindUser } from '../../QL/types';
 
 interface Friendship {
   accepted: boolean;
-  friend: { id: string; name: string };
+  friend: FindUser;
 }
 
 interface Props {

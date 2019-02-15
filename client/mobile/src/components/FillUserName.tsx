@@ -53,30 +53,31 @@ export default class FillUserName extends Component<Props, State> {
         />
         {searched &&
           (searchResults.length === 0 ? (
-            <Mutation mutation={UPDATE_USER_NAME} variables={{ name }}>
-              {(updateUserName, { error, loading }) =>
-                loading ? (
-                  <Loader />
-                ) : (
+            <Mutation
+              refetchQueries={[
+                {
+                  query: ME_QUERY
+                }
+              ]}
+              mutation={UPDATE_USER_NAME}
+              variables={{ name }}
+            >
+              {(updateUserName, { error, loading }) => {
+                if (error) return <QLNotifications error={error} />;
+                if (loading) return <Loader />;
+                return (
                   <React.Fragment>
                     <Button
                       bgColor={colors.color1}
                       onPress={async () => {
-                        await updateUserName({
-                          refetchQueries: [
-                            {
-                              query: ME_QUERY
-                            }
-                          ]
-                        });
+                        await updateUserName();
                       }}
                     >
                       <Text>Save name!</Text>
                     </Button>
-                    {error && <QLNotifications error={error} />}
                   </React.Fragment>
-                )
-              }
+                );
+              }}
             </Mutation>
           ) : (
             <Text color={colors.error}>Given name is already taken</Text>

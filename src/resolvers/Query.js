@@ -82,6 +82,21 @@ const Query = {
       info
     );
   },
+  async friendshipsConnection(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    return await ctx.db.query.friendshipsConnection(
+      {
+        where: {
+          ...args.where,
+          user: { id: userId }
+        }
+      },
+      info
+    );
+  },
   async notifications(parent, args, ctx, info) {
     const userId = ctx.request.userId;
     if (!userId) {
@@ -90,7 +105,8 @@ const Query = {
     return await ctx.db.query.notifications(
       {
         where: {
-          user: { id: userId }
+          user: { id: userId },
+          done: false
         },
         orderBy: 'createdAt_DESC'
       },

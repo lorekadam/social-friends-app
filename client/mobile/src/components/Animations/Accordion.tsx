@@ -5,6 +5,7 @@ import { PaddingView } from '../../styled/View';
 
 interface Props {
   open: boolean;
+  padding?: number;
 }
 
 export default class Accordion extends Component<Props, {}> {
@@ -29,7 +30,7 @@ export default class Accordion extends Component<Props, {}> {
 
   render() {
     const { dropAnim, opacity } = this.state;
-
+    const { padding } = this.props;
     return (
       <Animated.View
         style={{
@@ -49,7 +50,9 @@ export default class Accordion extends Component<Props, {}> {
               this.setState({ toHeight: e.nativeEvent.layout.height });
             }}
           >
-            <PaddingView>{this.props.children}</PaddingView>
+            <PaddingView padding={padding ? padding : 15}>
+              {this.props.children}
+            </PaddingView>
           </AbsoluteFlex>
         )}
       </Animated.View>

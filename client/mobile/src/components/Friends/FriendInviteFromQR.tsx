@@ -37,25 +37,24 @@ class FriendInviteFromQR extends Component<Props, {}> {
                 mutation={INVITE_FRIEND_MUTATION}
                 variables={{ id: this.props.id }}
               >
-                {(inviteFriend, { error, loading }) => (
-                  <React.Fragment>
-                    <Button
-                      onPress={async () => {
-                        const res = await inviteFriend();
-                        if (res) {
-                          this.props.navigation.navigate(HOME_PAGE);
-                        }
-                      }}
-                    >
-                      {loading ? (
-                        <Loader />
-                      ) : (
+                {(inviteFriend, { error, loading }) => {
+                  if (error) return <QLNotifications error={error} />;
+                  if (loading) return <Loader />;
+                  return (
+                    <React.Fragment>
+                      <Button
+                        onPress={async () => {
+                          const res = await inviteFriend();
+                          if (res) {
+                            this.props.navigation.navigate(HOME_PAGE);
+                          }
+                        }}
+                      >
                         <Text>Send invitation to {data.user.name}</Text>
-                      )}
-                    </Button>
-                    <QLNotifications error={error} />
-                  </React.Fragment>
-                )}
+                      </Button>
+                    </React.Fragment>
+                  );
+                }}
               </Mutation>
               <Button onPress={() => this.setState({ userId: '' })}>
                 <Text>Close</Text>

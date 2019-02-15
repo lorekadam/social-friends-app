@@ -6,6 +6,7 @@ import { NotificationTypes, ArrayTwoOrMore } from '../../QL/globals';
 import FriendInvite from './types/FriendInvite';
 import Loader from '../Loader';
 import { Text } from '../../styled/Text';
+import { FindUser } from '../../QL/types';
 
 interface Notification {
   id: string;
@@ -14,16 +15,12 @@ interface Notification {
     id: string;
   };
   friendship?: ArrayTwoOrMore<{
-    friend: {
-      id: string;
-      name: string;
-    };
+    friend: FindUser;
   }>;
-  accepted: boolean;
   viewed: boolean;
 }
 
-const MY_NOTIFICATIONS_QUERY = gql`
+export const MY_NOTIFICATIONS_QUERY = gql`
   query MY_NOTIFICATIONS_QUERY {
     notifications {
       id
@@ -37,7 +34,6 @@ const MY_NOTIFICATIONS_QUERY = gql`
           name
         }
       }
-      accepted
       viewed
     }
   }
@@ -47,19 +43,17 @@ export default class NotificationsList extends Component {
   renderNotificationListItems = (notifications: [Notification]) => {
     const elements: [JSX.Element?] = [];
     notifications.map((notification) => {
-      const { id, type, friendship, accepted, viewed, user } = notification;
+      const { id, type, friendship, viewed, user } = notification;
       if (
         type === NotificationTypes.FRIEND_INVITE &&
         friendship !== undefined &&
-        friendship.length === 2 &&
-        !accepted
+        friendship.length === 2
       ) {
         elements.push(
           <FriendInvite
             key={id}
             id={id}
             viewed={viewed}
-            accepted={accepted}
             friend={
               friendship[0].friend.id === user.id
                 ? friendship[1].friend
