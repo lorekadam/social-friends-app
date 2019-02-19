@@ -23,7 +23,8 @@ type User {
 type Friendship {
   id: ID! @unique
   user: User! @relation(name: "User")
-  friend: User @relation(name: "Friend")
+  friend: User! @relation(name: "Friend")
+  inviting: User! @relation(name: "UserInviting")
   accepted: Boolean! @default(value: "false")
   createdAt: DateTime!
   updatedAt: DateTime!

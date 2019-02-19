@@ -189,6 +189,11 @@ const Mutation = {
                 id: userId
               }
             },
+            inviting: {
+              connect: {
+                id: userId
+              }
+            },
             friend: {
               connect: {
                 id: friendToAdd.id
@@ -202,6 +207,11 @@ const Mutation = {
             user: {
               connect: {
                 id: friendToAdd.id
+              }
+            },
+            inviting: {
+              connect: {
+                id: userId
               }
             },
             friend: {

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/adam-lorek-1a2a61/allstats/dev
-# timestamp: Fri Feb 15 2019 09:53:26 GMT+0100 (GMT+01:00)
+# timestamp: Tue Feb 19 2019 11:28:12 GMT+0100 (GMT+01:00)
 
 type AggregateFriendship {
   count: Int!
@@ -23,7 +23,8 @@ scalar DateTime
 type Friendship implements Node {
   id: ID!
   user: User!
-  friend: User
+  friend: User!
+  inviting: User!
   accepted: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -42,7 +43,8 @@ type FriendshipConnection {
 input FriendshipCreateInput {
   accepted: Boolean
   user: UserCreateOneInput!
-  friend: UserCreateOneInput
+  friend: UserCreateOneInput!
+  inviting: UserCreateOneInput!
 }
 
 input FriendshipCreateManyInput {
@@ -218,13 +220,15 @@ input FriendshipSubscriptionWhereInput {
 input FriendshipUpdateDataInput {
   accepted: Boolean
   user: UserUpdateOneRequiredInput
-  friend: UserUpdateOneInput
+  friend: UserUpdateOneRequiredInput
+  inviting: UserUpdateOneRequiredInput
 }
 
 input FriendshipUpdateInput {
   accepted: Boolean
   user: UserUpdateOneRequiredInput
-  friend: UserUpdateOneInput
+  friend: UserUpdateOneRequiredInput
+  inviting: UserUpdateOneRequiredInput
 }
 
 input FriendshipUpdateManyDataInput {
@@ -362,6 +366,7 @@ input FriendshipWhereInput {
   updatedAt_gte: DateTime
   user: UserWhereInput
   friend: UserWhereInput
+  inviting: UserWhereInput
 }
 
 input FriendshipWhereUniqueInput {
@@ -843,15 +848,6 @@ input UserUpdateManyMutationInput {
   resetToken: String
   resetTokenExpiry: Float
   permissions: UserUpdatepermissionsInput
-}
-
-input UserUpdateOneInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
 }
 
 input UserUpdateOneRequiredInput {
