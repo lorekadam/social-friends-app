@@ -13,6 +13,9 @@ export const MY_FRIENDS_QUERY = gql`
   query MY_FRIENDS_QUERY($skip: Int, $first: Int, $last: Int) {
     friendships(skip: $skip, first: $first, last: $last) {
       accepted
+      inviting {
+        id
+      }
       friend {
         id
         name

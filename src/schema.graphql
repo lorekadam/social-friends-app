@@ -17,6 +17,7 @@ type Mutation {
   ): User!
   inviteFriend(name: String, id: String): SuccessMessage!
   acceptFriendInvite(id: String!): SuccessMessage!
+  acceptFriend(friendId: String!): SuccessMessage!
   removeFriend(friendId: String!): SuccessMessage!
 }
 
@@ -61,7 +62,8 @@ type User {
 type Friendship {
   id: ID!
   user: User!
-  friend: User
+  friend: User!
+  inviting: User!
   accepted: Boolean!
 }
 

@@ -16,6 +16,8 @@ interface Props {
   name: string;
   accepted: boolean;
   id: string;
+  me: string;
+  inviting: string;
 }
 
 const REMOVE_FRIEND_MUTATION = gql`
@@ -26,37 +28,73 @@ const REMOVE_FRIEND_MUTATION = gql`
   }
 `;
 
+const ACCEPT_FRIEND_MUTATION = gql`
+  mutation ACCEPT_FRIEND_MUTATION($friendId: String!) {
+    acceptFriend(friendId: $friendId) {
+      message
+    }
+  }
+`;
+
 export default class FriendListItem extends Component<Props, {}> {
   render() {
-    const { name, accepted, id } = this.props;
+    const { name, accepted, id, me, inviting } = this.props;
     return (
-      <Mutation
-        refetchQueries={[
-          {
-            query: MY_FRIENDS_QUERY,
-            variables: { last: 5 }
-          }
-        ]}
-        mutation={REMOVE_FRIEND_MUTATION}
-        variables={{ friendId: id }}
-      >
-        {(removeFriend, { error, loading }) => {
-          if (error) return <QLNotifications error={error} />;
-          if (loading) return <Loader />;
-          return (
-            <PaddingView padding={4}>
-              <Row justify="space-between" align="center">
-                <Image
-                  source={{
-                    uri: `${avatarUrl}${id}`
-                  }}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 30
-                  }}
-                />
-                <Text>{name}</Text>
+      <PaddingView padding={4}>
+        <Row justify="space-between" align="center">
+          <Image
+            source={{
+              uri: `${avatarUrl}${id}`
+            }}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 30
+            }}
+          />
+          <Text>{name}</Text>
+          {accepted === false && me !== inviting && (
+            <Mutation
+              refetchQueries={[
+                {
+                  query: MY_FRIENDS_QUERY,
+                  variables: { last: 5 }
+                }
+              ]}
+              mutation={ACCEPT_FRIEND_MUTATION}
+              variables={{ friendId: id }}
+            >
+              {(acceptFriend, { error, loading }) => {
+                if (error) return <QLNotifications error={error} />;
+                if (loading) return <Loader />;
+                return (
+                  <CircleIconButton
+                    bgColor={colors.dark1}
+                    size={24}
+                    iconSize={14}
+                    icon="check"
+                    action={async () => {
+                      await acceptFriend();
+                    }}
+                  />
+                );
+              }}
+            </Mutation>
+          )}
+          <Mutation
+            refetchQueries={[
+              {
+                query: MY_FRIENDS_QUERY,
+                variables: { last: 5 }
+              }
+            ]}
+            mutation={REMOVE_FRIEND_MUTATION}
+            variables={{ friendId: id }}
+          >
+            {(removeFriend, { error, loading }) => {
+              if (error) return <QLNotifications error={error} />;
+              if (loading) return <Loader />;
+              return (
                 <CircleIconButton
                   bgColor={colors.dark1}
                   size={24}
@@ -66,11 +104,11 @@ export default class FriendListItem extends Component<Props, {}> {
                     await removeFriend();
                   }}
                 />
-              </Row>
-            </PaddingView>
-          );
-        }}
-      </Mutation>
+              );
+            }}
+          </Mutation>
+        </Row>
+      </PaddingView>
     );
   }
 }

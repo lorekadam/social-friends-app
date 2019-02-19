@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import FriendList from './FriendList';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import Loader from '../Loader';
@@ -10,7 +9,6 @@ import {
   QRCODESCANNER_PAGE,
   FRIENDS_PAGE
 } from '../../navigation/pageTypes';
-import { Text } from '../../styled/Text';
 import { Row } from '../../styled/Grid';
 import CircleIconButton from '../display/CircleIconButton';
 import colors from '../../styled/colors';

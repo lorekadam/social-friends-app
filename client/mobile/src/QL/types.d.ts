@@ -225,6 +225,85 @@ export interface UserWhereInput {
   updatedAt_gte?: Maybe<DateTime>;
 }
 
+export interface FriendshipWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<FriendshipWhereInput[]>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<FriendshipWhereInput[]>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<FriendshipWhereInput[]>;
+
+  id?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<string>;
+
+  accepted?: Maybe<boolean>;
+  /** All values that are not equal to given value. */
+  accepted_not?: Maybe<boolean>;
+
+  createdAt?: Maybe<DateTime>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: Maybe<DateTime>;
+  /** All values that are contained in given list. */
+  createdAt_in?: Maybe<DateTime[]>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: Maybe<DateTime[]>;
+  /** All values less than the given value. */
+  createdAt_lt?: Maybe<DateTime>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: Maybe<DateTime>;
+  /** All values greater than the given value. */
+  createdAt_gt?: Maybe<DateTime>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: Maybe<DateTime>;
+
+  updatedAt?: Maybe<DateTime>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: Maybe<DateTime>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: Maybe<DateTime[]>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: Maybe<DateTime[]>;
+  /** All values less than the given value. */
+  updatedAt_lt?: Maybe<DateTime>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: Maybe<DateTime>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: Maybe<DateTime>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: Maybe<DateTime>;
+
+  user?: Maybe<UserWhereInput>;
+
+  friend?: Maybe<UserWhereInput>;
+
+  inviting?: Maybe<UserWhereInput>;
+}
+
 export enum UserOrderByInput {
   IdAsc = "id_ASC",
   IdDesc = "id_DESC",
@@ -240,6 +319,17 @@ export enum UserOrderByInput {
   ResetTokenDesc = "resetToken_DESC",
   ResetTokenExpiryAsc = "resetTokenExpiry_ASC",
   ResetTokenExpiryDesc = "resetTokenExpiry_DESC",
+  CreatedAtAsc = "createdAt_ASC",
+  CreatedAtDesc = "createdAt_DESC",
+  UpdatedAtAsc = "updatedAt_ASC",
+  UpdatedAtDesc = "updatedAt_DESC"
+}
+
+export enum FriendshipOrderByInput {
+  IdAsc = "id_ASC",
+  IdDesc = "id_DESC",
+  AcceptedAsc = "accepted_ASC",
+  AcceptedDesc = "accepted_DESC",
   CreatedAtAsc = "createdAt_ASC",
   CreatedAtDesc = "createdAt_DESC",
   UpdatedAtAsc = "updatedAt_ASC",
@@ -271,6 +361,8 @@ export interface Query {
 
   friendships: Friendship[];
 
+  friendshipsConnection?: Maybe<FriendshipConnection>;
+
   notifications: Notification[];
 }
 
@@ -295,9 +387,45 @@ export interface Friendship {
 
   user: User;
 
-  friend?: Maybe<User>;
+  friend: User;
+
+  inviting: User;
 
   accepted: boolean;
+}
+
+/** A connection to a list of items. */
+export interface FriendshipConnection {
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges: (Maybe<FriendshipEdge>)[];
+
+  aggregate: AggregateFriendship;
+}
+
+/** Information about pagination in a connection. */
+export interface PageInfo {
+  /** When paginating forwards, are there more items? */
+  hasNextPage: boolean;
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: boolean;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<string>;
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<string>;
+}
+
+/** An edge in a connection. */
+export interface FriendshipEdge {
+  /** The item at the end of the edge. */
+  node: Friendship;
+  /** A cursor for use in pagination. */
+  cursor: string;
+}
+
+export interface AggregateFriendship {
+  count: number;
 }
 
 export interface Notification {
@@ -362,6 +490,20 @@ export interface FriendsToInviteQueryArgs {
   skip?: Maybe<number>;
 
   first?: Maybe<number>;
+}
+export interface FriendshipsQueryArgs {
+  where?: Maybe<FriendshipWhereInput>;
+
+  orderBy?: Maybe<FriendshipOrderByInput>;
+
+  skip?: Maybe<number>;
+
+  first?: Maybe<number>;
+
+  last?: Maybe<number>;
+}
+export interface FriendshipsConnectionQueryArgs {
+  where?: Maybe<FriendshipWhereInput>;
 }
 export interface SignupMutationArgs {
   email: string;

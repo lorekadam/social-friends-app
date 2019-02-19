@@ -339,6 +339,14 @@ const Mutation = {
     } else {
       return null;
     }
+  },
+  async acceptFriend(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    console.log(userId);
+    return { message: 'Accept' };
   }
 };
 
