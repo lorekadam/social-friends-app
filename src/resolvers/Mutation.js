@@ -345,8 +345,72 @@ const Mutation = {
     if (!userId) {
       return null;
     }
-    console.log(userId);
-    return { message: 'Accept' };
+
+    const acceptInvitation = await ctx.db.mutation.updateManyFriendships({
+      data: {
+        accepted: true
+      },
+      where: {
+        OR: [
+          {
+            user: {
+              id: userId
+            },
+            friend: {
+              id: args.friendId
+            }
+          },
+          {
+            user: {
+              id: args.friendId
+            },
+            friend: {
+              id: userId
+            }
+          }
+        ]
+      }
+    });
+    if (acceptInvitation.count === 2) {
+      const friendships = await ctx.db.query.friendships({
+        where: {
+          OR: [
+            {
+              user: {
+                id: userId
+              },
+              friend: {
+                id: args.friendId
+              }
+            },
+            {
+              user: {
+                id: args.friendId
+              },
+              friend: {
+                id: userId
+              }
+            }
+          ]
+        }
+      });
+      const notification = await ctx.db.mutation.updateManyNotifications({
+        data: {
+          viewed: true,
+          done: true
+        },
+        where: {
+          friendship_every: {
+            OR: [{ id: friendships[0].id }, { id: friendships[1].id }]
+          }
+        }
+      });
+      if (notification.count === 1) {
+        return { message: 'Success!' };
+      } else {
+        return { message: 'Something went wrong :(' };
+      }
+    }
   }
 };
 
