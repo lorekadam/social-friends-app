@@ -94,7 +94,7 @@ class FriendSearch extends Component<Props, State> {
                     if (error) return <QLNotifications error={error} />;
                     if (loading) return <Loader />;
                     return (
-                      <Item topBorder={i === 0}>
+                      <Item>
                         <Image
                           source={{
                             uri: `${avatarUrl}${user.id}`

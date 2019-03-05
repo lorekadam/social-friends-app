@@ -37,7 +37,7 @@ export default class FindUsers extends Component<Props, State> {
       this.setState({
         loading: false
       });
-      setResults({ data: res.data, searched: true });
+      setResults({ data: res.data, searched: true, name });
     } else {
       this.setState({
         invalid: true

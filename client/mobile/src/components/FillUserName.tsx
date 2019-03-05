@@ -10,6 +10,8 @@ import LogOutButton from './ControlButtons/LogOutButton';
 import Loader from './Loader';
 import { ME_QUERY } from '../pages/PageSpine';
 import QLNotifications from './QLNotifications';
+import { UserSearch } from '../QL/globals';
+import { FindUser, User } from '../QL/types';
 
 const UPDATE_USER_NAME = gql`
   mutation UPDATE_USER_NAME($name: String!) {
@@ -19,18 +21,37 @@ const UPDATE_USER_NAME = gql`
   }
 `;
 
+export const SEARCH_USER_NAMES = gql`
+  query SEARCH_USER_NAMES($searchName: String!) {
+    users(where: { name: $searchName }) {
+      id
+      name
+    }
+  }
+`;
+
 interface State {
   name: string;
   searched: boolean;
-  searchResults: any[];
+  searchResults: User[];
 }
 
-export default class FillUserName extends Component<Props, State> {
+export default class FillUserName extends Component<{}, State> {
   state = {
     name: '',
     searched: false,
     searchResults: []
   };
+
+  setResults = (res: UserSearch) => {
+    const { data, searched, name } = res;
+    this.setState({
+      searched: searched ? searched : false,
+      name: name ? name : '',
+      searchResults: data.users ? data.users : []
+    });
+  };
+
   render() {
     const { name, searched, searchResults } = this.state;
     return (
@@ -48,7 +69,8 @@ export default class FillUserName extends Component<Props, State> {
           Please fill up your name
         </Text>
         <FindUsers
-          setResults={(results: State) => this.setState(results)}
+          setResults={this.setResults}
+          query={SEARCH_USER_NAMES}
           placeholder="Name..."
         />
         {searched &&

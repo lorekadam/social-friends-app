@@ -2,10 +2,11 @@ import styled from 'styled-components/native';
 import colors from './colors';
 
 interface Props {
-  error?: string;
+  error?: string | boolean;
+  success?: string | boolean;
 }
 
-export const Notification = styled.View`
+export const AlertMessage = styled.View`
   padding: 5px 15px;
   margin: 10px;
   background-color: ${(props: Props) =>

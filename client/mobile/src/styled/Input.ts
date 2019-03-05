@@ -3,7 +3,7 @@ import colors from './colors';
 
 interface Props {
   borderColor: string;
-  color: string;
+  color?: string;
 }
 
 export const Input = styled.TextInput`

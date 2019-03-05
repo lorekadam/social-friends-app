@@ -12,7 +12,7 @@ interface Props {
   justify?: string;
   align?: string;
   direction?: string;
-  flex?: string;
+  flex?: string | number;
   bgColor?: string;
 }
 

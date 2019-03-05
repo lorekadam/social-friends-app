@@ -5,7 +5,7 @@ import * as globals from './globals';
 interface Props {
   color?: string;
   size?: number;
-  align?: boolean;
+  align?: string;
   font?: string;
 }
 

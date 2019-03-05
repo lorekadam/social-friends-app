@@ -1,4 +1,4 @@
-import { FindUser } from './types';
+import { FindUser, User } from './types';
 
 export enum NotificationTypes {
   FRIEND_INVITE = 'FRIEND_INVITE'
@@ -14,7 +14,7 @@ export interface UserToInvite extends FindUser {
 }
 
 export interface UserSearch {
-  data: { friendsToInvite?: UserToInvite[] };
+  data: { friendsToInvite?: UserToInvite[]; users?: User[] };
   name?: string;
   searched?: boolean;
 }

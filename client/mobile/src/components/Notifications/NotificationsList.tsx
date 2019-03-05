@@ -75,9 +75,6 @@ export default class NotificationsList extends Component {
                 <Loader />
               ) : data.notifications.length > 0 ? (
                 <React.Fragment>
-                  <Text>
-                    You have {data.notifications.length} notifications
-                  </Text>
                   {this.renderNotificationListItems(data.notifications)}
                 </React.Fragment>
               ) : (

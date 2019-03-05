@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Notification } from '../styled/Notification';
+import { AlertMessage } from '../styled/AlertMessage';
 import { Text } from '../styled/Text';
 import colors from '../styled/colors';
 
@@ -13,18 +13,18 @@ export default class QLNotifications extends Component<Props, {}> {
     return (
       <React.Fragment>
         {error && (
-          <Notification error>
+          <AlertMessage error>
             <Text color={colors.white}>
               {error.message.replace('GraphQL error: ', '')}
             </Text>
-          </Notification>
+          </AlertMessage>
         )}
         {success !== undefined && success.length > 0 && (
-          <Notification success>
+          <AlertMessage success>
             <Text color={colors.white}>
               {success.replace('GraphQL error: ', '')}
             </Text>
-          </Notification>
+          </AlertMessage>
         )}
       </React.Fragment>
     );

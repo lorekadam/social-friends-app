@@ -10,6 +10,9 @@ import Loader from '../../Loader';
 import { MY_NOTIFICATIONS_QUERY } from '../NotificationsList';
 import { FindUser } from '../../../QL/types';
 import { MY_FRIENDS_QUERY } from '../../../QL/Queries';
+import CircleIconButton from '../../display/CircleIconButton';
+import colors from '../../../styled/colors';
+import { NotificationItem } from '../../../styled/Notifications';
 
 interface Props {
   id: string;
@@ -46,26 +49,19 @@ export default class FriendInvite extends Component<Props> {
           if (error) return <QLNotifications error={error} />;
           if (loading) return <Loader />;
           return (
-            <FullView>
-              <Row>
-                <Col>
-                  <Text>Friend invitation from {friend.name}</Text>
-                </Col>
+            <NotificationItem viewed={viewed}>
+              <Text>Friend invitation from {friend.name}</Text>
 
-                <Col>
-                  <PillTextIconButton
-                    text="Accept"
-                    icon="plus"
-                    action={async () => {
-                      await acceptFriendInvite();
-                    }}
-                  />
-                </Col>
-                <Col>
-                  <Text>{viewed.toString()}</Text>
-                </Col>
-              </Row>
-            </FullView>
+              <CircleIconButton
+                bgColor={colors.dark1}
+                size={24}
+                iconSize={14}
+                icon="plus"
+                action={async () => {
+                  await acceptFriendInvite();
+                }}
+              />
+            </NotificationItem>
           );
         }}
       </Mutation>
