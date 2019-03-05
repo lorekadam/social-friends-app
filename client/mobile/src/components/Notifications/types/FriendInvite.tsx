@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { FullView } from '../../../styled/View';
 import { Row, Col } from '../../../styled/Grid';
 import PillTextIconButton from '../../display/PillTextIconButton';
@@ -13,6 +13,8 @@ import { MY_FRIENDS_QUERY } from '../../../QL/Queries';
 import CircleIconButton from '../../display/CircleIconButton';
 import colors from '../../../styled/colors';
 import { NotificationItem } from '../../../styled/Notifications';
+import { REMOVE_FRIEND_MUTATION } from '../../Friends/FriendListItem';
+import { MY_UNREAD_NOTIFICATIONS } from '../../../pages/PageSpine';
 
 interface Props {
   id: string;
@@ -32,39 +34,77 @@ export default class FriendInvite extends Component<Props> {
   render() {
     const { id, friend, viewed } = this.props;
     return (
-      <Mutation
-        refetchQueries={[
-          {
-            query: MY_FRIENDS_QUERY,
-            variables: { last: 5 }
-          },
-          {
-            query: MY_NOTIFICATIONS_QUERY
-          }
-        ]}
-        mutation={ACCEPT_FRIEND_INVITE_MUTATION}
-        variables={{ id }}
-      >
-        {(acceptFriendInvite, { error, loading }) => {
-          if (error) return <QLNotifications error={error} />;
-          if (loading) return <Loader />;
-          return (
-            <NotificationItem viewed={viewed}>
-              <Text>Friend invitation from {friend.name}</Text>
-
-              <CircleIconButton
-                bgColor={colors.dark1}
-                size={24}
-                iconSize={14}
-                icon="plus"
-                action={async () => {
-                  await acceptFriendInvite();
-                }}
-              />
-            </NotificationItem>
-          );
-        }}
-      </Mutation>
+      <NotificationItem viewed={viewed}>
+        <Col flex={3}>
+          <Text>Friend invite from {friend.name}</Text>
+        </Col>
+        <Col>
+          <Mutation
+            refetchQueries={[
+              {
+                query: MY_FRIENDS_QUERY,
+                variables: { last: 5 }
+              },
+              {
+                query: MY_NOTIFICATIONS_QUERY
+              },
+              {
+                query: MY_UNREAD_NOTIFICATIONS
+              }
+            ]}
+            mutation={ACCEPT_FRIEND_INVITE_MUTATION}
+            variables={{ id }}
+          >
+            {(acceptFriendInvite, { error, loading }) => {
+              if (error) return <QLNotifications error={error} />;
+              if (loading) return <Loader />;
+              return (
+                <CircleIconButton
+                  bgColor={colors.dark1}
+                  size={24}
+                  iconSize={14}
+                  icon="plus"
+                  action={async () => {
+                    await acceptFriendInvite();
+                  }}
+                />
+              );
+            }}
+          </Mutation>
+          <Mutation
+            refetchQueries={[
+              {
+                query: MY_FRIENDS_QUERY,
+                variables: { last: 5 }
+              },
+              {
+                query: MY_NOTIFICATIONS_QUERY
+              },
+              {
+                query: MY_UNREAD_NOTIFICATIONS
+              }
+            ]}
+            mutation={REMOVE_FRIEND_MUTATION}
+            variables={{ friendId: friend.id }}
+          >
+            {(acceptFriendInvite, { error, loading }) => {
+              if (error) return <QLNotifications error={error} />;
+              if (loading) return <Loader />;
+              return (
+                <CircleIconButton
+                  bgColor={colors.error}
+                  size={24}
+                  iconSize={14}
+                  icon="minus"
+                  action={async () => {
+                    await acceptFriendInvite();
+                  }}
+                />
+              );
+            }}
+          </Mutation>
+        </Col>
+      </NotificationItem>
     );
   }
 }

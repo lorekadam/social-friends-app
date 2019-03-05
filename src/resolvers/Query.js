@@ -102,7 +102,7 @@ const Query = {
     if (!userId) {
       return null;
     }
-    return await ctx.db.query.notifications(
+    const notifications = await ctx.db.query.notifications(
       {
         where: {
           user: { id: userId },
@@ -112,6 +112,24 @@ const Query = {
       },
       info
     );
+    return notifications;
+  },
+  async unviewedNotifications(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    const notifications = await ctx.db.query.notifications(
+      {
+        where: {
+          user: { id: userId },
+          viewed: false
+        },
+        orderBy: 'createdAt_DESC'
+      },
+      info
+    );
+    return { message: notifications ? notifications.length : '0' };
   }
 };
 

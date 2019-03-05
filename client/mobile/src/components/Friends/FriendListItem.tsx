@@ -11,6 +11,7 @@ import { PaddingView } from '../../styled/View';
 import { Image } from 'react-native';
 import { avatarUrl } from '../../config';
 import { MY_FRIENDS_QUERY } from '../../QL/Queries';
+import { Feather } from '@expo/vector-icons';
 
 interface Props {
   name: string;
@@ -20,7 +21,7 @@ interface Props {
   inviting: string;
 }
 
-const REMOVE_FRIEND_MUTATION = gql`
+export const REMOVE_FRIEND_MUTATION = gql`
   mutation REMOVE_FRIEND_MUTATION($friendId: String!) {
     removeFriend(friendId: $friendId) {
       message
@@ -107,6 +108,9 @@ export default class FriendListItem extends Component<Props, {}> {
               );
             }}
           </Mutation>
+          {accepted === false && (
+            <Feather color={colors.white} name="clock" size={22} />
+          )}
         </Row>
       </PaddingView>
     );

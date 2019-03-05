@@ -3,9 +3,12 @@ import { Absolute } from '../../styled/Postions';
 import CircleIconButton from '../display/CircleIconButton';
 import colors from '../../styled/colors';
 import { withNavigation, NavigationScreenProp } from 'react-navigation';
+import { CircleButton } from '../../styled/Buttons';
+import { Text } from '../../styled/Text';
 
 interface Props {
   path?: string;
+  notifications: string;
   navigation: NavigationScreenProp<any, any>;
 }
 
@@ -19,6 +22,16 @@ class SideMenuToggle extends Component<Props, {}> {
           action={() => this.props.navigation.openDrawer()}
           icon="settings"
         />
+        {this.props.notifications !== '0' && (
+          <Absolute top={0} right={0}>
+            <CircleButton
+              size={16}
+              onPress={() => this.props.navigation.openDrawer()}
+            >
+              <Text size={10}>{this.props.notifications}</Text>
+            </CircleButton>
+          </Absolute>
+        )}
       </Absolute>
     );
   }

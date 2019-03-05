@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Animated, LayoutChangeEvent } from 'react-native';
+import { Animated, LayoutChangeEvent, ScrollView } from 'react-native';
 import { AbsoluteFlex } from '../../styled/Postions';
 import { PaddingView } from '../../styled/View';
 
 interface Props {
   open: boolean;
   padding?: number;
+  maxHeight?: number;
 }
 
 export default class Accordion extends Component<Props, {}> {
@@ -30,7 +31,7 @@ export default class Accordion extends Component<Props, {}> {
 
   render() {
     const { dropAnim, opacity } = this.state;
-    const { padding } = this.props;
+    const { padding, maxHeight } = this.props;
     return (
       <Animated.View
         style={{
@@ -50,9 +51,17 @@ export default class Accordion extends Component<Props, {}> {
               this.setState({ toHeight: e.nativeEvent.layout.height });
             }}
           >
-            <PaddingView padding={padding ? padding : 15}>
-              {this.props.children}
-            </PaddingView>
+            {maxHeight ? (
+              <ScrollView style={{ flex: 1, height: maxHeight }}>
+                <PaddingView padding={padding ? padding : 15}>
+                  {this.props.children}
+                </PaddingView>
+              </ScrollView>
+            ) : (
+              <PaddingView padding={padding ? padding : 15}>
+                {this.props.children}
+              </PaddingView>
+            )}
           </AbsoluteFlex>
         )}
       </Animated.View>

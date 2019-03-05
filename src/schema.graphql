@@ -19,6 +19,7 @@ type Mutation {
   acceptFriendInvite(id: String!): SuccessMessage!
   acceptFriend(friendId: String!): SuccessMessage!
   removeFriend(friendId: String!): SuccessMessage!
+  viewNotifications(view: Boolean): SuccessMessage!
 }
 
 type Query {
@@ -45,6 +46,7 @@ type Query {
   ): [Friendship!]!
   friendshipsConnection(where: FriendshipWhereInput): FriendshipConnection
   notifications: [Notification!]!
+  unviewedNotifications: SuccessMessage!
 }
 
 type FindUser {

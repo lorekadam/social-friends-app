@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FullView } from '../../styled/View';
-import { Query } from 'react-apollo';
+import { Query, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { NotificationTypes, ArrayTwoOrMore } from '../../QL/globals';
 import FriendInvite from './types/FriendInvite';
@@ -39,7 +39,22 @@ export const MY_NOTIFICATIONS_QUERY = gql`
   }
 `;
 
-export default class NotificationsList extends Component {
+export const VIEW_MY_NOTIFICATIONS_MUTATION = gql`
+  mutation VIEW_MY_NOTIFICATIONS_MUTATION {
+    viewNotifications {
+      message
+    }
+  }
+`;
+
+class NotificationsList extends Component {
+  componentDidMount = async () => {
+    const res = await this.props.client.mutate({
+      mutation: VIEW_MY_NOTIFICATIONS_MUTATION,
+      refetchQueries: [{ query: MY_NOTIFICATIONS_QUERY }]
+    });
+    console.log(res);
+  };
   renderNotificationListItems = (notifications: [Notification]) => {
     const elements: [JSX.Element?] = [];
     notifications.map((notification) => {
@@ -87,3 +102,5 @@ export default class NotificationsList extends Component {
     );
   }
 }
+
+export default withApollo(NotificationsList);

@@ -411,6 +411,25 @@ const Mutation = {
         return { message: 'Something went wrong :(' };
       }
     }
+  },
+  async viewNotifications(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      return null;
+    }
+    await ctx.db.mutation.updateManyNotifications({
+      data: {
+        viewed: args.view !== undefined ? args.view : true
+      },
+      where: {
+        user: {
+          id: userId
+        },
+        viewed: args.view !== undefined ? !args.view : false
+      }
+    });
+
+    return { message: 'Success!' };
   }
 };
 

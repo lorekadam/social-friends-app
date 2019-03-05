@@ -9,7 +9,7 @@ interface Props {
 export default class Notifications extends Component<Props, {}> {
   render() {
     return (
-      <Accordion open={this.props.open}>
+      <Accordion maxHeight={175} open={this.props.open}>
         <NotificationsList />
       </Accordion>
     );

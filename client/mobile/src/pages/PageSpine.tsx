@@ -28,6 +28,14 @@ export const ME_QUERY = gql`
   }
 `;
 
+export const MY_UNREAD_NOTIFICATIONS = gql`
+  query MY_UNREAD_NOTIFICATIONS {
+    unviewedNotifications {
+      message
+    }
+  }
+`;
+
 export const MainView = styled.View`
   display: flex;
   position: relative;
@@ -55,7 +63,21 @@ export default class PageSpine extends Component {
                         <FlexView>
                           <ColorizedTop>
                             <CenteredTop userId={data.me.id} />
-                            <SideMenuToggle />
+                            <Query query={MY_UNREAD_NOTIFICATIONS}>
+                              {({ data, loading }) => {
+                                if (loading) {
+                                  return <Loader />;
+                                } else {
+                                  return (
+                                    <SideMenuToggle
+                                      notifications={
+                                        data.unviewedNotifications.message
+                                      }
+                                    />
+                                  );
+                                }
+                              }}
+                            </Query>
                           </ColorizedTop>
                         </FlexView>
                       </ColColumn>
