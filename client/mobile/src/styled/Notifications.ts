@@ -13,5 +13,5 @@ export const NotificationItem = styled.View`
   align-items: center;
   justify-content: space-between;
   background-color: ${(props: Props) =>
-    props.viewed ? colors.light2 : colors.light1};
+    props.viewed ? 'transparent' : colors.light1};
 `;

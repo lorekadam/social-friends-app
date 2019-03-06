@@ -8,27 +8,25 @@ import { Text } from '../../styled/Text';
 
 interface Props {
   path?: string;
-  notifications: string;
+  notifications: number;
   navigation: NavigationScreenProp<any, any>;
 }
 
 class SideMenuToggle extends Component<Props, {}> {
   render() {
+    const { navigation, notifications } = this.props;
     return (
       <Absolute top={10} right={10}>
         <CircleIconButton
           bgColor={'transparent'}
           color={colors.light2}
-          action={() => this.props.navigation.openDrawer()}
+          action={() => navigation.openDrawer()}
           icon="settings"
         />
-        {this.props.notifications !== '0' && (
+        {notifications > 0 && (
           <Absolute top={0} right={0}>
-            <CircleButton
-              size={16}
-              onPress={() => this.props.navigation.openDrawer()}
-            >
-              <Text size={10}>{this.props.notifications}</Text>
+            <CircleButton size={16} onPress={() => navigation.openDrawer()}>
+              <Text size={10}>{notifications > 99 ? 99 : notifications}</Text>
             </CircleButton>
           </Absolute>
         )}

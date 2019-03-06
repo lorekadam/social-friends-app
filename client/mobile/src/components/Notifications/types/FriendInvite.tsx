@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { FullView } from '../../../styled/View';
 import { Row, Col } from '../../../styled/Grid';
 import PillTextIconButton from '../../display/PillTextIconButton';
@@ -15,6 +15,7 @@ import colors from '../../../styled/colors';
 import { NotificationItem } from '../../../styled/Notifications';
 import { REMOVE_FRIEND_MUTATION } from '../../Friends/FriendListItem';
 import { MY_UNREAD_NOTIFICATIONS } from '../../../pages/PageSpine';
+import { Text } from '../../../styled/Text';
 
 interface Props {
   id: string;
@@ -36,7 +37,9 @@ export default class FriendInvite extends Component<Props> {
     return (
       <NotificationItem viewed={viewed}>
         <Col flex={3}>
-          <Text>Friend invite from {friend.name}</Text>
+          <Text color={viewed ? colors.light1 : colors.dark2}>
+            Friend invite from {friend.name}
+          </Text>
         </Col>
         <Col>
           <Mutation

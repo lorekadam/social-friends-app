@@ -7,6 +7,7 @@ import FriendInvite from './types/FriendInvite';
 import Loader from '../Loader';
 import { Text } from '../../styled/Text';
 import { FindUser } from '../../QL/types';
+import { MY_UNREAD_NOTIFICATIONS } from '../../pages/PageSpine';
 
 interface Notification {
   id: string;
@@ -51,7 +52,7 @@ class NotificationsList extends Component {
   componentDidMount = async () => {
     const res = await this.props.client.mutate({
       mutation: VIEW_MY_NOTIFICATIONS_MUTATION,
-      refetchQueries: [{ query: MY_NOTIFICATIONS_QUERY }]
+      refetchQueries: [{ query: MY_UNREAD_NOTIFICATIONS }]
     });
     console.log(res);
   };

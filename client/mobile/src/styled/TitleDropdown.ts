@@ -16,5 +16,6 @@ export const TitleDropdown = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
 `;

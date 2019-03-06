@@ -16,7 +16,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { HOME_PAGE } from '../../navigation/pageTypes';
 import Loader from '../Loader';
 import { getRouteName } from '../../utils/getRouteName';
-import { ME_QUERY } from '../../pages/PageSpine';
+import { ME_QUERY, MY_UNREAD_NOTIFICATIONS } from '../../pages/PageSpine';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -87,12 +87,25 @@ export default class SettingsSidebar extends Component<Props, {}> {
                     />
                     <Mutation mutation={TOGGLE_NOTIFICATIONS_MUTATION}>
                       {(toggleNotification) => (
-                        <AccordionHeadline
-                          active={notificationsOpen}
-                          action={() => toggleNotification()}
-                          icon="mail"
-                          title="Notifications"
-                        />
+                        <Query query={MY_UNREAD_NOTIFICATIONS}>
+                          {({ data, loading }) => {
+                            if (loading) {
+                              return <Loader />;
+                            } else {
+                              return (
+                                <AccordionHeadline
+                                  active={notificationsOpen}
+                                  action={() => toggleNotification()}
+                                  icon="mail"
+                                  title="Notifications"
+                                  badge={parseInt(
+                                    data.unviewedNotifications.message
+                                  )}
+                                />
+                              );
+                            }
+                          }}
+                        </Query>
                       )}
                     </Mutation>
                     <Notifications open={notificationsOpen} />

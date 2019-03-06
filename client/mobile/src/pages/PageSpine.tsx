@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { PaddingView, FlexView } from '../styled/View';
 import ColorizedTop from '../components/ColorizedTop';
 import CenteredTop from '../components/CenteredTop';
@@ -70,9 +70,9 @@ export default class PageSpine extends Component {
                                 } else {
                                   return (
                                     <SideMenuToggle
-                                      notifications={
+                                      notifications={parseInt(
                                         data.unviewedNotifications.message
-                                      }
+                                      )}
                                     />
                                   );
                                 }

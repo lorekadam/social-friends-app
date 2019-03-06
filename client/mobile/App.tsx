@@ -29,6 +29,7 @@ export default class App extends React.Component<Props, State> {
       roboto: require('./assets/fonts/Roboto-Regular.ttf')
     });
     const jwt = await AsyncStorage.getItem('token');
+    console.log(jwt);
     if (jwt && jwt.length > 0) {
       this.setState({ token: jwt, signedIn: true, checkedSignIn: true });
     } else {
