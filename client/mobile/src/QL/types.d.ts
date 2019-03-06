@@ -361,9 +361,11 @@ export interface Query {
 
   friendships: Friendship[];
 
-  friendshipsConnection?: Maybe<FriendshipConnection>;
+  friendshipsConnection: FriendshipConnection;
 
   notifications: Notification[];
+
+  unviewedNotifications: SuccessMessage;
 }
 
 export interface User {
@@ -442,6 +444,10 @@ export interface Notification {
   accepted: boolean;
 }
 
+export interface SuccessMessage {
+  message?: Maybe<string>;
+}
+
 export interface Mutation {
   signup: User;
 
@@ -459,11 +465,11 @@ export interface Mutation {
 
   acceptFriendInvite: SuccessMessage;
 
-  removeFriend: SuccessMessage;
-}
+  acceptFriend: SuccessMessage;
 
-export interface SuccessMessage {
-  message?: Maybe<string>;
+  removeFriend: SuccessMessage;
+
+  viewNotifications: SuccessMessage;
 }
 
 // ====================================================
@@ -504,6 +510,18 @@ export interface FriendshipsQueryArgs {
 }
 export interface FriendshipsConnectionQueryArgs {
   where?: Maybe<FriendshipWhereInput>;
+
+  orderBy?: Maybe<FriendshipOrderByInput>;
+
+  skip?: Maybe<number>;
+
+  after?: Maybe<string>;
+
+  before?: Maybe<string>;
+
+  first?: Maybe<number>;
+
+  last?: Maybe<number>;
 }
 export interface SignupMutationArgs {
   email: string;
@@ -543,6 +561,12 @@ export interface InviteFriendMutationArgs {
 export interface AcceptFriendInviteMutationArgs {
   id: string;
 }
+export interface AcceptFriendMutationArgs {
+  friendId: string;
+}
 export interface RemoveFriendMutationArgs {
   friendId: string;
+}
+export interface ViewNotificationsMutationArgs {
+  view?: Maybe<boolean>;
 }

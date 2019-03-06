@@ -7,7 +7,7 @@ import { ME_QUERY } from '../../pages/PageSpine';
 import QLNotifications from '../QLNotifications';
 import Loader from '../Loader';
 
-interface Friendship {
+export interface Friendship {
   accepted: boolean;
   friend: FindUser;
   inviting: {
@@ -16,7 +16,7 @@ interface Friendship {
 }
 
 interface Props {
-  friendships: [Friendship];
+  friendships: Friendship[];
 }
 
 export default class FriendList extends Component<Props> {

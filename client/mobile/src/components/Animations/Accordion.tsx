@@ -52,7 +52,7 @@ export default class Accordion extends Component<Props, {}> {
             }}
           >
             {maxHeight ? (
-              <ScrollView style={{ flex: 1, height: maxHeight }}>
+              <ScrollView style={{ flex: 1, maxHeight }}>
                 <PaddingView padding={padding ? padding : 15}>
                   {this.props.children}
                 </PaddingView>

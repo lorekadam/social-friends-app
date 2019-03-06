@@ -58,7 +58,7 @@ export const SignedIn = createStackNavigator(
           }
         },
         {
-          initialRouteName: pages.HOME_PAGE,
+          initialRouteName: pages.FRIENDS_PAGE,
           drawerWidth: width * 0.8,
           drawerBackgroundColor: colors.dark2,
           contentComponent: SettingsSidebar

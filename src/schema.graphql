@@ -44,7 +44,15 @@ type Query {
     first: Int
     last: Int
   ): [Friendship!]!
-  friendshipsConnection(where: FriendshipWhereInput): FriendshipConnection
+  friendshipsConnection(
+    where: FriendshipWhereInput
+    orderBy: FriendshipOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): FriendshipConnection!
   notifications: [Notification!]!
   unviewedNotifications: SuccessMessage!
 }

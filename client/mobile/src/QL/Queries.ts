@@ -25,10 +25,39 @@ export const MY_FRIENDS_QUERY = gql`
 `;
 
 export const MY_FRIENDS_CONNECTION_QUERY = gql`
-  query MY_FRIENDS_CONNECTION_QUERY {
-    friendshipsConnection {
-      aggregate {
-        count
+  query MY_FRIENDS_CONNECTION_QUERY(
+    $where: FriendshipWhereInput
+    $orderBy: FriendshipOrderByInput
+    $skip: Int
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+  ) {
+    friendshipsConnection(
+      where: $where
+      orderBy: $orderBy
+      skip: $skip
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          accepted
+          inviting {
+            id
+          }
+          friend {
+            id
+            name
+          }
+        }
       }
     }
   }
