@@ -30,7 +30,7 @@ class FriendInviteFromQR extends Component<Props, {}> {
                 top: '20%',
                 left: '10%',
                 width: '80%',
-                padding: 20
+                padding: 20,
               }}
             >
               <Mutation

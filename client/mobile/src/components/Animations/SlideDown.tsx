@@ -11,19 +11,19 @@ interface Props {
 
 export default class SlideDown extends Component<Props, {}> {
   state = {
-    fadeAnim: new Animated.Value(0)
+    fadeAnim: new Animated.Value(0),
   };
 
   componentDidMount() {
     const { duration, toHeight } = this.props;
     Animated.timing(this.state.fadeAnim, {
-      toValue: toHeight ? toHeight : 240,
-      duration: duration ? duration : 300
+      toValue: toHeight || 240,
+      duration: duration || 300,
     }).start();
   }
 
   render() {
-    let { fadeAnim } = this.state;
+    const { fadeAnim } = this.state;
 
     return (
       <Animated.ScrollView
@@ -35,7 +35,7 @@ export default class SlideDown extends Component<Props, {}> {
           right: 0,
           backgroundColor: colors.secondary,
           top: this.props.top,
-          height: fadeAnim
+          height: fadeAnim,
         }}
       >
         <PaddingView padding={5}>{this.props.children}</PaddingView>

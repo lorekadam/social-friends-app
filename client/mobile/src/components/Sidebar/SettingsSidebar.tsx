@@ -58,7 +58,7 @@ export default class SettingsSidebar extends Component<Props, {}> {
     const { navigation } = this.props;
     return (
       <Composed>
-        {({ me, local }) => {
+        {({ me, local }:any) => {
           const routeName = getRouteName(navigation.state);
           const { friendsOpen, notificationsOpen, settingsOpen } = local.data;
           return (

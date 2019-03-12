@@ -1,7 +1,7 @@
 import { FindUser, User } from './types';
 
 export enum NotificationTypes {
-  FRIEND_INVITE = 'FRIEND_INVITE'
+  FRIEND_INVITE = 'FRIEND_INVITE',
 }
 
 export type ArrayTwoOrMore<T> = {

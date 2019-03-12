@@ -11,7 +11,7 @@ import Loader from './Loader';
 import { ME_QUERY } from '../pages/PageSpine';
 import QLNotifications from './QLNotifications';
 import { UserSearch } from '../QL/globals';
-import { FindUser, User } from '../QL/types';
+import { User } from '../QL/types';
 
 const UPDATE_USER_NAME = gql`
   mutation UPDATE_USER_NAME($name: String!) {

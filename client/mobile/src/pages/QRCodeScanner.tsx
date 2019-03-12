@@ -1,17 +1,16 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Camera, Permissions } from 'expo';
-import BackButton from '../components/BackButton';
-import { HOME_PAGE } from '../navigation/pageTypes';
-import { MainView } from './PageSpine';
 import { BarCodeScanner } from 'expo';
+import BackButton from '../components/BackButton';
+import { MainView } from './PageSpine';
 import FriendInviteFromQR from '../components/Friends/FriendInviteFromQR';
 
 export default class QRCodeScanner extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
-    userId: ''
+    userId: '',
   };
 
   async componentDidMount() {
@@ -23,55 +22,51 @@ export default class QRCodeScanner extends React.Component {
     const { hasCameraPermission, userId } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
-    } else if (hasCameraPermission === false) {
+    }
+    if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
-    } else {
-      return (
-        <MainView>
-          <Camera
-            style={{ flex: 1 }}
-            type={this.state.type}
-            onBarCodeScanned={(e) => this.setState({ userId: e.data })}
-            barCodeScannerSettings={{
-              barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr]
+    }
+    return (
+      <MainView>
+        <Camera
+          style={{ flex: 1 }}
+          type={this.state.type}
+          onBarCodeScanned={e => this.setState({ userId: e.data })}
+          barCodeScannerSettings={{
+            barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row',
             }}
           >
-            <View
+            {userId.length > 0 && <FriendInviteFromQR id={this.state.userId} />}
+            <TouchableOpacity
               style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row'
+                flex: 0.1,
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+              }}
+              onPress={() => {
+                this.setState({
+                  type:
+                    this.state.type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back,
+                });
               }}
             >
-              {userId.length > 0 && (
-                <FriendInviteFromQR id={this.state.userId} />
-              )}
-              <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center'
-                }}
-                onPress={() => {
-                  this.setState({
-                    type:
-                      this.state.type === Camera.Constants.Type.back
-                        ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back
-                  });
-                }}
-              >
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}
-                >
-                  Flip
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </Camera>
-          <BackButton />
-        </MainView>
-      );
-    }
+              <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
+                Flip
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Camera>
+        <BackButton />
+      </MainView>
+    );
   }
 }

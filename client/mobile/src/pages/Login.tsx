@@ -139,7 +139,6 @@ export default class LoginPage extends Component<Props, State> {
                           <ApolloConsumer>
                             {(client) => (
                               <Button
-                                title="Login"
                                 full
                                 disabled={
                                   !(

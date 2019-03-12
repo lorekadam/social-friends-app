@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import colors from './colors';
 
 interface Props {
-  borderColor: string;
+  borderColor?: string;
   color?: string;
 }
 

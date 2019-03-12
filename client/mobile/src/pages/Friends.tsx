@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
+import { Query } from 'react-apollo';
+import { ScrollView, NativeScrollEvent } from 'react-native';
 import PageSpine from './PageSpine';
-import { Query, withApollo } from 'react-apollo';
-import { MY_FRIENDS_QUERY, MY_FRIENDS_CONNECTION_QUERY } from '../QL/Queries';
+import { MY_FRIENDS_CONNECTION_QUERY } from '../QL/Queries';
 import QLNotifications from '../components/QLNotifications';
 import Loader from '../components/Loader';
 import FriendList, { Friendship } from '../components/Friends/FriendList';
-import { Text } from '../styled/Text';
-import { ScrollView, NativeScrollEvent } from 'react-native';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -15,13 +14,14 @@ interface Props {
 
 export default class FriendsPage extends Component<Props, {}> {
   state = {
-    friendships: []
+    friendships: [],
   };
+
   render() {
     const isCloseToBottom = ({
       layoutMeasurement,
       contentOffset,
-      contentSize
+      contentSize,
     }: NativeScrollEvent) => {
       const bottomOffset = 10;
       return (
@@ -43,21 +43,19 @@ export default class FriendsPage extends Component<Props, {}> {
                       fetchMore({
                         query: MY_FRIENDS_CONNECTION_QUERY,
                         variables: {
-                          after: data.friendshipsConnection.pageInfo.endCursor
+                          after: data.friendshipsConnection.pageInfo.endCursor,
                         },
-                        updateQuery: (prev, { fetchMoreResult }) => {
-                          return {
-                            friendshipsConnection: {
-                              __typename: 'FriendshipsConnection',
-                              pageInfo:
-                                fetchMoreResult.friendshipsConnection.pageInfo,
-                              edges: [
-                                ...prev.friendshipsConnection.edges,
-                                ...fetchMoreResult.friendshipsConnection.edges
-                              ]
-                            }
-                          };
-                        }
+                        updateQuery: (prev, { fetchMoreResult }) => ({
+                          friendshipsConnection: {
+                            __typename: 'FriendshipsConnection',
+                            pageInfo:
+                              fetchMoreResult.friendshipsConnection.pageInfo,
+                            edges: [
+                              ...prev.friendshipsConnection.edges,
+                              ...fetchMoreResult.friendshipsConnection.edges,
+                            ],
+                          },
+                        }),
                       });
                     }
                   }

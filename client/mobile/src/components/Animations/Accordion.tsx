@@ -13,19 +13,19 @@ export default class Accordion extends Component<Props, {}> {
   state = {
     toHeight: 0,
     dropAnim: new Animated.Value(0),
-    opacity: new Animated.Value(0)
+    opacity: new Animated.Value(0),
   };
 
   componentDidUpdate() {
     const { open } = this.props;
     Animated.parallel([
       Animated.spring(this.state.dropAnim, {
-        toValue: open ? this.state.toHeight : 0
+        toValue: open ? this.state.toHeight : 0,
       }),
       Animated.timing(this.state.opacity, {
         toValue: open ? 1 : 0,
-        duration: 300
-      })
+        duration: 300,
+      }),
     ]).start();
   }
 
@@ -40,7 +40,7 @@ export default class Accordion extends Component<Props, {}> {
           right: 0,
           height: dropAnim,
           opacity,
-          width: '100%'
+          width: '100%',
         }}
       >
         {this.props.open && (
@@ -53,12 +53,12 @@ export default class Accordion extends Component<Props, {}> {
           >
             {maxHeight ? (
               <ScrollView style={{ flex: 1, maxHeight }}>
-                <PaddingView padding={padding ? padding : 15}>
+                <PaddingView padding={padding || 15}>
                   {this.props.children}
                 </PaddingView>
               </ScrollView>
             ) : (
-              <PaddingView padding={padding ? padding : 15}>
+              <PaddingView padding={padding || 15}>
                 {this.props.children}
               </PaddingView>
             )}

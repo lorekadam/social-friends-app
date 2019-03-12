@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import colors from '../styled/colors';
+import styled from 'styled-components/native';
 import { Image } from 'react-native';
+import { LayoutEvent } from 'react-navigation';
+import colors from '../styled/colors';
 import { avatarUrl } from '../config';
 
 interface Props {
@@ -24,16 +25,19 @@ const AvatarWrapper = styled.View`
 
 export default class Avatar extends Component<Props, State> {
   state = {
-    width: 0
+    width: 0,
   };
+
   render() {
     return (
       <AvatarWrapper
-        onLayout={(e) => this.setState({ width: e.nativeEvent.layout.height })}
+        onLayout={(e: LayoutEvent) =>
+          this.setState({ width: e.nativeEvent.layout.height })
+        }
       >
         <Image
           source={{
-            uri: `${avatarUrl}${this.props.userId}`
+            uri: `${avatarUrl}${this.props.userId}`,
           }}
           style={{ width: this.state.width, display: 'flex', flex: 1 }}
         />

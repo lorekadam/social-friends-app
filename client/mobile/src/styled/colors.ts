@@ -16,5 +16,5 @@ export default {
   dark2: '#263055',
   light2: '#d8eee1',
   color1: '#35a0b1',
-  color2: '#0ABEDC'
+  color2: '#0ABEDC',
 };

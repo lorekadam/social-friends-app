@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { Query } from 'react-apollo';
 import FriendListItem from './FriendListItem';
 import { FullView } from '../../styled/View';
 import { FindUser } from '../../QL/types';
-import { Query } from 'react-apollo';
 import { ME_QUERY } from '../../pages/PageSpine';
 import QLNotifications from '../QLNotifications';
 import Loader from '../Loader';
@@ -22,7 +22,7 @@ interface Props {
 export default class FriendList extends Component<Props> {
   renderFriendListItems = (friendships: Props['friendships'], me: string) => {
     const elements: [JSX.Element?] = [];
-    friendships.map((friendship) => {
+    friendships.map(friendship => {
       const { id, name } = friendship.friend;
       elements.push(
         <FriendListItem
@@ -37,6 +37,7 @@ export default class FriendList extends Component<Props> {
     });
     return elements;
   };
+
   render() {
     const { friendships } = this.props;
     return (

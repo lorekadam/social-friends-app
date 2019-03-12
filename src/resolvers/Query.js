@@ -1,53 +1,56 @@
-const { forwardTo } = require('prisma-binding');
+// const { forwardTo } = require('prisma-binding');
 
 const Query = {
   async me(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
-    return await ctx.db.query.user(
+    const user = await ctx.db.query.user(
       {
-        where: { id: ctx.request.userId }
+        where: { id: ctx.request.userId },
       },
       info
     );
+    return user;
   },
   async user(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
-    return await ctx.db.query.user(
+    const user = await ctx.db.query.user(
       {
-        where: { id: args.id }
+        where: { id: args.id },
       },
       info
     );
+    return user;
   },
   async users(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
-    return await ctx.db.query.users({
+    const users = await ctx.db.query.users({
       where: {
         ...args.where,
-        id_not: userId
+        id_not: userId,
       },
-      info
+      info,
     });
+    return users;
   },
   async friendsToInvite(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
     const userFriends = await ctx.db.query.friendships(
       {
         where: {
-          user: { id: userId }
-        }
+          user: { id: userId },
+        },
       },
       `{ 
         friend{
@@ -56,49 +59,51 @@ const Query = {
       }`
     );
     const id = [];
-    userFriends.forEach((item) => {
+    userFriends.forEach(item => {
       id.push({ id: item.friend.id });
     });
     const users = await ctx.db.query.users({
       where: {
         ...args.where,
-        NOT: [{ id: userId }, ...id]
+        NOT: [{ id: userId }, ...id],
       },
-      info
+      info,
     });
     return users;
   },
   async friendships(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
-    return await ctx.db.query.friendships(
+    const friendships = await ctx.db.query.friendships(
       {
         where: {
-          user: { id: userId }
-        }
+          user: { id: userId },
+        },
       },
       info
     );
+    return friendships;
   },
   async friendshipsConnection(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
-    return await ctx.db.query.friendshipsConnection(
+    const friendshipsConnection = await ctx.db.query.friendshipsConnection(
       {
         where: {
           ...args.where,
-          user: { id: userId }
-        }
+          user: { id: userId },
+        },
       },
       info
     );
+    return friendshipsConnection;
   },
   async notifications(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
@@ -106,16 +111,16 @@ const Query = {
       {
         where: {
           user: { id: userId },
-          done: false
+          done: false,
         },
-        orderBy: 'createdAt_DESC'
+        orderBy: 'createdAt_DESC',
       },
       info
     );
     return notifications;
   },
   async unviewedNotifications(parent, args, ctx, info) {
-    const userId = ctx.request.userId;
+    const { userId } = ctx.request;
     if (!userId) {
       return null;
     }
@@ -123,14 +128,14 @@ const Query = {
       {
         where: {
           user: { id: userId },
-          viewed: false
+          viewed: false,
         },
-        orderBy: 'createdAt_DESC'
+        orderBy: 'createdAt_DESC',
       },
       info
     );
     return { message: notifications ? notifications.length : '0' };
-  }
+  },
 };
 
 module.exports = Query;

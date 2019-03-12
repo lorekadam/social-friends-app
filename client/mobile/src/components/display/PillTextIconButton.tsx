@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { Feather } from '@expo/vector-icons';
 import { Button } from '../../styled/Buttons';
 import { Text } from '../../styled/Text';
 import colors from '../../styled/colors';
-import { Feather } from '@expo/vector-icons';
 
 interface Props {
   full?: boolean;
@@ -20,16 +20,16 @@ export default class PillTextIconButton extends Component<Props, {}> {
     const { full, icon, text, size, buttonColor, color, action } = this.props;
     return (
       <Button
-        full={full ? full : false}
-        size={size ? size : 'auto'}
+        full={full || false}
+        size={size || 'auto'}
         bgColor={buttonColor}
         onPress={() => action()}
       >
-        <Text color={color ? color : colors.white}>{text}</Text>
+        <Text color={color || colors.white}>{text}</Text>
         <Feather
           style={{ marginLeft: 5 }}
-          color={color ? color : colors.white}
-          size={size ? size : 16}
+          color={color || colors.white}
+          size={size || 16}
           name={icon}
         />
       </Button>

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { FullView } from '../../../styled/View';
-import { Row, Col } from '../../../styled/Grid';
-import PillTextIconButton from '../../display/PillTextIconButton';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import { Col } from '../../../styled/Grid';
 import QLNotifications from '../../QLNotifications';
 import Loader from '../../Loader';
 import { MY_NOTIFICATIONS_QUERY } from '../NotificationsList';
@@ -46,14 +43,14 @@ export default class FriendInvite extends Component<Props> {
             refetchQueries={[
               {
                 query: MY_FRIENDS_QUERY,
-                variables: { last: 5 }
+                variables: { last: 5 },
               },
               {
-                query: MY_NOTIFICATIONS_QUERY
+                query: MY_NOTIFICATIONS_QUERY,
               },
               {
-                query: MY_UNREAD_NOTIFICATIONS
-              }
+                query: MY_UNREAD_NOTIFICATIONS,
+              },
             ]}
             mutation={ACCEPT_FRIEND_INVITE_MUTATION}
             variables={{ id }}
@@ -78,14 +75,14 @@ export default class FriendInvite extends Component<Props> {
             refetchQueries={[
               {
                 query: MY_FRIENDS_QUERY,
-                variables: { last: 5 }
+                variables: { last: 5 },
               },
               {
-                query: MY_NOTIFICATIONS_QUERY
+                query: MY_NOTIFICATIONS_QUERY,
               },
               {
-                query: MY_UNREAD_NOTIFICATIONS
-              }
+                query: MY_UNREAD_NOTIFICATIONS,
+              },
             ]}
             mutation={REMOVE_FRIEND_MUTATION}
             variables={{ friendId: friend.id }}

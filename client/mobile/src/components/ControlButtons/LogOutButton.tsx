@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { NavigationScreenProp, withNavigation } from 'react-navigation';
+import { Mutation, withApollo } from 'react-apollo';
 import { Absolute } from '../../styled/Postions';
 import CircleIconButton from '../display/CircleIconButton';
 import colors from '../../styled/colors';
 import { LOGIN_PAGE } from '../../navigation/pageTypes';
-import { Mutation, withApollo } from 'react-apollo';
 import { CLEAR_LOCAL_STATE_MUTATION } from '../../QL/Mutations';
 
 interface Props {
@@ -16,10 +16,10 @@ class LogOutButton extends Component<Props, {}> {
   render() {
     return (
       <Mutation mutation={CLEAR_LOCAL_STATE_MUTATION}>
-        {(clearLocalState) => (
+        {clearLocalState => (
           <Absolute top={10} left={10}>
             <CircleIconButton
-              bgColor={'transparent'}
+              bgColor="transparent"
               color={colors.light2}
               action={async () => {
                 clearLocalState();

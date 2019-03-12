@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Facebook } from 'expo';
-import { AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import { ApolloConsumer } from 'react-apollo';
+import gql from 'graphql-tag';
 import { facebookAppId } from '../config';
 import { Button } from '../styled/Buttons';
 import colors from '../styled/colors';
 import { Text } from '../styled/Text';
-import { ApolloConsumer } from 'react-apollo';
-import gql from 'graphql-tag';
 
 interface Props {
   logIn: Function;
@@ -30,12 +29,12 @@ export const logInWithFacebook = async (client: any, logIn: Props['logIn']) => {
     const { type, token } = await Facebook.logInWithReadPermissionsAsync(
       facebookAppId,
       {
-        behavior: 'native'
+        behavior: 'native',
       }
     );
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
-      const res = await fetch(
+      const res: any = await fetch(
         `https://graph.facebook.com/me?fields=email&access_token=${token}`
       );
       if (res) {
@@ -45,8 +44,8 @@ export const logInWithFacebook = async (client: any, logIn: Props['logIn']) => {
             mutation: SIGNIN_FACEBOOK_MUTATION,
             variables: {
               email,
-              facebookId: id
-            }
+              facebookId: id,
+            },
           });
 
           await logIn(QLres.data.signinFacebook.jwt);
@@ -67,7 +66,7 @@ export default class FacebookLogin extends Component<Props> {
   render() {
     return (
       <ApolloConsumer>
-        {(client) => (
+        {client => (
           <Button
             full
             bgColor={colors.facebook}

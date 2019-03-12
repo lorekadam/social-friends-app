@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { LinearGradient } from 'expo';
 import { View } from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import colors from '../styled/colors';
 // import { ArrayTwoOrMore } from '../types/globals';
 
@@ -33,7 +33,7 @@ export default class ColorizedTop extends Component {
         style={{
           height: '100%',
           width: '100%',
-          backgroundColor: `${colors.dark1}`
+          backgroundColor: `${colors.dark1}`,
         }}
       >
         {this.props.children}

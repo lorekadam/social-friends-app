@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import { Absolute } from '../../styled/Postions';
 import CircleIconButton from '../display/CircleIconButton';
 import colors from '../../styled/colors';
-import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import { CircleButton } from '../../styled/Buttons';
 import { Text } from '../../styled/Text';
 
@@ -18,7 +18,7 @@ class SideMenuToggle extends Component<Props, {}> {
     return (
       <Absolute top={10} right={10}>
         <CircleIconButton
-          bgColor={'transparent'}
+          bgColor="transparent"
           color={colors.light2}
           action={() => navigation.openDrawer()}
           icon="settings"

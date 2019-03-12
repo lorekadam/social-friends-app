@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { CircleButton } from '../../styled/Buttons';
 import { Feather } from '@expo/vector-icons';
-import colors from '../../styled/colors';
 import { StyleProp } from 'react-native';
+import { CircleButton } from '../../styled/Buttons';
+import colors from '../../styled/colors';
 
 interface Props {
   icon: string;
@@ -19,15 +19,15 @@ export default class CircleIconButton extends Component<Props, {}> {
     const { icon, iconSize, size, bgColor, color, action, style } = this.props;
     return (
       <CircleButton
-        size={size ? size : 38}
+        size={size || 38}
         bgColor={bgColor}
         onPress={() => action()}
         style={{ ...style }}
       >
         <Feather
-          color={color ? color : colors.white}
+          color={color || colors.white}
           name={icon}
-          size={iconSize ? iconSize : 19}
+          size={iconSize || 19}
         />
       </CircleButton>
     );
