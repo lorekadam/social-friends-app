@@ -23,13 +23,14 @@ export const Button = styled.TouchableOpacity`
   justify-content: center;
   flex-direction: row;
   opacity: ${(props: Props) => (props.disabled ? 0.7 : 1)};
+  flex: 1;
 `;
 
 export const TextButton = styled.TouchableOpacity`
   border-radius: 30px;
   display: flex;
   justify-content: ${(props: Props) => (props.align ? props.align : 'center')};
-  width: 100%;
+  flex: 1;
 `;
 
 export const CircleButton = styled.TouchableOpacity`

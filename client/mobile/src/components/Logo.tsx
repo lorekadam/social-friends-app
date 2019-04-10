@@ -10,13 +10,13 @@ interface Props {
 export default class Logo extends Component<Props, {}> {
   render() {
     let { width, height } = this.props;
-    width = width ? width : 280;
-    height = height ? height : 280;
+    width = width || 280;
+    height = height || 280;
     return (
       <Image
-        source={require('../../assets/logo1.png')}
+        source={require('../../assets/logo2.png')}
         style={{ width, height }}
-        resizeMode={'contain'}
+        resizeMode="contain"
       />
     );
   }

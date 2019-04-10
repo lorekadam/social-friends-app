@@ -2,21 +2,22 @@ import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { adopt } from 'react-adopt';
 import gql from 'graphql-tag';
+import QRCode from 'react-native-qrcode';
+import { ScrollView } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 import { RowColumn } from '../../styled/Grid';
 import Friends from '../Friends/Friends';
 import Notifications from '../Notifications/Notifications';
 import Settings from '../Settings/Settings';
 import colors from '../../styled/colors';
-import QRCode from 'react-native-qrcode';
 import { FullView, SimpleView } from '../../styled/View';
 import LogOutButton from '../ControlButtons/LogOutButton';
 import AccordionHeadline from './AccordionHeadline';
-import { ScrollView } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
 import { HOME_PAGE } from '../../navigation/pageTypes';
 import Loader from '../Loader';
 import { getRouteName } from '../../utils/getRouteName';
 import { ME_QUERY, MY_UNREAD_NOTIFICATIONS } from '../../pages/PageSpine';
+import { statusBarHeight } from '../../styled/globals';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -50,7 +51,7 @@ export const TOGGLE_SETTINGS_MUTATION = gql`
 
 const Composed = adopt({
   me: ({ render }) => <Query query={ME_QUERY}>{render}</Query>,
-  local: ({ render }) => <Query query={LOCAL_TOGGLE_QUERY}>{render}</Query>
+  local: ({ render }) => <Query query={LOCAL_TOGGLE_QUERY}>{render}</Query>,
 });
 
 export default class SettingsSidebar extends Component<Props, {}> {
@@ -58,19 +59,24 @@ export default class SettingsSidebar extends Component<Props, {}> {
     const { navigation } = this.props;
     return (
       <Composed>
-        {({ me, local }:any) => {
+        {({ me, local }: any) => {
           const routeName = getRouteName(navigation.state);
           const { friendsOpen, notificationsOpen, settingsOpen } = local.data;
           return (
-            <ScrollView>
+            <ScrollView
+              style={{
+                marginTop: statusBarHeight,
+                backgroundColor: colors.dark2,
+              }}
+            >
               {me.loading || local.loading ? (
                 <Loader />
               ) : (
                 <RowColumn noGutters>
                   <SimpleView>
                     <QRCode
-                      bgColor={colors.dark2}
-                      fgColor={colors.light2}
+                      bgColor={colors.light2}
+                      fgColor={colors.dark2}
                       value={me.data.id}
                     />
                   </SimpleView>
@@ -86,31 +92,32 @@ export default class SettingsSidebar extends Component<Props, {}> {
                       icon="home"
                     />
                     <Mutation mutation={TOGGLE_NOTIFICATIONS_MUTATION}>
-                      {(toggleNotification) => (
+                      {toggleNotification => (
                         <Query query={MY_UNREAD_NOTIFICATIONS}>
                           {({ data, loading }) => {
                             if (loading) {
                               return <Loader />;
-                            } else {
-                              return (
-                                <AccordionHeadline
-                                  active={notificationsOpen}
-                                  action={() => toggleNotification()}
-                                  icon="mail"
-                                  title="Notifications"
-                                  badge={parseInt(
-                                    data.unviewedNotifications.message
-                                  )}
-                                />
-                              );
                             }
+                            return (
+                              <AccordionHeadline
+                                active={notificationsOpen}
+                                action={() => toggleNotification()}
+                                icon="mail"
+                                title="Notifications"
+                                badge={parseInt(
+                                  data.unviewedNotifications.message
+                                )}
+                              />
+                            );
                           }}
                         </Query>
                       )}
                     </Mutation>
-                    <Notifications open={notificationsOpen} />
+                    <Notifications
+                      open={notificationsOpen}                      
+                    />
                     <Mutation mutation={TOGGLE_FRIENDS_MUTATION}>
-                      {(toggleFriends) => (
+                      {toggleFriends => (
                         <AccordionHeadline
                           active={friendsOpen}
                           action={() => toggleFriends()}
@@ -121,7 +128,7 @@ export default class SettingsSidebar extends Component<Props, {}> {
                     </Mutation>
                     <Friends open={friendsOpen} />
                     <Mutation mutation={TOGGLE_SETTINGS_MUTATION}>
-                      {(toggleSettings) => (
+                      {toggleSettings => (
                         <AccordionHeadline
                           active={settingsOpen}
                           action={() => toggleSettings()}

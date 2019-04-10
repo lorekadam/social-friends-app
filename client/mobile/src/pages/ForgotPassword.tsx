@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, KeyboardAvoidingView } from 'react-native';
 
 import { emailValidation } from '../utils/validations';
 import BackButton from '../components/BackButton';
@@ -37,25 +37,25 @@ const REQUEST_RESET_MUTATION = gql`
 export default class ForgotPassword extends Component<Props, State> {
   state = {
     email: '',
-    success: ''
+    success: '',
   };
 
   setValue = (name: string, val: string) => {
     this.setState({
-      [name]: val
+      [name]: val,
     } as any);
   };
 
   requestReset = async (requestReset: Function) => {
     this.setState({
-      success: ''
+      success: '',
     });
     const res = await requestReset();
     if (res) {
       console.log(res);
       this.setState({
         email: '',
-        success: res.data.requestReset.message
+        success: res.data.requestReset.message,
       });
     }
   };
@@ -63,9 +63,9 @@ export default class ForgotPassword extends Component<Props, State> {
   render() {
     const { email, success } = this.state;
     return (
-      <Mutation mutation={REQUEST_RESET_MUTATION} variables={this.state}>
-        {(requestReset, { error, loading }) => {
-          return (
+      <KeyboardAvoidingView behavior="position" enabled>
+        <Mutation mutation={REQUEST_RESET_MUTATION} variables={this.state}>
+          {(requestReset, { error, loading }) => (
             <ImageBackground
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
@@ -114,9 +114,9 @@ export default class ForgotPassword extends Component<Props, State> {
                 </React.Fragment>
               </PaddingView>
             </ImageBackground>
-          );
-        }}
-      </Mutation>
+          )}
+        </Mutation>
+      </KeyboardAvoidingView>
     );
   }
 }

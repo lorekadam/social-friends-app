@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground, AsyncStorage } from 'react-native';
+import {
+  ImageBackground,
+  AsyncStorage,
+  KeyboardAvoidingView,
+} from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 import { emailValidation, nameValidation } from '../utils/validations';
 import colors from '../styled/colors';
 import { PaddingView } from '../styled/View';
@@ -9,7 +14,6 @@ import { Input } from '../styled/Input';
 import { Button } from '../styled/Buttons';
 import { Text } from '../styled/Text';
 import BackButton from '../components/BackButton';
-import { NavigationScreenProp } from 'react-navigation';
 import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
 import Logo from '../components/Logo';
@@ -47,20 +51,21 @@ export default class RegisterPage extends Component<Props, State> {
     name: '',
     email: '',
     password: '',
-    success: ''
+    success: '',
   };
 
   setValue = (name: keyof State, val: string) => {
     this.setState({
-      [name]: val
+      [name]: val,
     } as any);
   };
+
   render() {
     const { name, email, password, success } = this.state;
     return (
-      <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
-        {(signup, { error, loading }) => {
-          return (
+      <KeyboardAvoidingView behavior="position" enabled>
+        <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
+          {(signup, { error, loading }) => (
             <ImageBackground
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
@@ -104,7 +109,7 @@ export default class RegisterPage extends Component<Props, State> {
                                 this.setValue('password', val)
                               }
                               placeholder="Password"
-                              secureTextEntry={true}
+                              secureTextEntry
                             />
                           </ColColumn>
                           <ColColumn>
@@ -127,7 +132,7 @@ export default class RegisterPage extends Component<Props, State> {
                                     res.data.signup.jwt
                                   );
                                   this.setState({
-                                    success: res.data.signup.message
+                                    success: res.data.signup.message,
                                   });
                                   this.props.navigation.navigate('Profile');
                                 }
@@ -146,9 +151,9 @@ export default class RegisterPage extends Component<Props, State> {
                 </React.Fragment>
               </PaddingView>
             </ImageBackground>
-          );
-        }}
-      </Mutation>
+          )}
+        </Mutation>
+      </KeyboardAvoidingView>
     );
   }
 }

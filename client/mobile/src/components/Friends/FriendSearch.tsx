@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigation, NavigationScreenProp } from 'react-navigation';
+import { Image } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import colors from '../../styled/colors';
 import { FullView } from '../../styled/View';
 import QLNotifications from '../QLNotifications';
@@ -9,13 +11,12 @@ import Loader from '../Loader';
 import { Text } from '../../styled/Text';
 import { Item, ResultsWrapper } from '../../styled/Autocomplete';
 import CircleIconButton from '../display/CircleIconButton';
-import { Image } from 'react-native';
 import { UserSearch, UserToInvite } from '../../QL/globals';
 import { avatarUrl } from '../../config';
 import { FindUser } from '../../QL/types';
 import FindUsers from '../FindUsers';
-import { Feather } from '@expo/vector-icons';
 import { MY_FRIENDS_QUERY } from '../../QL/Queries';
+import { ColColumn } from '../../styled/Grid';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -48,13 +49,13 @@ class FriendSearch extends Component<Props, State> {
   state = {
     success: '',
     searchResults: [],
-    searched: false
+    searched: false,
   };
 
   setResults = (res: UserSearch) => {
     const { data } = res;
     this.setState({
-      searchResults: data.friendsToInvite ? data.friendsToInvite : []
+      searchResults: data.friendsToInvite ? data.friendsToInvite : [],
     });
   };
 
@@ -62,7 +63,7 @@ class FriendSearch extends Component<Props, State> {
     const { searchResults } = this.state;
     searchResults[i].invited = true;
     this.setState({
-      searchResults
+      searchResults,
     });
   };
 
@@ -71,11 +72,13 @@ class FriendSearch extends Component<Props, State> {
     return (
       <FullView>
         <React.Fragment>
-          <FindUsers
-            placeholder="Search..."
-            query={SEARCH_FRIENDS_QUERY}
-            setResults={this.setResults}
-          />
+          <ColColumn>
+            <FindUsers
+              placeholder="Search..."
+              query={SEARCH_FRIENDS_QUERY}
+              setResults={this.setResults}
+            />
+          </ColColumn>
           {searchResults.length > 0 && (
             <ResultsWrapper>
               {searchResults.map((user: UserToInvite, i) => (
@@ -85,8 +88,8 @@ class FriendSearch extends Component<Props, State> {
                   refetchQueries={[
                     {
                       query: MY_FRIENDS_QUERY,
-                      variables: { last: 5 }
-                    }
+                      variables: { last: 5 },
+                    },
                   ]}
                   variables={{ id: user.id }}
                 >
@@ -97,12 +100,12 @@ class FriendSearch extends Component<Props, State> {
                       <Item>
                         <Image
                           source={{
-                            uri: `${avatarUrl}${user.id}`
+                            uri: `${avatarUrl}${user.id}`,
                           }}
                           style={{
                             width: 40,
                             height: 40,
-                            borderRadius: 40
+                            borderRadius: 40,
                           }}
                         />
                         <Text>{user.name}</Text>

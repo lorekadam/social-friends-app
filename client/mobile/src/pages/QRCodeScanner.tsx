@@ -31,7 +31,10 @@ export default class QRCodeScanner extends React.Component {
         <Camera
           style={{ flex: 1 }}
           type={this.state.type}
-          onBarCodeScanned={e => this.setState({ userId: e.data })}
+          onBarCodeScanned={e => {
+            console.log('data', e.data);
+            this.setState({ userId: e.data });
+          }}
           barCodeScannerSettings={{
             barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
           }}

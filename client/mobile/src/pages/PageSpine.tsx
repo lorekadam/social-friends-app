@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components/native';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import { PaddingView, FlexView } from '../styled/View';
 import ColorizedTop from '../components/ColorizedTop';
 import CenteredTop from '../components/CenteredTop';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import { RowColumn, ColColumn } from '../styled/Grid';
 import Loader from '../components/Loader';
 import SideMenuToggle from '../components/ControlButtons/SideMenuToggle';
 import FillUserName from '../components/FillUserName';
+import { statusBarHeight } from '../styled/globals';
 
 export const LOCAL_TOGGLE_QUERY = gql`
   query {
@@ -42,6 +43,7 @@ export const MainView = styled.View`
   flex: 1;
   height: 100%;
   flex-direction: column;
+  margin-top: ${statusBarHeight};
 `;
 
 export default class PageSpine extends Component {
@@ -51,49 +53,44 @@ export default class PageSpine extends Component {
         {({ data, loading }) => {
           if (loading) {
             return <Loader />;
-          } else {
-            if (data.me.name === null || data.me.name.length === 0) {
-              return <FillUserName />;
-            } else {
-              return (
-                <MainView>
-                  <React.Fragment>
-                    <RowColumn noGutters>
-                      <ColColumn noGutters>
-                        <FlexView>
-                          <ColorizedTop>
-                            <CenteredTop userId={data.me.id} />
-                            <Query query={MY_UNREAD_NOTIFICATIONS}>
-                              {({ data, loading }) => {
-                                if (loading) {
-                                  return <Loader />;
-                                } else {
-                                  return (
-                                    <SideMenuToggle
-                                      notifications={parseInt(
-                                        data.unviewedNotifications.message
-                                      )}
-                                    />
-                                  );
-                                }
-                              }}
-                            </Query>
-                          </ColorizedTop>
-                        </FlexView>
-                      </ColColumn>
-                      <ColColumn noGutters flex={2}>
-                        <PaddingView
-                          style={{ zIndex: 1, backgroundColor: 'gray' }}
-                        >
-                          {this.props.children}
-                        </PaddingView>
-                      </ColColumn>
-                    </RowColumn>
-                  </React.Fragment>
-                </MainView>
-              );
-            }
           }
+          if (data.me.name === null || data.me.name.length === 0) {
+            return <FillUserName />;
+          }
+          return (
+            <MainView>
+              <React.Fragment>
+                <RowColumn noGutters>
+                  <ColColumn noGutters>
+                    <FlexView>
+                      <ColorizedTop>
+                        <CenteredTop userId={data.me.id} />
+                        <Query query={MY_UNREAD_NOTIFICATIONS}>
+                          {({ data, loading }) => {
+                            if (loading) {
+                              return <Loader />;
+                            }
+                            return (
+                              <SideMenuToggle
+                                notifications={parseInt(
+                                  data.unviewedNotifications.message
+                                )}
+                              />
+                            );
+                          }}
+                        </Query>
+                      </ColorizedTop>
+                    </FlexView>
+                  </ColColumn>
+                  <ColColumn noGutters flex={2}>
+                    <PaddingView style={{ zIndex: 1, backgroundColor: 'gray' }}>
+                      {this.props.children}
+                    </PaddingView>
+                  </ColColumn>
+                </RowColumn>
+              </React.Fragment>
+            </MainView>
+          );
         }}
       </Query>
     );

@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Mutation, ApolloConsumer } from 'react-apollo';
 import { NavigationScreenProp } from 'react-navigation';
 import gql from 'graphql-tag';
-import { ImageBackground, AsyncStorage } from 'react-native';
+import {
+  ImageBackground,
+  AsyncStorage,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { PaddingView } from '../styled/View';
 import colors from '../styled/colors';
 import { Input } from '../styled/Input';
@@ -15,6 +19,7 @@ import Loader from '../components/Loader';
 import QLNotifications from '../components/QLNotifications';
 import Logo from '../components/Logo';
 import { HOME_PAGE } from '../navigation/pageTypes';
+import { height } from '../styled/globals';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -41,12 +46,12 @@ export default class LoginPage extends Component<Props, State> {
   state = {
     email: 'lorekkadam@gmail.com',
     password: '102587',
-    success: ''
+    success: '',
   };
 
   setValue = (name: keyof State, val: string) => {
     this.setState({
-      [name]: val
+      [name]: val,
     } as any);
   };
 
@@ -69,15 +74,15 @@ export default class LoginPage extends Component<Props, State> {
   render() {
     const { email, password, success } = this.state;
     return (
-      <Mutation mutation={SIGNIN_MUTATION} variables={this.state}>
-        {(signin, { error, loading }) => {
-          return (
+      <KeyboardAvoidingView behavior="position" enabled>
+        <Mutation mutation={SIGNIN_MUTATION} variables={this.state}>
+          {(signin, { error, loading }) => (
             <ImageBackground
               source={require('../../assets/bg1.jpg')}
               style={{ width: '100%', height: '100%' }}
             >
               <PaddingView>
-                <RowColumn noGutters>
+                <RowColumn>
                   <ColColumn flex={4} justify="center" align="center">
                     <Logo />
                   </ColColumn>
@@ -90,6 +95,7 @@ export default class LoginPage extends Component<Props, State> {
                       <RowColumn>
                         <ColColumn>
                           <Input
+                            minHeight={40}
                             value={email}
                             onChangeText={(val: string) =>
                               this.setValue('email', val)
@@ -99,12 +105,13 @@ export default class LoginPage extends Component<Props, State> {
                         </ColColumn>
                         <ColColumn>
                           <Input
+                            minHeight={40}
                             value={password}
                             onChangeText={(val: string) =>
                               this.setValue('password', val)
                             }
                             placeholder="Password"
-                            secureTextEntry={true}
+                            secureTextEntry
                           />
                         </ColColumn>
                         <ColColumn>
@@ -137,7 +144,7 @@ export default class LoginPage extends Component<Props, State> {
                         </ColColumn>
                         <ColColumn>
                           <ApolloConsumer>
-                            {(client) => (
+                            {client => (
                               <Button
                                 full
                                 disabled={
@@ -166,9 +173,9 @@ export default class LoginPage extends Component<Props, State> {
                 </RowColumn>
               </PaddingView>
             </ImageBackground>
-          );
-        }}
-      </Mutation>
+          )}
+        </Mutation>
+      </KeyboardAvoidingView>
     );
   }
 }

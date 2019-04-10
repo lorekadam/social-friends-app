@@ -8,7 +8,7 @@ interface Props {
   paddingRight?: number;
   paddingBottom?: number;
   paddingLeft?: number;
-  height?: string;
+  height?: string | number;
   justify?: string;
   align?: string;
   direction?: string;

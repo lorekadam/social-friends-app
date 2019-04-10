@@ -39,6 +39,7 @@ export const RowColumn = styled(Row)`
 `;
 
 export const ColColumn = styled(Col)`
+  flex: 1;
   width: 100%;
   padding: 0;
 `;
